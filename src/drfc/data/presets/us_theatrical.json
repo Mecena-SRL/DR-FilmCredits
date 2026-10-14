@@ -1,0 +1,603 @@
+{
+ "label": {
+  "it": "USA – Lungometraggio (WGA/DGA)",
+  "en": "US – Theatrical feature (WGA/DGA)"
+ },
+ "region": "US",
+ "theme": "classic",
+ "language": "en",
+ "format": {
+  "width": 2048,
+  "height": 1080,
+  "fps": 24.0
+ },
+ "timing": {
+  "speed": "normal",
+  "end_mode": "scroll_out"
+ },
+ "notes": [
+  "DGA: 'Directed by' e' l'unica forma ammessa; con 6+ crediti personali spetta anche 'A Film By' sopra il titolo (Sideletter 27).",
+  "WGA: forme ammesse 'Written by', 'Screenplay by', 'Story by', 'Screen Story by', 'Adaptation by'. '&' = team, 'and' = lavoro separato.",
+  "p.g.a.: solo per i produttori certificati dalla PGA, progetto per progetto.",
+  "'No Animals Were Harmed' e' un marchio American Humane: solo con certificazione.",
+  "Ordine main titles tipico: casting, music, costume, editor, production designer, DP, executive producers, producers, writers, director (ultimo)."
+ ],
+ "sequences": [
+  {
+   "id": "opening",
+   "kind": "cards",
+   "name": "Main Titles",
+   "blocks": [
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "Studio/Distributor presents"
+    },
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "A {Company} production"
+    },
+    {
+     "type": "card",
+     "role": "film_by",
+     "names": []
+    },
+    {
+     "type": "card",
+     "names": [],
+     "note": "Starring (lead cast)"
+    },
+    {
+     "type": "title",
+     "text": ""
+    },
+    {
+     "type": "card",
+     "role": "casting",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "composer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "costume_designer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "editor",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "production_designer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "cinematographer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "executive_producer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "producer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "screenplay",
+     "names": [],
+     "team": true
+    },
+    {
+     "type": "card",
+     "role": "director",
+     "names": []
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "End Crawl",
+   "blocks": [
+    {
+     "type": "credit",
+     "role": "director",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "written_by",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "producer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "executive_producer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "cinematographer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "production_designer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "editor",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "costume_designer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "composer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "music_supervisor",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "casting",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "cast",
+     "heading": "h:cast",
+     "rows": [],
+     "order": "character_actor"
+    },
+    {
+     "type": "list",
+     "heading": "dept:production",
+     "rows": [
+      {
+       "role": "general_manager",
+       "names": []
+      },
+      {
+       "role": "first_ad",
+       "names": []
+      },
+      {
+       "role": "second_ad",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:stunts",
+     "rows": [
+      {
+       "role": "stunt_coordinator",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:camera",
+     "rows": [
+      {
+       "role": "camera_operator",
+       "names": []
+      },
+      {
+       "role": "first_ac",
+       "names": []
+      },
+      {
+       "role": "second_ac",
+       "names": []
+      },
+      {
+       "role": "dit",
+       "names": []
+      },
+      {
+       "role": "steadicam",
+       "names": []
+      },
+      {
+       "role": "drone_operator",
+       "names": []
+      },
+      {
+       "role": "stills",
+       "names": []
+      },
+      {
+       "role": "bts",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:electric",
+     "rows": [
+      {
+       "role": "gaffer",
+       "names": []
+      },
+      {
+       "role": "electrician",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:grip",
+     "rows": [
+      {
+       "role": "key_grip",
+       "names": []
+      },
+      {
+       "role": "grip",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:sound",
+     "rows": [
+      {
+       "role": "sound_mixer",
+       "names": []
+      },
+      {
+       "role": "boom_operator",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:art",
+     "rows": [
+      {
+       "role": "art_director",
+       "names": []
+      },
+      {
+       "role": "set_decorator",
+       "names": []
+      },
+      {
+       "role": "props",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:costume",
+     "rows": [
+      {
+       "role": "wardrobe",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:makeup",
+     "rows": [
+      {
+       "role": "makeup_artist",
+       "names": []
+      },
+      {
+       "role": "hair_stylist",
+       "names": []
+      },
+      {
+       "role": "sfx_makeup",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:locations",
+     "rows": [
+      {
+       "role": "location_manager",
+       "names": []
+      },
+      {
+       "role": "location_scout",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:transport",
+     "rows": [
+      {
+       "role": "driver",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:catering",
+     "rows": [
+      {
+       "role": "catering",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:editing",
+     "rows": [
+      {
+       "role": "assistant_editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post",
+     "rows": [
+      {
+       "role": "post_supervisor",
+       "names": []
+      },
+      {
+       "role": "titles",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:color",
+     "rows": [
+      {
+       "role": "colorist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:vfx",
+     "rows": [
+      {
+       "role": "vfx_supervisor",
+       "names": []
+      },
+      {
+       "role": "vfx_artist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post_sound",
+     "rows": [
+      {
+       "role": "sound_designer",
+       "names": []
+      },
+      {
+       "role": "dialogue_editor",
+       "names": []
+      },
+      {
+       "role": "foley",
+       "names": []
+      },
+      {
+       "role": "rerecording_mixer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:music",
+     "rows": [
+      {
+       "role": "music_supervisor",
+       "names": []
+      },
+      {
+       "role": "music_editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:accounting",
+     "rows": [
+      {
+       "role": "accountant",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:legal",
+     "rows": [
+      {
+       "role": "legal_counsel",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:publicity",
+     "rows": [
+      {
+       "role": "press_office",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "music",
+     "heading": "h:songs",
+     "cues": []
+    },
+    {
+     "type": "agreements",
+     "kind": "location",
+     "entries": []
+    },
+    {
+     "type": "agreements",
+     "kind": "rental",
+     "entries": []
+    },
+    {
+     "type": "agreements",
+     "kind": "archive",
+     "entries": [],
+     "enabled": false
+    },
+    {
+     "type": "agreements",
+     "kind": "product",
+     "entries": [],
+     "enabled": false
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "media",
+     "items": [],
+     "arrangement": "row",
+     "enabled": false,
+     "note": "Foto/video di backstage"
+    },
+    {
+     "type": "logos",
+     "caption": "",
+     "items": [],
+     "hold_s": 0
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "animals_aha",
+       "values": {
+        "cert_no": ""
+       }
+      }
+     ],
+     "enabled": false
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "mpa_cert",
+       "values": {
+        "cert_no": ""
+       }
+      }
+     ],
+     "enabled": false
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "copyright"
+      },
+      {
+       "key": "fiction"
+      },
+      {
+       "key": "piracy"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checks": [
+  {
+   "check": "title_present"
+  },
+  {
+   "check": "role_present",
+   "role": "director"
+  },
+  {
+   "check": "director_form"
+  },
+  {
+   "check": "legal_present",
+   "key": "copyright"
+  },
+  {
+   "check": "wga_team_hint"
+  }
+ ],
+ "id": "us_theatrical"
+}

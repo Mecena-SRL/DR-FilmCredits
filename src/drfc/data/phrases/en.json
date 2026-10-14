@@ -1,0 +1,112 @@
+{
+  "_lang": "en",
+  "quote": [
+    "“",
+    "”"
+  ],
+  "list_sep": ", ",
+  "list_last": " and ",
+  "team_sep": " & ",
+  "music": {
+    "header": "Music",
+    "songs_header": "Songs",
+    "written_by": "Written by {names}",
+    "music_by": "Music by {names}",
+    "lyrics_by": "Lyrics by {names}",
+    "composed_by": "Composed by {names}",
+    "arranged_by": "Arranged by {names}",
+    "performed_by": "Performed by {names}",
+    "publisher": "Published by {names}",
+    "agreement": {
+      "original": "Original music composed for the film",
+      "licensed": "Courtesy of {licensor}",
+      "licensed_under": "Under license from {licensor}",
+      "courtesy": "Used by kind permission of {licensor}",
+      "artist_owned": "Courtesy of the artist",
+      "library": "Courtesy of {licensor}",
+      "public_domain": "Traditional",
+      "creative_commons": "Licensed under {cc_license} – {licensor}",
+      "by_arrangement": "By arrangement with {agent}"
+    }
+  },
+  "agreement": {
+    "location": {
+      "paid": "{name}",
+      "free": "{name}, by kind permission of {provider}",
+      "public": "{name}, with the kind cooperation of {provider}",
+      "thanks": "{name}"
+    },
+    "rental": {
+      "paid": "Equipment provided by {provider}",
+      "free": "Equipment kindly provided by {provider}",
+      "discount": "With the technical support of {provider}",
+      "sponsor": "In collaboration with {provider}"
+    },
+    "archive": {
+      "licensed": "Archive footage licensed from {provider}",
+      "free": "Archive footage courtesy of {provider}",
+      "public_domain": "Archive footage: {provider} (public domain)"
+    },
+    "product": {
+      "placement": "{name}",
+      "free": "{name}, courtesy of {provider}"
+    },
+    "artwork": {
+      "licensed": "Artwork licensed from {provider}",
+      "free": "Artwork courtesy of {provider}"
+    }
+  },
+  "headers": {
+    "locations": "Locations",
+    "rentals": "Equipment & Facilities",
+    "archive": "Archive Footage",
+    "products": "Products & Brands",
+    "thanks": "Special Thanks",
+    "with_support": "With the support of",
+    "cast": "Cast",
+    "in_order_of_appearance": "In order of appearance",
+    "and_with": "and",
+    "with": "with",
+    "the_end": "The End",
+    "filmed_in": "Filmed on location in {place}",
+    "songs": "Songs"
+  },
+  "presenting": {
+    "presents": "{name} presents",
+    "a_production": "A {name} production",
+    "in_coproduction": "In co-production with {name}",
+    "in_association": "In association with {name}",
+    "with_participation": "With the participation of {name}",
+    "in_collaboration": "In collaboration with {name}",
+    "distributed_by": "Distributed by {name}",
+    "film_by": "A film by {name}"
+  },
+  "legal": {
+    "copyright": "© {year} {owner}. All rights reserved.",
+    "copyright_short": "© {year} {owner}",
+    "fiction": "This is a work of fiction. Any resemblance to actual persons, living or dead, or actual events is purely coincidental.",
+    "fiction_true_story": "This film is inspired by true events. Some names, characters, places and incidents have been changed or fictionalised for dramatic purposes.",
+    "piracy": "Unauthorized duplication, distribution or exhibition of this film may result in civil liability and criminal prosecution.",
+    "ai_disclosure": "Artificial intelligence systems were used in the making of this work for: {uses}.",
+    "no_ai": "No generative artificial intelligence was used in the making of this work.",
+    "animals_generic": "No animals were harmed or mistreated during the making of this film.",
+    "animals_aha": "American Humane monitored the animal action. No Animals Were Harmed® (AHA {cert_no})",
+    "product_placement": "This film contains product placement.",
+    "music_rights_society": "Music rights administered by {society}.",
+    "mic_tax_credit": "Made with the support of the Italian Ministry of Culture – Directorate-General for Cinema and Audiovisual",
+    "italian_tax_credit_foreign": "With the support of the Italian Tax Credit",
+    "creative_europe": "With the support of the Creative Europe MEDIA Programme of the European Union",
+    "eurimages": "With the support of Eurimages – Council of Europe",
+    "film_commission": "With the support of {name}",
+    "cultural_interest": "Film recognised as being of cultural interest by the Italian Ministry of Culture – Directorate-General for Cinema and Audiovisual",
+    "rating": "Rated {rating}",
+    "mpa_cert": "MPA Certificate No. {cert_no}",
+    "union_bug": "Made with the support of {unions}",
+    "country_of_origin": "{country}",
+    "no_endorsement": "The appearance of any brand or product does not imply endorsement.",
+    "cnc": "With the support of the Centre national du cinéma et de l'image animée (CNC)",
+    "ffa": "Funded by the German Federal Film Board (FFA)",
+    "dfff": "Funded by the German Federal Film Fund (DFFF)",
+    "icaa": "With the participation of the Spanish Film Institute (ICAA)"
+  }
+}

@@ -1,0 +1,687 @@
+{
+ "label": {
+  "it": "Italia – Lungometraggio cinema",
+  "en": "Italy – Theatrical feature"
+ },
+ "region": "IT",
+ "theme": "classic",
+ "language": "it",
+ "format": {
+  "width": 1920,
+  "height": 1080,
+  "fps": 24.0
+ },
+ "timing": {
+  "speed": "normal",
+  "end_mode": "hold_last",
+  "hold_last_s": 4.0
+ },
+ "funding_options": [
+  "mic_tax_credit",
+  "mic_selective",
+  "cultural_interest",
+  "film_commission",
+  "creative_europe",
+  "eurimages",
+  "rai_cinema"
+ ],
+ "notes": [
+  "Tax credit MiC: logo + nome del Ministero e dicitura nei titoli (a pena di decadenza). Richiedere il logo alla DGCA.",
+  "Uso di intelligenza artificiale: va dichiarato nei titoli di testa o di coda per le opere che accedono al tax credit.",
+  "Ordine titoli di testa tipico: distribuzione presenta, produzione, 'un film di', cast principale, titolo, reparti creativi, produttori, regia."
+ ],
+ "sequences": [
+  {
+   "id": "opening",
+   "kind": "cards",
+   "name": "Titoli di testa",
+   "blocks": [
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "Distribuzione: '{nome} presenta'"
+    },
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "Produzione: 'Una produzione {nome}'"
+    },
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "In coproduzione con / In collaborazione con (es. Rai Cinema)"
+    },
+    {
+     "type": "card",
+     "role": "film_by",
+     "names": []
+    },
+    {
+     "type": "card",
+     "names": [],
+     "note": "Cast principale (un nome per cartello o a coppie)"
+    },
+    {
+     "type": "title",
+     "text": ""
+    },
+    {
+     "type": "card",
+     "role": "casting",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "composer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "costume_designer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "editor",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "production_designer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "cinematographer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "general_manager",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "story",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "screenplay",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "producer",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "director",
+     "names": []
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "Titoli di coda",
+   "blocks": [
+    {
+     "type": "credit",
+     "role": "director",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "screenplay",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "producer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "cast",
+     "heading": "h:cast",
+     "rows": [],
+     "order": "actor_character"
+    },
+    {
+     "type": "list",
+     "heading": "dept:production",
+     "rows": [
+      {
+       "role": "executive_producer",
+       "names": []
+      },
+      {
+       "role": "line_producer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "credit",
+     "role": "cinematographer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "editor",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "production_designer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "costume_designer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "composer",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "casting",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "list",
+     "heading": "dept:production",
+     "rows": [
+      {
+       "role": "general_manager",
+       "names": []
+      },
+      {
+       "role": "production_manager",
+       "names": []
+      },
+      {
+       "role": "unit_manager",
+       "names": []
+      },
+      {
+       "role": "production_coordinator",
+       "names": []
+      },
+      {
+       "role": "production_secretary",
+       "names": []
+      },
+      {
+       "role": "production_assistant",
+       "names": []
+      },
+      {
+       "role": "runner",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:direction",
+     "rows": [
+      {
+       "role": "first_ad",
+       "names": []
+      },
+      {
+       "role": "second_ad",
+       "names": []
+      },
+      {
+       "role": "script_supervisor",
+       "names": []
+      },
+      {
+       "role": "casting",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:camera",
+     "rows": [
+      {
+       "role": "camera_operator",
+       "names": []
+      },
+      {
+       "role": "first_ac",
+       "names": []
+      },
+      {
+       "role": "second_ac",
+       "names": []
+      },
+      {
+       "role": "dit",
+       "names": []
+      },
+      {
+       "role": "steadicam",
+       "names": []
+      },
+      {
+       "role": "drone_operator",
+       "names": []
+      },
+      {
+       "role": "stills",
+       "names": []
+      },
+      {
+       "role": "bts",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:electric",
+     "rows": [
+      {
+       "role": "gaffer",
+       "names": []
+      },
+      {
+       "role": "electrician",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:grip",
+     "rows": [
+      {
+       "role": "key_grip",
+       "names": []
+      },
+      {
+       "role": "grip",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:sound",
+     "rows": [
+      {
+       "role": "sound_mixer",
+       "names": []
+      },
+      {
+       "role": "boom_operator",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:art",
+     "rows": [
+      {
+       "role": "art_director",
+       "names": []
+      },
+      {
+       "role": "set_decorator",
+       "names": []
+      },
+      {
+       "role": "props",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:costume",
+     "rows": [
+      {
+       "role": "wardrobe",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:makeup",
+     "rows": [
+      {
+       "role": "makeup_artist",
+       "names": []
+      },
+      {
+       "role": "hair_stylist",
+       "names": []
+      },
+      {
+       "role": "sfx_makeup",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:locations",
+     "rows": [
+      {
+       "role": "location_manager",
+       "names": []
+      },
+      {
+       "role": "location_scout",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:transport",
+     "rows": [
+      {
+       "role": "driver",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:catering",
+     "rows": [
+      {
+       "role": "catering",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:editing",
+     "rows": [
+      {
+       "role": "assistant_editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post",
+     "rows": [
+      {
+       "role": "post_supervisor",
+       "names": []
+      },
+      {
+       "role": "titles",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:color",
+     "rows": [
+      {
+       "role": "colorist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:vfx",
+     "rows": [
+      {
+       "role": "vfx_supervisor",
+       "names": []
+      },
+      {
+       "role": "vfx_artist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post_sound",
+     "rows": [
+      {
+       "role": "sound_designer",
+       "names": []
+      },
+      {
+       "role": "dialogue_editor",
+       "names": []
+      },
+      {
+       "role": "foley",
+       "names": []
+      },
+      {
+       "role": "rerecording_mixer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:music",
+     "rows": [
+      {
+       "role": "music_supervisor",
+       "names": []
+      },
+      {
+       "role": "music_editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:accounting",
+     "rows": [
+      {
+       "role": "accountant",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:legal",
+     "rows": [
+      {
+       "role": "legal_counsel",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:publicity",
+     "rows": [
+      {
+       "role": "press_office",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "music",
+     "heading": "h:songs",
+     "cues": []
+    },
+    {
+     "type": "agreements",
+     "kind": "location",
+     "entries": []
+    },
+    {
+     "type": "agreements",
+     "kind": "rental",
+     "entries": []
+    },
+    {
+     "type": "agreements",
+     "kind": "archive",
+     "entries": [],
+     "enabled": false
+    },
+    {
+     "type": "agreements",
+     "kind": "product",
+     "entries": [],
+     "enabled": false
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "media",
+     "items": [],
+     "arrangement": "row",
+     "enabled": false,
+     "note": "Foto/video di backstage"
+    },
+    {
+     "type": "logos",
+     "caption": "h:with_support",
+     "items": [],
+     "hold_s": 0
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "mic_tax_credit"
+      }
+     ],
+     "enabled": false,
+     "note": "Attivare se tax credit MiC"
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "ai_disclosure",
+       "values": {
+        "uses": ""
+       }
+      }
+     ],
+     "enabled": false
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "fiction"
+      },
+      {
+       "key": "piracy"
+      },
+      {
+       "key": "copyright"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checks": [
+  {
+   "check": "title_present"
+  },
+  {
+   "check": "role_present",
+   "role": "director"
+  },
+  {
+   "check": "legal_present",
+   "key": "copyright"
+  },
+  {
+   "check": "funding",
+   "flag": "mic_tax_credit",
+   "legal": "mic_tax_credit",
+   "logo_tag": "mic"
+  },
+  {
+   "check": "funding",
+   "flag": "mic_selective",
+   "legal": "mic_tax_credit",
+   "logo_tag": "mic"
+  },
+  {
+   "check": "funding",
+   "flag": "cultural_interest",
+   "legal": "cultural_interest",
+   "logo_tag": "mic"
+  },
+  {
+   "check": "funding",
+   "flag": "creative_europe",
+   "legal": "creative_europe",
+   "logo_tag": "creative_europe",
+   "opening": true
+  },
+  {
+   "check": "funding",
+   "flag": "eurimages",
+   "logo_tag": "eurimages",
+   "opening": true
+  },
+  {
+   "check": "funding",
+   "flag": "film_commission",
+   "legal": null,
+   "logo_tag": "film_commission"
+  },
+  {
+   "check": "ai_disclosure"
+  }
+ ],
+ "id": "it_cinema"
+}

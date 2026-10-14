@@ -1,0 +1,441 @@
+{
+ "label": {
+  "it": "USA/Streaming – Serie",
+  "en": "US / Streaming – Series"
+ },
+ "region": "US",
+ "theme": "modern",
+ "language": "en",
+ "format": {
+  "width": 3840,
+  "height": 2160,
+  "fps": 23.976
+ },
+ "timing": {
+  "speed": "fast",
+  "end_mode": "scroll_out"
+ },
+ "notes": [
+  "Netflix raccomanda title-safe 90% e action-safe 93% (SMPTE). I crediti nei titoli di testa devono avere stesso font e dimensione dei crediti circostanti."
+ ],
+ "sequences": [
+  {
+   "id": "opening",
+   "kind": "cards",
+   "name": "Opening",
+   "blocks": [
+    {
+     "type": "title",
+     "text": ""
+    },
+    {
+     "type": "card",
+     "role": "created_by",
+     "names": []
+    },
+    {
+     "type": "card",
+     "role": "director",
+     "names": [],
+     "position": "lower_third"
+    },
+    {
+     "type": "card",
+     "role": "written_by",
+     "names": [],
+     "position": "lower_third"
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "End Credits",
+   "blocks": [
+    {
+     "type": "list",
+     "heading": "dept:production",
+     "rows": [
+      {
+       "role": "executive_producer",
+       "names": []
+      },
+      {
+       "role": "producer",
+       "names": []
+      },
+      {
+       "role": "line_producer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "cast",
+     "heading": "h:cast",
+     "rows": [],
+     "order": "character_actor"
+    },
+    {
+     "type": "list",
+     "heading": "dept:direction",
+     "rows": [
+      {
+       "role": "first_ad",
+       "names": []
+      },
+      {
+       "role": "second_ad",
+       "names": []
+      },
+      {
+       "role": "script_supervisor",
+       "names": []
+      },
+      {
+       "role": "casting",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:camera",
+     "rows": [
+      {
+       "role": "camera_operator",
+       "names": []
+      },
+      {
+       "role": "first_ac",
+       "names": []
+      },
+      {
+       "role": "second_ac",
+       "names": []
+      },
+      {
+       "role": "dit",
+       "names": []
+      },
+      {
+       "role": "steadicam",
+       "names": []
+      },
+      {
+       "role": "drone_operator",
+       "names": []
+      },
+      {
+       "role": "stills",
+       "names": []
+      },
+      {
+       "role": "bts",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:electric",
+     "rows": [
+      {
+       "role": "gaffer",
+       "names": []
+      },
+      {
+       "role": "electrician",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:grip",
+     "rows": [
+      {
+       "role": "key_grip",
+       "names": []
+      },
+      {
+       "role": "grip",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:sound",
+     "rows": [
+      {
+       "role": "sound_mixer",
+       "names": []
+      },
+      {
+       "role": "boom_operator",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:art",
+     "rows": [
+      {
+       "role": "art_director",
+       "names": []
+      },
+      {
+       "role": "set_decorator",
+       "names": []
+      },
+      {
+       "role": "props",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:costume",
+     "rows": [
+      {
+       "role": "wardrobe",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:makeup",
+     "rows": [
+      {
+       "role": "makeup_artist",
+       "names": []
+      },
+      {
+       "role": "hair_stylist",
+       "names": []
+      },
+      {
+       "role": "sfx_makeup",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:locations",
+     "rows": [
+      {
+       "role": "location_manager",
+       "names": []
+      },
+      {
+       "role": "location_scout",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:transport",
+     "rows": [
+      {
+       "role": "driver",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:catering",
+     "rows": [
+      {
+       "role": "catering",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:editing",
+     "rows": [
+      {
+       "role": "assistant_editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post",
+     "rows": [
+      {
+       "role": "post_supervisor",
+       "names": []
+      },
+      {
+       "role": "titles",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:color",
+     "rows": [
+      {
+       "role": "colorist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:vfx",
+     "rows": [
+      {
+       "role": "vfx_supervisor",
+       "names": []
+      },
+      {
+       "role": "vfx_artist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post_sound",
+     "rows": [
+      {
+       "role": "sound_designer",
+       "names": []
+      },
+      {
+       "role": "dialogue_editor",
+       "names": []
+      },
+      {
+       "role": "foley",
+       "names": []
+      },
+      {
+       "role": "rerecording_mixer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:music",
+     "rows": [
+      {
+       "role": "music_supervisor",
+       "names": []
+      },
+      {
+       "role": "music_editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:accounting",
+     "rows": [
+      {
+       "role": "accountant",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:legal",
+     "rows": [
+      {
+       "role": "legal_counsel",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:publicity",
+     "rows": [
+      {
+       "role": "press_office",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "music",
+     "heading": "h:songs",
+     "cues": []
+    },
+    {
+     "type": "agreements",
+     "kind": "location",
+     "entries": []
+    },
+    {
+     "type": "agreements",
+     "kind": "rental",
+     "entries": []
+    },
+    {
+     "type": "agreements",
+     "kind": "archive",
+     "entries": [],
+     "enabled": false
+    },
+    {
+     "type": "agreements",
+     "kind": "product",
+     "entries": [],
+     "enabled": false
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "media",
+     "items": [],
+     "arrangement": "row",
+     "enabled": false,
+     "note": "Foto/video di backstage"
+    },
+    {
+     "type": "logos",
+     "caption": "",
+     "items": [],
+     "hold_s": 0
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "copyright"
+      },
+      {
+       "key": "fiction"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checks": [
+  {
+   "check": "legal_present",
+   "key": "copyright"
+  }
+ ],
+ "id": "us_tv_streaming"
+}

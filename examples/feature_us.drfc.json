@@ -1,0 +1,1205 @@
+{
+  "schema": "drfc/1",
+  "meta": {
+    "title": "October Light",
+    "original_title": "",
+    "year": 2026,
+    "language": "en",
+    "preset": "us_theatrical",
+    "copyright_owner": "October Films LLC",
+    "country": "",
+    "funding": []
+  },
+  "format": {
+    "width": 2048,
+    "height": 1080,
+    "fps": 24.0,
+    "safe_title": 0.9,
+    "background": "transparent"
+  },
+  "style": {
+    "theme": "classic",
+    "overrides": {}
+  },
+  "timing": {
+    "speed": "normal",
+    "px_per_frame": null,
+    "fit": "none",
+    "target_seconds": null,
+    "lead_in_s": 0.0,
+    "lead_out_s": 0.0,
+    "end_mode": "scroll_out",
+    "hold_last_s": 4.0,
+    "card_pace": "normal",
+    "card_fade_s": 0.5,
+    "card_gap_s": 0.25,
+    "allow_fractional_speed": false
+  },
+  "layout": {
+    "split": "media_right",
+    "axis": 0.5,
+    "text_lane": 0.5,
+    "max_text_width": 0.8,
+    "render_mode": "auto"
+  },
+  "sequences": [
+    {
+      "id": "opening",
+      "kind": "cards",
+      "name": "Main Titles",
+      "blocks": [
+        {
+          "type": "card",
+          "lines": [
+            {
+              "text": "October Films presents",
+              "style": "card_name"
+            }
+          ],
+          "note": "Studio/Distributor presents",
+          "id": "opening_card_1",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "role": "",
+          "names": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "lines": [
+            {
+              "text": "",
+              "style": "card_name"
+            }
+          ],
+          "note": "A {Company} production",
+          "id": "opening_card_2",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "role": "",
+          "names": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "film_by",
+          "names": [
+            "Giulia Ferri"
+          ],
+          "id": "opening_card_3",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "names": [
+            "Marta Lodi",
+            "Paul Gentile"
+          ],
+          "note": "Starring (lead cast)",
+          "id": "opening_card_4",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "role": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "title",
+          "text": "October Light",
+          "id": "opening_title_5",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": ""
+        },
+        {
+          "type": "card",
+          "role": "casting",
+          "names": [],
+          "id": "opening_card_6",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "composer",
+          "names": [],
+          "id": "opening_card_7",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "costume_designer",
+          "names": [],
+          "id": "opening_card_8",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "editor",
+          "names": [],
+          "id": "opening_card_9",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "production_designer",
+          "names": [],
+          "id": "opening_card_10",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "cinematographer",
+          "names": [
+            "Luca Marini"
+          ],
+          "id": "opening_card_11",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "executive_producer",
+          "names": [],
+          "id": "opening_card_12",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "producer",
+          "names": [
+            "Roberta October",
+            "Sam Lee"
+          ],
+          "id": "opening_card_13",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "screenplay",
+          "names": [
+            "Giulia Ferri",
+            "Andrew Hall"
+          ],
+          "team": true,
+          "id": "opening_card_14",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        },
+        {
+          "type": "card",
+          "role": "director",
+          "names": [
+            "Giulia Ferri"
+          ],
+          "id": "opening_card_15",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": [],
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "kind": "crawl",
+      "name": "End Crawl",
+      "blocks": [
+        {
+          "type": "credit",
+          "role": "director",
+          "names": [
+            "Giulia Ferri"
+          ],
+          "layout": "stacked",
+          "id": "end_credit_1",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "written_by",
+          "names": [
+            "Giulia Ferri",
+            "Andrew Hall"
+          ],
+          "layout": "stacked",
+          "id": "end_credit_2",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": true
+        },
+        {
+          "type": "credit",
+          "role": "producer",
+          "names": [
+            "Roberta October",
+            "Sam Lee"
+          ],
+          "layout": "stacked",
+          "id": "end_credit_3",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "executive_producer",
+          "names": [],
+          "layout": "stacked",
+          "id": "end_credit_4",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "cinematographer",
+          "names": [],
+          "layout": "stacked",
+          "id": "end_credit_5",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "production_designer",
+          "names": [],
+          "layout": "stacked",
+          "id": "end_credit_6",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "editor",
+          "names": [],
+          "layout": "stacked",
+          "id": "end_credit_7",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "costume_designer",
+          "names": [],
+          "layout": "stacked",
+          "id": "end_credit_8",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "composer",
+          "names": [],
+          "layout": "stacked",
+          "id": "end_credit_9",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "music_supervisor",
+          "names": [],
+          "layout": "stacked",
+          "id": "end_credit_10",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "credit",
+          "role": "casting",
+          "names": [],
+          "layout": "stacked",
+          "id": "end_credit_11",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "cast",
+          "heading": "h:cast",
+          "rows": [
+            {
+              "actor": "Marta Lodi",
+              "character": "Elena"
+            },
+            {
+              "actor": "Paul Gentile",
+              "character": "Tom"
+            }
+          ],
+          "order": "character_actor",
+          "id": "end_cast_12",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": ""
+        },
+        {
+          "type": "list",
+          "heading": "dept:production",
+          "rows": [
+            {
+              "role": "general_manager",
+              "names": []
+            },
+            {
+              "role": "first_ad",
+              "names": []
+            },
+            {
+              "role": "second_ad",
+              "names": []
+            }
+          ],
+          "id": "end_list_13",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:stunts",
+          "rows": [
+            {
+              "role": "stunt_coordinator",
+              "names": []
+            }
+          ],
+          "id": "end_list_14",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:camera",
+          "rows": [
+            {
+              "role": "camera_operator",
+              "names": []
+            },
+            {
+              "role": "first_ac",
+              "names": []
+            },
+            {
+              "role": "second_ac",
+              "names": []
+            },
+            {
+              "role": "dit",
+              "names": []
+            },
+            {
+              "role": "steadicam",
+              "names": []
+            },
+            {
+              "role": "drone_operator",
+              "names": []
+            },
+            {
+              "role": "stills",
+              "names": []
+            },
+            {
+              "role": "bts",
+              "names": []
+            }
+          ],
+          "id": "end_list_15",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:electric",
+          "rows": [
+            {
+              "role": "gaffer",
+              "names": []
+            },
+            {
+              "role": "electrician",
+              "names": []
+            }
+          ],
+          "id": "end_list_16",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:grip",
+          "rows": [
+            {
+              "role": "key_grip",
+              "names": []
+            },
+            {
+              "role": "grip",
+              "names": []
+            }
+          ],
+          "id": "end_list_17",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:sound",
+          "rows": [
+            {
+              "role": "sound_mixer",
+              "names": []
+            },
+            {
+              "role": "boom_operator",
+              "names": []
+            }
+          ],
+          "id": "end_list_18",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:art",
+          "rows": [
+            {
+              "role": "art_director",
+              "names": []
+            },
+            {
+              "role": "set_decorator",
+              "names": []
+            },
+            {
+              "role": "props",
+              "names": []
+            }
+          ],
+          "id": "end_list_19",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:costume",
+          "rows": [
+            {
+              "role": "wardrobe",
+              "names": []
+            }
+          ],
+          "id": "end_list_20",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:makeup",
+          "rows": [
+            {
+              "role": "makeup_artist",
+              "names": []
+            },
+            {
+              "role": "hair_stylist",
+              "names": []
+            },
+            {
+              "role": "sfx_makeup",
+              "names": []
+            }
+          ],
+          "id": "end_list_21",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:locations",
+          "rows": [
+            {
+              "role": "location_manager",
+              "names": []
+            },
+            {
+              "role": "location_scout",
+              "names": []
+            }
+          ],
+          "id": "end_list_22",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:transport",
+          "rows": [
+            {
+              "role": "driver",
+              "names": []
+            }
+          ],
+          "id": "end_list_23",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:catering",
+          "rows": [
+            {
+              "role": "catering",
+              "names": []
+            }
+          ],
+          "id": "end_list_24",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:editing",
+          "rows": [
+            {
+              "role": "assistant_editor",
+              "names": []
+            }
+          ],
+          "id": "end_list_25",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:post",
+          "rows": [
+            {
+              "role": "post_supervisor",
+              "names": []
+            },
+            {
+              "role": "titles",
+              "names": []
+            }
+          ],
+          "id": "end_list_26",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:color",
+          "rows": [
+            {
+              "role": "colorist",
+              "names": []
+            }
+          ],
+          "id": "end_list_27",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:vfx",
+          "rows": [
+            {
+              "role": "vfx_supervisor",
+              "names": []
+            },
+            {
+              "role": "vfx_artist",
+              "names": []
+            }
+          ],
+          "id": "end_list_28",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:post_sound",
+          "rows": [
+            {
+              "role": "sound_designer",
+              "names": []
+            },
+            {
+              "role": "dialogue_editor",
+              "names": []
+            },
+            {
+              "role": "foley",
+              "names": []
+            },
+            {
+              "role": "rerecording_mixer",
+              "names": []
+            }
+          ],
+          "id": "end_list_29",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:music",
+          "rows": [
+            {
+              "role": "music_supervisor",
+              "names": []
+            },
+            {
+              "role": "music_editor",
+              "names": []
+            }
+          ],
+          "id": "end_list_30",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:accounting",
+          "rows": [
+            {
+              "role": "accountant",
+              "names": []
+            }
+          ],
+          "id": "end_list_31",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:legal",
+          "rows": [
+            {
+              "role": "legal_counsel",
+              "names": []
+            }
+          ],
+          "id": "end_list_32",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:publicity",
+          "rows": [
+            {
+              "role": "press_office",
+              "names": []
+            }
+          ],
+          "id": "end_list_33",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "music",
+          "heading": "h:songs",
+          "cues": [],
+          "id": "end_music_34",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": ""
+        },
+        {
+          "type": "agreements",
+          "kind": "location",
+          "entries": [],
+          "id": "end_agreements_35",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "heading": "",
+          "columns": 1
+        },
+        {
+          "type": "agreements",
+          "kind": "rental",
+          "entries": [],
+          "id": "end_agreements_36",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "heading": "",
+          "columns": 1
+        },
+        {
+          "type": "agreements",
+          "kind": "archive",
+          "entries": [],
+          "enabled": false,
+          "id": "end_agreements_37",
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "heading": "",
+          "columns": 1
+        },
+        {
+          "type": "agreements",
+          "kind": "product",
+          "entries": [],
+          "enabled": false,
+          "id": "end_agreements_38",
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "heading": "",
+          "columns": 1
+        },
+        {
+          "type": "names",
+          "heading": "h:thanks",
+          "names": [
+            "City of Example",
+            "The Rossi Family",
+            "Harbor Bar"
+          ],
+          "id": "end_names_39",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "columns": "auto"
+        },
+        {
+          "type": "media",
+          "items": [],
+          "arrangement": "row",
+          "enabled": false,
+          "note": "Foto/video di backstage",
+          "id": "end_media_40",
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "height": null,
+          "lane": "main"
+        },
+        {
+          "type": "logos",
+          "caption": "",
+          "items": [],
+          "hold_s": 0,
+          "id": "end_logos_41",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "height": null,
+          "per_row": "auto"
+        },
+        {
+          "type": "media",
+          "id": null,
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "items": [
+            {
+              "path": "assets/bts_01.png"
+            },
+            {
+              "path": "assets/bts_02.png"
+            },
+            {
+              "path": "assets/bts_01.png"
+            }
+          ],
+          "arrangement": "row",
+          "height": null,
+          "lane": "side"
+        },
+        {
+          "type": "legal",
+          "items": [
+            {
+              "key": "animals_aha",
+              "values": {
+                "cert_no": ""
+              }
+            }
+          ],
+          "enabled": false,
+          "id": "end_legal_42",
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "text": ""
+        },
+        {
+          "type": "legal",
+          "items": [
+            {
+              "key": "mpa_cert",
+              "values": {
+                "cert_no": ""
+              }
+            }
+          ],
+          "enabled": false,
+          "id": "end_legal_43",
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "text": ""
+        },
+        {
+          "type": "legal",
+          "items": [
+            {
+              "key": "copyright"
+            },
+            {
+              "key": "fiction"
+            },
+            {
+              "key": "piracy"
+            }
+          ],
+          "id": "end_legal_44",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

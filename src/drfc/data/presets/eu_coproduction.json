@@ -1,0 +1,585 @@
+{
+ "label": {
+  "it": "Europa – Coproduzione internazionale",
+  "en": "Europe – International co-production"
+ },
+ "region": "EU",
+ "theme": "festival",
+ "language": "en",
+ "format": {
+  "width": 2048,
+  "height": 1080,
+  "fps": 24.0
+ },
+ "timing": {
+  "speed": "normal",
+  "end_mode": "hold_last",
+  "hold_last_s": 5.0
+ },
+ "funding_options": [
+  "eurimages",
+  "creative_europe",
+  "mic_tax_credit",
+  "italian_tax_credit_foreign",
+  "cnc",
+  "ffa",
+  "dfff",
+  "icaa",
+  "film_commission"
+ ],
+ "notes": [
+  "Eurimages: sostegno citato nei titoli di testa, il piu' in alto possibile dopo i produttori e secondo il contributo; bozza dei titoli da sottoporre a Eurimages (pena il saldo).",
+  "Creative Europe MEDIA: 'with the support of the Creative Europe MEDIA Programme of the European Union' + logo; per contributi >= 300k EUR o >= 10% del budget, nei titoli di testa e di coda.",
+  "Ordine coproduttori: generalmente per quota di partecipazione; paesi elencati come da accordo di coproduzione."
+ ],
+ "sequences": [
+  {
+   "id": "opening",
+   "kind": "cards",
+   "name": "Opening credits",
+   "blocks": [
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "Majority producer presents"
+    },
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "In co-production with (per paese)"
+    },
+    {
+     "type": "logos",
+     "caption": "h:with_support",
+     "items": [],
+     "note": "Eurimages / MEDIA / fondi nazionali"
+    },
+    {
+     "type": "card",
+     "role": "film_by",
+     "names": []
+    },
+    {
+     "type": "title",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "End credits",
+   "blocks": [
+    {
+     "type": "credit",
+     "role": "director",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "screenplay",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "cast",
+     "heading": "h:cast",
+     "rows": []
+    },
+    {
+     "type": "list",
+     "heading": "dept:production",
+     "rows": [
+      {
+       "role": "producer",
+       "names": []
+      },
+      {
+       "role": "coproducer",
+       "names": []
+      },
+      {
+       "role": "executive_producer",
+       "names": []
+      },
+      {
+       "role": "line_producer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:production",
+     "rows": [
+      {
+       "role": "general_manager",
+       "names": []
+      },
+      {
+       "role": "production_manager",
+       "names": []
+      },
+      {
+       "role": "unit_manager",
+       "names": []
+      },
+      {
+       "role": "production_coordinator",
+       "names": []
+      },
+      {
+       "role": "production_secretary",
+       "names": []
+      },
+      {
+       "role": "production_assistant",
+       "names": []
+      },
+      {
+       "role": "runner",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:direction",
+     "rows": [
+      {
+       "role": "first_ad",
+       "names": []
+      },
+      {
+       "role": "second_ad",
+       "names": []
+      },
+      {
+       "role": "script_supervisor",
+       "names": []
+      },
+      {
+       "role": "casting",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:camera",
+     "rows": [
+      {
+       "role": "camera_operator",
+       "names": []
+      },
+      {
+       "role": "first_ac",
+       "names": []
+      },
+      {
+       "role": "second_ac",
+       "names": []
+      },
+      {
+       "role": "dit",
+       "names": []
+      },
+      {
+       "role": "steadicam",
+       "names": []
+      },
+      {
+       "role": "drone_operator",
+       "names": []
+      },
+      {
+       "role": "stills",
+       "names": []
+      },
+      {
+       "role": "bts",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:electric",
+     "rows": [
+      {
+       "role": "gaffer",
+       "names": []
+      },
+      {
+       "role": "electrician",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:grip",
+     "rows": [
+      {
+       "role": "key_grip",
+       "names": []
+      },
+      {
+       "role": "grip",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:sound",
+     "rows": [
+      {
+       "role": "sound_mixer",
+       "names": []
+      },
+      {
+       "role": "boom_operator",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:art",
+     "rows": [
+      {
+       "role": "art_director",
+       "names": []
+      },
+      {
+       "role": "set_decorator",
+       "names": []
+      },
+      {
+       "role": "props",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:costume",
+     "rows": [
+      {
+       "role": "wardrobe",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:makeup",
+     "rows": [
+      {
+       "role": "makeup_artist",
+       "names": []
+      },
+      {
+       "role": "hair_stylist",
+       "names": []
+      },
+      {
+       "role": "sfx_makeup",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:locations",
+     "rows": [
+      {
+       "role": "location_manager",
+       "names": []
+      },
+      {
+       "role": "location_scout",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:transport",
+     "rows": [
+      {
+       "role": "driver",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:catering",
+     "rows": [
+      {
+       "role": "catering",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:editing",
+     "rows": [
+      {
+       "role": "assistant_editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post",
+     "rows": [
+      {
+       "role": "post_supervisor",
+       "names": []
+      },
+      {
+       "role": "titles",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:color",
+     "rows": [
+      {
+       "role": "colorist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:vfx",
+     "rows": [
+      {
+       "role": "vfx_supervisor",
+       "names": []
+      },
+      {
+       "role": "vfx_artist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post_sound",
+     "rows": [
+      {
+       "role": "sound_designer",
+       "names": []
+      },
+      {
+       "role": "dialogue_editor",
+       "names": []
+      },
+      {
+       "role": "foley",
+       "names": []
+      },
+      {
+       "role": "rerecording_mixer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:music",
+     "rows": [
+      {
+       "role": "music_supervisor",
+       "names": []
+      },
+      {
+       "role": "music_editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:accounting",
+     "rows": [
+      {
+       "role": "accountant",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:legal",
+     "rows": [
+      {
+       "role": "legal_counsel",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:publicity",
+     "rows": [
+      {
+       "role": "press_office",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "music",
+     "heading": "h:songs",
+     "cues": []
+    },
+    {
+     "type": "agreements",
+     "kind": "location",
+     "entries": []
+    },
+    {
+     "type": "agreements",
+     "kind": "rental",
+     "entries": []
+    },
+    {
+     "type": "agreements",
+     "kind": "archive",
+     "entries": [],
+     "enabled": false
+    },
+    {
+     "type": "agreements",
+     "kind": "product",
+     "entries": [],
+     "enabled": false
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "media",
+     "items": [],
+     "arrangement": "row",
+     "enabled": false,
+     "note": "Foto/video di backstage"
+    },
+    {
+     "type": "logos",
+     "caption": "h:with_support",
+     "items": [],
+     "hold_s": 0
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "eurimages"
+      },
+      {
+       "key": "creative_europe"
+      }
+     ],
+     "enabled": false
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "copyright"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checks": [
+  {
+   "check": "title_present"
+  },
+  {
+   "check": "role_present",
+   "role": "director"
+  },
+  {
+   "check": "legal_present",
+   "key": "copyright"
+  },
+  {
+   "check": "funding",
+   "flag": "eurimages",
+   "logo_tag": "eurimages",
+   "opening": true
+  },
+  {
+   "check": "funding",
+   "flag": "creative_europe",
+   "legal": "creative_europe",
+   "logo_tag": "creative_europe"
+  },
+  {
+   "check": "funding",
+   "flag": "italian_tax_credit_foreign",
+   "legal": "italian_tax_credit_foreign",
+   "logo_tag": "mic"
+  },
+  {
+   "check": "funding",
+   "flag": "mic_tax_credit",
+   "legal": "mic_tax_credit",
+   "logo_tag": "mic"
+  },
+  {
+   "check": "funding",
+   "flag": "cnc",
+   "legal": "cnc",
+   "logo_tag": "cnc"
+  },
+  {
+   "check": "funding",
+   "flag": "ffa",
+   "legal": "ffa",
+   "logo_tag": "ffa"
+  },
+  {
+   "check": "funding",
+   "flag": "dfff",
+   "legal": "dfff",
+   "logo_tag": "dfff"
+  },
+  {
+   "check": "funding",
+   "flag": "icaa",
+   "legal": "icaa",
+   "logo_tag": "icaa"
+  },
+  {
+   "check": "ai_disclosure"
+  }
+ ],
+ "id": "eu_coproduction"
+}

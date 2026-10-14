@@ -1,0 +1,112 @@
+{
+  "_lang": "it",
+  "quote": [
+    "«",
+    "»"
+  ],
+  "list_sep": ", ",
+  "list_last": " e ",
+  "team_sep": " & ",
+  "music": {
+    "header": "Musiche",
+    "songs_header": "Brani",
+    "written_by": "di {names}",
+    "music_by": "Musica di {names}",
+    "lyrics_by": "Testo di {names}",
+    "composed_by": "Composta da {names}",
+    "arranged_by": "Arrangiamento di {names}",
+    "performed_by": "Eseguita da {names}",
+    "publisher": "Edizioni musicali {names}",
+    "agreement": {
+      "original": "Musica originale composta per il film",
+      "licensed": "Su licenza di {licensor}",
+      "licensed_under": "Su licenza di {licensor}",
+      "courtesy": "Per gentile concessione di {licensor}",
+      "artist_owned": "Per gentile concessione dell'artista",
+      "library": "Musica di repertorio per gentile concessione di {licensor}",
+      "public_domain": "Tradizionale",
+      "creative_commons": "Licenza {cc_license} – {licensor}",
+      "by_arrangement": "In accordo con {agent}"
+    }
+  },
+  "agreement": {
+    "location": {
+      "paid": "{name}",
+      "free": "{name}, per gentile concessione di {provider}",
+      "public": "{name}, con la gentile collaborazione di {provider}",
+      "thanks": "{name}"
+    },
+    "rental": {
+      "paid": "Attrezzature fornite da {provider}",
+      "free": "Attrezzature gentilmente concesse da {provider}",
+      "discount": "Con il supporto tecnico di {provider}",
+      "sponsor": "In collaborazione con {provider}"
+    },
+    "archive": {
+      "licensed": "Immagini di repertorio su licenza di {provider}",
+      "free": "Immagini di repertorio per gentile concessione di {provider}",
+      "public_domain": "Immagini di repertorio: {provider} (pubblico dominio)"
+    },
+    "product": {
+      "placement": "{name}",
+      "free": "{name}, per gentile concessione di {provider}"
+    },
+    "artwork": {
+      "licensed": "Opere riprodotte su licenza di {provider}",
+      "free": "Opere riprodotte per gentile concessione di {provider}"
+    }
+  },
+  "headers": {
+    "locations": "Location",
+    "rentals": "Mezzi tecnici",
+    "archive": "Materiali di repertorio",
+    "products": "Prodotti e marchi",
+    "thanks": "Si ringrazia",
+    "with_support": "Con il sostegno di",
+    "cast": "Interpreti",
+    "in_order_of_appearance": "In ordine di apparizione",
+    "and_with": "e con",
+    "with": "con",
+    "the_end": "Fine",
+    "filmed_in": "Girato in {place}",
+    "songs": "Brani"
+  },
+  "presenting": {
+    "presents": "{name} presenta",
+    "a_production": "Una produzione {name}",
+    "in_coproduction": "In coproduzione con {name}",
+    "in_association": "In associazione con {name}",
+    "with_participation": "Con la partecipazione di {name}",
+    "in_collaboration": "In collaborazione con {name}",
+    "distributed_by": "Distribuito da {name}",
+    "film_by": "Un film di {name}"
+  },
+  "legal": {
+    "copyright": "© {year} {owner}. Tutti i diritti riservati.",
+    "copyright_short": "© {year} {owner}",
+    "fiction": "I personaggi e i fatti narrati sono frutto di fantasia. Ogni riferimento a persone esistenti o a fatti realmente accaduti è puramente casuale.",
+    "fiction_true_story": "Il film è ispirato a fatti realmente accaduti. Alcuni nomi, personaggi, luoghi ed eventi sono stati modificati per esigenze narrative.",
+    "piracy": "La riproduzione, distribuzione o proiezione non autorizzata di quest'opera è vietata e perseguibile ai sensi di legge.",
+    "ai_disclosure": "Nella realizzazione dell'opera sono stati utilizzati sistemi di intelligenza artificiale per: {uses}.",
+    "no_ai": "Nella realizzazione dell'opera non sono stati utilizzati sistemi di intelligenza artificiale generativa.",
+    "animals_generic": "Nessun animale ha subito maltrattamenti durante la realizzazione del film.",
+    "animals_aha": "American Humane monitored the animal action. No Animals Were Harmed® (AHA {cert_no})",
+    "product_placement": "Il film contiene inserimenti di prodotti a fini commerciali.",
+    "music_rights_society": "Diritti musicali tutelati da {society}.",
+    "mic_tax_credit": "Opera realizzata con il contributo del Ministero della Cultura – Direzione Generale Cinema e Audiovisivo",
+    "italian_tax_credit_foreign": "With the support of the Italian Tax Credit",
+    "creative_europe": "Con il sostegno del programma Europa Creativa MEDIA dell'Unione Europea",
+    "eurimages": "Con il sostegno di Eurimages – Consiglio d'Europa",
+    "film_commission": "Con il sostegno di {name}",
+    "cultural_interest": "Film riconosciuto di interesse culturale dal Ministero della Cultura – Direzione Generale Cinema e Audiovisivo",
+    "rating": "Classificazione: {rating}",
+    "mpa_cert": "MPA Certificate No. {cert_no}",
+    "union_bug": "Realizzato con {unions}",
+    "country_of_origin": "{country}",
+    "no_endorsement": "La presenza di marchi o prodotti non implica alcuna sponsorizzazione.",
+    "cnc": "Con il sostegno del Centre national du cinéma et de l'image animée (CNC)",
+    "ffa": "Con il sostegno della Filmförderungsanstalt (FFA)",
+    "dfff": "Con il sostegno del Deutscher Filmförderfonds (DFFF)",
+    "icaa": "Con la partecipazione dell'Instituto de la Cinematografía y de las Artes Audiovisuales (ICAA)"
+  }
+}

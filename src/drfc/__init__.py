@@ -4,7 +4,7 @@ Il pacchetto e' scritto in Python puro (>= 3.6, nessuna dipendenza) cosi' gira s
 dentro Resolve (Workspace > Scripts) sia da riga di comando per test e anteprime.
 """
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 import os
 

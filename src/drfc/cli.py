@@ -45,6 +45,7 @@ def main(argv=None):
     p_new.add_argument("path")
     p_new.add_argument("--title", default="")
     p_new.add_argument("--lang", default=None)
+    p_new.add_argument("--placeholders", action="store_true", help="riempie tutto con NOME COGNOME ecc.")
     p_imp = sub.add_parser("import")
     p_imp.add_argument("project")
     p_imp.add_argument("csv")
@@ -93,6 +94,9 @@ def main(argv=None):
             print("%-14s %s  [%s]" % (k, f["name"], ", ".join(f["sections"])))
     elif a.cmd == "new":
         p = presets.project_from_preset(a.preset, language=a.lang, title=a.title)
+        if a.placeholders:
+            from . import placeholders
+            placeholders.fill(p)
         model.save(p, a.path)
         print("Creato %s" % a.path)
     elif a.cmd == "import":

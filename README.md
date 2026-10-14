@@ -19,7 +19,7 @@ quella sezione: il resto del lavoro in timeline non viene toccato.
 
 ### 1. Scarica
 - Dalla pagina GitHub del progetto: pulsante verde **Code › Download ZIP**, poi estrai la cartella.
-- Oppure chiedi a Ivan lo ZIP già pronto (`DR-FilmCredits-v0.2.1.zip`).
+- Oppure chiedi a Ivan lo ZIP già pronto (`DR-FilmCredits-v0.3.0.zip`).
 - Il repository è privato? Ivan deve aggiungerti come collaboratrice (GitHub › Settings ›
   Collaborators) e poi puoi scaricarlo.
 
@@ -50,53 +50,41 @@ nuova versione e rilancia l'installer (i tuoi progetti non vengono toccati).
 
 ---
 
-## Uso rapido: un cortometraggio in 5 minuti
+## Uso rapido: 3 passi
 
-1. **Progetto**
-   - Tipo di opera: *Cortometraggio*.
-   - Standard: *Italia*.
-   - Destinazione: scegline una o premi **Dalla timeline**.
-   - In **Cosa hai?** spunta solo quello che c'è davvero (es. cast, troupe, musiche, festival, copyright).
-   - Premi **Crea progetto**, poi compila titolo, anno e titolare dei diritti.
-2. **Contenuti**: a sinistra c'è l'elenco delle sezioni. Selezionane una:
-   - **reparti e crediti**: scegli *Reparto* e poi *Ruolo* dai menu (oppure scrivi un ruolo
-     personalizzato), inserisci i nomi separati da virgola e premi **+ Aggiungi riga**;
-   - **Disposizione**:
-     - *Due colonne* (ruolo | nome);
-     - *Colonna singola*;
-     - *2 o 3 gruppi affiancati* (sinistra, centro, destra);
-     - *Griglie*;
-     - *Solo nomi*.
-     Il pulsante **Nuova colonna** sceglie a mano dove inizia il gruppo successivo;
-   - **musiche, location, noleggi, repertorio**: indica il tipo di accordo e la dicitura giusta
-     viene scritta da sola (es. concessione gratuita = «Per gentile concessione di…»);
-   - **loghi**: scegli l'ente dal kit (MiC, Film Commission, Europa Creativa, Eurimages…) oppure
-     aggiungi un tuo PNG;
-   - **allori**: scegli festival, stato (Selezione ufficiale, In concorso, Vincitore…), sezione e anno.
-   - **Riordina secondo standard** mette tutto nell'ordine corretto; **Cosa manca?** suggerisce le
-     sezioni tipiche o obbligatorie.
-3. **Stile**:
-   - **Destinazione**: cinema, TV, streaming, verticale 9:16, 4:5, 1:1;
-   - **Tema** e **Set di font** (Classico, Elegante, Moderno, Neutro, Festival, Videoclip,
-     Documentario, Broadcast, solo font di sistema);
-   - **Densità** (compatta / normale / ariosa) e **Interlinea** (stretta / normale / larga);
-   - **Sfondo**: trasparente sopra le immagini, nero, bianco, colore, gradiente, immagine o video
-     di sfondo oscurato e sfocato, oscura le immagini sotto, pannello dietro il testo.
-4. **Tempi**:
-   - velocità lenta, normale o veloce, sempre a pixel interi quindi senza scatti;
-   - per ogni sequenza puoi indicare la **durata obiettivo**: *Adatta velocità* oppure *Adatta
-     spaziatura*, che allarga o stringe gli spazi finché la durata coincide al fotogramma.
-5. **Verifica e genera**:
-   - **Verifica**: controlla crediti obbligatori, loghi richiesti dai finanziamenti, diciture,
-     testo fuori dalla safe area, velocità;
-   - **Anteprima nel browser**: animata e fedele, da mandare in approvazione;
-   - **Aggiorna solo le modifiche**: crea o aggiorna le clip in timeline.
+**Come funziona, in una riga:** compili il pannello › premi **Metti in timeline** › se cambi
+qualcosa premi di nuovo lo stesso pulsante. Si aggiornano solo le clip cambiate, e quello che hai
+fatto a mano in timeline resta. Non c'è niente da trascinare dagli Effetti: le clip le crea il plugin.
+
+1. **Cosa crei**
+   - Scrivi il titolo, scegli il tipo di opera (corto, lungo, documentario, videoclip…) e dove andrà.
+   - Lascia la spunta **Riempi con NOME COGNOME**: il plugin crea *subito tutto* (ruoli, cast,
+     musiche, loghi, allori…) con nomi segnaposto, così vedi il risultato e riempi dopo.
+   - Spunta solo ciò che c'è davvero (cast, troupe, musiche, location, loghi, festival, ringraziamenti…).
+   - **Crea e continua ›**.
+2. **Compila**
+   - A sinistra c'è l'elenco di tutto. Clicca una voce: a destra scegli il ruolo dal menu (oppure
+     scrivi il tuo), metti i nomi separati da virgola e premi **Salva**: passa alla voce successiva.
+   - Sezioni a testo (musiche, location, noleggi, cast…): incolli l'elenco e premi **Salva**; la
+     dicitura giusta per ogni accordo si scrive da sola (es. gratuito = «Per gentile concessione di…»).
+   - **Loghi**: scegli l'ente dal kit (MiC, Film Commission, Europa Creativa…) o aggiungi un tuo PNG.
+     **Allori**: festival, stato, sezione, anno.
+   - **Su / Giù / Elimina** spostano o tolgono una sezione; **Riordina secondo standard** la mette
+     nell'ordine corretto; **Cosa manca?** suggerisce le sezioni tipiche.
+   - **Elimina i segnaposto rimasti** toglie tutto ciò che non hai compilato.
+3. **Metti in timeline**
+   - **Anteprima nel browser** (animata, da mandare in approvazione) e **Verifica**.
+   - **Metti in timeline / Aggiorna**: crea le clip la prima volta, poi aggiorna solo quelle cambiate.
+
+**Aspetto e avanzate** (scheda a parte, non serve per iniziare): destinazione, tema, set di font,
+densità, interlinea, sfondo, tempi (velocità, durata obiettivo, finale), spaziature per sezione,
+blocco delle clip, dichiarazione IA, import CSV.
 
 ### Clip in timeline e aggiornamenti
 - Ogni **rullo** diventa **una clip**; ogni **cartello** dei titoli di testa diventa una **clip
   separata**, da spostare liberamente sopra le inquadrature.
 - Le clip vanno su una traccia dedicata, «DR-FilmCredits».
-- **Aggiorna solo le modifiche** rigenera solo le sezioni cambiate:
+- **Metti in timeline / Aggiorna** rigenera solo le sezioni cambiate:
   - sezione invariata: non viene toccata;
   - sezione modificata con la stessa durata: nuovo comp **nello stesso clip**. Restano posizione,
     trasformazioni, opacità, colore e i **nodi Fusion aggiunti a mano** (es. un Glow). La
@@ -181,10 +169,7 @@ la regola d'uso di molti festival.
   (con zone UI), 4:5, 1:1, verticale 4K.
 - **10 set di font**: 8 gratuiti inclusi e installati automaticamente, più 2 solo di sistema.
   Ogni stile resta personalizzabile (font, dimensione, colore, maiuscole, spaziatura, interlinea).
-- **Modalità Semplice** (predefinita) e **Avanzata**: l'avanzata aggiunge l'editor testuale veloce,
-  le spaziature per blocco, le personalizzazioni di stile e la granularità dei nodi Fusion.
-- **Title manuali** da trascinare (Effetti › Titles › DR-FilmCredits): cartello, due colonne,
-  lower third, brano, copyright.
+- **Interfaccia a 3 passi** con segnaposto NOME COGNOME; le opzioni avanzate stanno nella scheda «Aspetto e avanzate».
 - **Import da CSV/Excel** (modello generabile dal pulsante) e uso da riga di comando, anche senza Resolve.
 
 ## Riga di comando (opzionale)
@@ -203,7 +188,7 @@ orizzontale e verticale, corto festival, lungometraggio USA.
 ## Domande frequenti
 | Domanda | Risposta |
 |---|---|
-| La finestra compare e sparisce / errori | Aggiorna all'ultima versione (v0.2.1 risolve la finestra che sparisce). Se capita ancora, manda a Ivan il file `drfc.log` (Windows: `%APPDATA%\DR-FilmCredits`, macOS: `~/Library/Application Support/DR-FilmCredits`, Linux: `~/.config/DR-FilmCredits`): contiene l'errore. In caso di errore il pannello mostra anche una finestra con il testo. |
+| La finestra compare e sparisce / errori | Aggiorna all'ultima versione. Se capita ancora, manda a Ivan il file `drfc.log` (Windows: `%APPDATA%\DR-FilmCredits`, macOS: `~/Library/Application Support/DR-FilmCredits`, Linux: `~/.config/DR-FilmCredits`): contiene l'errore. In caso di errore il pannello mostra anche una finestra con il testo. |
 | Non vedo la voce nel menu Scripts | Riavvia Resolve; controlla di aver lanciato l'installer e di avere Python 3. |
 | «Font non trovati» nella verifica | Rilancia l'installer (installa i font) oppure scegli un set «solo sistema». |
 | Logo «da richiedere» | L'ente concede il logo su richiesta: usa *Pagina ufficiale*, poi *Importa file ricevuto*. |

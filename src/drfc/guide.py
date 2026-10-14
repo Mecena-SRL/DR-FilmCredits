@@ -6,7 +6,7 @@ Logica pura (testabile); il wizard la richiama.
 
 import copy
 
-from . import design, i18n, model, presets
+from . import design, i18n, model, placeholders, presets
 
 WORK_TYPES = ["corto", "lungo", "documentario", "videoclip", "serie", "spot", "social"]
 WORK_LABELS = {
@@ -97,8 +97,10 @@ def element_of(block):
     return None
 
 
-def new_project(work_type, territory="it", elements=None, destination=None, language=None, **meta):
-    """Progetto con solo le sezioni scelte."""
+def new_project(work_type, territory="it", elements=None, destination=None, language=None,
+                use_placeholders=False, **meta):
+    """Progetto con solo le sezioni scelte. Con use_placeholders=True ogni sezione e' gia' piena
+    di segnaposto (NOME COGNOME...) da sostituire."""
     pid = preset_for(work_type, territory)
     p = presets.project_from_preset(pid, language=language, **meta)
     p["meta"]["work_type"] = work_type
@@ -116,7 +118,10 @@ def new_project(work_type, territory="it", elements=None, destination=None, lang
                 if b["type"] == "media":
                     b["enabled"] = True
     p["sequences"] = [s for s in p["sequences"] if s["blocks"]]
-    return model.normalize(p)
+    p = model.normalize(p)
+    if use_placeholders:
+        placeholders.fill(p)
+    return p
 
 
 def _ensure_festival_block(p):

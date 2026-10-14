@@ -6,7 +6,7 @@ Gli 'error' non bloccano la generazione ma vengono mostrati in rosso nel wizard.
 
 import os
 
-from . import imageinfo, presets, timing
+from . import imageinfo, placeholders, presets, timing
 from .model import MUSIC_AGREEMENTS, resolve_path
 
 FUNDING_LABELS = {
@@ -151,6 +151,10 @@ def check_project(project, layouts=None):
                 elif t == "logos" and imageinfo.image_size(p) and p.lower().endswith((".jpg", ".jpeg")):
                     issues.append(_issue("info", "logo_alpha", "Logo JPEG senza trasparenza: meglio PNG con alpha.", bid))
 
+    n_ph = placeholders.count(project)
+    if n_ph:
+        issues.append(_issue("warning", "placeholder", "Ci sono ancora %d segnaposto da sostituire "
+                                                       "(es. %s)." % (n_ph, placeholders.texts(project["meta"].get("language", "it"))["name"])))
     empty = sum(len(s["blocks"]) for s in project["sequences"]) - \
         sum(len(s["blocks"]) for s in strip_empty(project)["sequences"])
     if empty:

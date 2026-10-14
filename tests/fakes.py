@@ -17,7 +17,7 @@ class Widget(object):
         object.__setattr__(self, "top", [])
         object.__setattr__(self, "Text", _TextProxy() if kind == "TreeItem" else props.get("Text", "") if props else "")
         if kind in ("ComboBox",):
-            self._p.setdefault("CurrentIndex", 0)
+            self._p.setdefault("CurrentIndex", -1)  # come Qt: vuoto = -1
         if kind == "Tree":
             self._p["ColumnWidth"] = {}
         for k, v in {"PlainText": "", "Checked": props.get("Checked", False) if props else False, "Value": 0, "Enabled": True}.items():
@@ -35,15 +35,23 @@ class Widget(object):
         else:
             if k == "Value" and self._p.get("kind") == "SpinBox":
                 v = int(v)
+            changed = self._p.get(k) != v
             self._p[k] = v
+            q = self._p.get("_queue")
+            if q is not None and changed and k == "CurrentIndex":
+                q.append((self._p.get("ID"), "CurrentIndexChanged"))
 
     # ComboBox
     def AddItem(self, t):
         self.items.append(t)
+        if self._p.get("kind") == "ComboBox" and self._p.get("CurrentIndex", -1) == -1:
+            self.CurrentIndex = 0  # il primo elemento diventa corrente (genera evento)
 
     def Clear(self):
         del self.items[:]
         del self.top[:]
+        if self._p.get("kind") == "ComboBox":
+            self.CurrentIndex = -1
 
     @property
     def CurrentText(self):
@@ -75,17 +83,28 @@ class On(object):
 
 
 class Window(object):
-    def __init__(self, props, root):
+    def __init__(self, props, root, queued=False):
         self.props = props
         self.On = On()
         self.ids = {}
+        self.queue = [] if queued else None
         self._collect(root)
         self.shown = False
+
+    def deliver(self):
+        """Consegna gli eventi accodati (come fa RunLoop in Resolve)."""
+        while self.queue:
+            cid, ev = self.queue.pop(0)
+            fn = getattr(getattr(self.On, cid), ev, None)
+            if fn is not None and callable(fn):
+                fn({})
 
     def _collect(self, w):
         if isinstance(w, Widget):
             if "ID" in w._p:
                 self.ids[w._p["ID"]] = w
+                if self.queue is not None:
+                    w._p["_queue"] = self.queue
             for c in w.children:
                 self._collect(c)
 
@@ -117,26 +136,40 @@ class UIManager(object):
 
 
 class Dispatcher(object):
+    queued = False
+
     def __init__(self, ui):
         self.ui = ui
         self.windows = []
+        self.exited = 0
+        self.loops = 0
 
     def AddWindow(self, props, root):
-        w = Window(props, root)
+        w = Window(props, root, queued=self.queued)
         self.windows.append(w)
         return w
 
     def RunLoop(self):
-        pass
+        self.loops += 1
+        for w in self.windows:
+            w.deliver()
 
     def ExitLoop(self):
-        pass
+        self.exited += 1
 
 
 class FakeBmd(object):
-    @staticmethod
-    def UIDispatcher(ui):
-        return Dispatcher(ui)
+    queued = False
+
+    def UIDispatcher(self, ui):
+        d = Dispatcher(ui)
+        d.queued = self.queued
+        return d
+
+
+class QueuedBmd(FakeBmd):
+    """Come Resolve: gli eventi generati dal codice arrivano quando parte RunLoop."""
+    queued = True
 
 
 class FakeFusion(object):
@@ -200,6 +233,53 @@ class FakeTool(object):
         return FakeInput(self, "Input")
 
 
+class _Image(object):
+    def __init__(self, dw):
+        self.DataWindow = dw
+
+
+class _Out(object):
+    def __init__(self, tool):
+        self.tool = tool
+
+    def __getitem__(self, t):
+        return self.tool.render()
+
+
+class ProbeTool(FakeTool):
+    """Text+ che 'renderizza' con le metriche reali del font e una scala nota (k_true)."""
+    k_true = 1.0 / 1.2
+    comp_width = 1920.0
+    bearing = 0.03  # side-bearing: 3% dell'em per lato
+
+    def __init__(self, name="Text1"):
+        FakeTool.__init__(self, name, "TextPlus")
+        self.deleted = False
+
+    @property
+    def Output(self):
+        return _Out(self)
+
+    def Delete(self):
+        self.deleted = True
+
+    def render(self):
+        from drfc.fontmetrics import FontIndex
+        fam, sty = self.inputs.get("Font", "Inter"), self.inputs.get("Style", "Regular")
+        fi, _ = FontIndex(cache_path=None).font(fam, sty)
+        text = self.inputs.get("StyledText", "H")
+        em = self.inputs.get("Size", 0.02) * self.comp_width * self.k_true
+        ink = fi.text_width_em(text) * em - 2 * self.bearing * em
+        cx = self.inputs.get("Center", {1: 0.5})[1] * self.comp_width
+        if self.inputs.get("HorizontalLeftCenterRight", 0) == self.left_value:
+            x1 = cx
+        else:
+            x1 = cx - ink / 2.0
+        return _Image({1: x1, 2: 0.0, 3: x1 + ink, 4: em})
+
+    left_value = -1
+
+
 class FakeComp(object):
     def __init__(self, path, start=0):
         self.path = path
@@ -220,6 +300,13 @@ class FakeComp(object):
 
     def FindTool(self, name):
         return self.tools.setdefault(name, FakeTool(name))
+
+    CurrentTime = 0
+
+    def AddTool(self, reg, x=0, y=0):
+        t = ProbeTool("Text%d" % (len(self.tools) + 1))
+        self.tools[t.Name] = t
+        return t
 
     def GetToolList(self, selected=False):
         return {i + 1: t for i, t in enumerate(self.tools.values())}
@@ -261,6 +348,12 @@ class FakeItem(object):
 
     def ImportFusionComp(self, path):
         c = FakeComp(path, start=self.comp_start)
+        self.comps.append(c)
+        self.names.append("Composition %d" % len(self.comps))
+        return c
+
+    def AddFusionComp(self):
+        c = FakeComp(None, start=self.comp_start)
         self.comps.append(c)
         self.names.append("Composition %d" % len(self.comps))
         return c
@@ -415,6 +508,9 @@ class FakeProject(object):
 
 
 class FakeResolve(object):
+    def GetVersionString(self):
+        return "20.0.0.1"
+
     def __init__(self, **kw):
         self.tl = FakeTimeline(**kw)
         self.project = FakeProject(self.tl)

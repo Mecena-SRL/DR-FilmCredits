@@ -10,7 +10,7 @@
 7. [Tempi: velocità, durata, pause](#tempi-velocità-durata-pause)
 8. [Generazione in timeline](#generazione-in-timeline)
 9. [Title manuali](#title-manuali)
-10. [Calibrazione](#calibrazione)
+10. [Calibrazione e log](#calibrazione-automatica)
 11. [Problemi frequenti](#problemi-frequenti)
 
 ## Installazione
@@ -27,10 +27,8 @@ Impostazioni, calibrazione e ultimo progetto aperto si salvano nella stessa cart
 
 ## Prima prova in Resolve
 1. Apri una timeline di prova e lancia **Workspace › Scripts › Utility › DR-FilmCredits**.
-2. Pagina Fusion su un clip qualsiasi → nel pannello: **5 · Verifica e genera › Calibra Text+**
-   (misura la scala reale dei caratteri; 1 secondo, una sola volta).
-3. Apri `examples/corto_festival_it.drfc.json` (**Apri…**), poi **Genera nella timeline**.
-4. Controlla: durata del clip = durata indicata nell'esito; scorrimento fluido; colonne allineate.
+2. Apri `examples/corto_festival_it.drfc.json` (**Apri…**), poi **Aggiorna solo le modifiche** (pagina 5).
+3. Controlla: durata del clip = durata indicata nell'esito; scorrimento fluido; colonne allineate.
    Per valutare il judder fai un render a piena risoluzione e guardalo in un player.
 
 ## Il progetto .drfc.json
@@ -161,10 +159,18 @@ In **Effects › Titles › DR-FilmCredits**: *Cartello Ruolo-Nome*, *Due Colonn
 Credito*, *Brano Musicale*, *Copyright*. Si trascinano in timeline e si modificano dall'Inspector.
 Rigenerabili con `python -m drfc.templates templates/`.
 
-## Calibrazione
-**Calibra Text+** aggiunge un Text+ temporaneo al comp aperto, misura l'altezza reale delle
-maiuscole e il verso dell'ancoraggio e salva `calibration.json` nella cartella utente. Valori
-modificabili a mano: `em_per_size_width`, `anchor_h`, `justify_h`, `baseline_fix_em`.
+## Calibrazione (automatica)
+Non va fatta a mano. Alla prima generazione (e a ogni nuova versione di Resolve) il plugin aggiunge
+al clip un comp temporaneo con un Text+ di prova, misura la larghezza di 1 e 41 caratteri alla
+stessa `Size` (la differenza vale 40 avanzamenti esatti del font, quindi le side-bearing si
+cancellano) e ne ricava `em_per_size_width`; poi elimina il comp di prova e salva
+`calibration.json`. Se la misura non è possibile si restano sui valori standard, senza errori.
+In modalità Avanzata **Ricalibra Text+** cancella il file: la misura si rifà alla generazione
+successiva. Valori modificabili a mano: `em_per_size_width`, `anchor_h`, `justify_h`, `baseline_fix_em`.
+
+## Log degli errori
+Il pannello scrive `drfc.log` nella cartella utente (vedi README) con errori e avvii. In caso di
+errore compare anche una finestra con il testo, invece di sparire.
 
 ## Problemi frequenti
 | Sintomo | Causa / soluzione |

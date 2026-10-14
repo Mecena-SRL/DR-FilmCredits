@@ -188,7 +188,7 @@
     "sequence": "Sequenza",
     "all": "Tutte",
     "results": "Esito",
-    "calibrate": "Calibra Text+…",
+    "calibrate": "Ricalibra Text+ (avanzato)",
     "ok": "Fatto",
     "errors": "errori",
     "warnings": "avvisi",
@@ -204,7 +204,8 @@
     "st_new": "nuova",
     "st_changed": "modificata",
     "st_unchanged": "invariata",
-    "st_locked": "bloccata"
+    "st_locked": "bloccata",
+    "recalibrate_done": "Calibrazione azzerata: verrà rifatta da sola alla prossima generazione."
   },
   "msg": {
     "saved": "Progetto salvato: {path}",

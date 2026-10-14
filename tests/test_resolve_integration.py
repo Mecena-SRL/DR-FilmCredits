@@ -262,3 +262,116 @@ def test_wizard_save_and_reopen(tmp_path):
     assert os.path.exists(path)
     w2 = _wizard(tmp_path)
     assert w2.project["meta"]["title"] == "Salvato"
+
+
+def test_startup_events_in_queue_do_not_close_or_change_anything(tmp_path):
+    """Regressione 'flash': in UIManager gli eventi dei menu riempiti dal codice arrivano
+    dopo la build; non devono chiudere la finestra ne' toccare il progetto."""
+    import copy
+    fu = fakes.FakeFusion()
+    w = ui_wizard.Wizard(fu, fakes.QueuedBmd(), fakes.FakeResolve())
+    w.build()
+    before = copy.deepcopy(w.project)
+    lang = w.lang
+    w.disp.RunLoop()
+    assert w.disp.exited == 0 and not w.restart
+    assert w.lang == lang
+    assert w.project == before
+
+
+def test_run_does_not_loop_on_startup(tmp_path):
+    fu = fakes.FakeFusion()
+    bmd = fakes.QueuedBmd()
+    w = ui_wizard.Wizard(fu, bmd, fakes.FakeResolve())
+    w.run()
+    assert w.disp.loops == 1
+
+
+def test_real_language_change_restarts_once(tmp_path):
+    fu = fakes.FakeFusion()
+    w = ui_wizard.Wizard(fu, fakes.QueuedBmd(), fakes.FakeResolve())
+    w.build()
+    w.disp.RunLoop()
+    other = (list(ui_wizard.i18n.LANGUAGES).index(w.lang) + 1) % 5
+    w.it["UiLang"].CurrentIndex = other
+    w.disp.RunLoop()
+    assert w.restart and w.disp.exited == 1
+
+
+# ------------------------------------------------------------------ calibrazione automatica
+def _sync_one(tmp_path, k_true=None, readable=True):
+    from drfc import fusion_constants
+    r = fakes.FakeResolve()
+    if k_true is not None:
+        fakes.ProbeTool.k_true = k_true
+    fakes.ProbeTool.comp_width = 3840.0
+    if not readable:
+        fakes.ProbeTool.render = lambda self: None
+    sess = resolve_bridge.ResolveSession(r)
+    res = sess.sync(sample_project(), str(tmp_path), only=["end"])
+    return r, sess, res, fusion_constants
+
+
+def _restore_probe():
+    import importlib
+    importlib.reload(fakes)
+
+
+def test_auto_calibration_measures_and_regenerates_with_true_scale(tmp_path):
+    try:
+        r, sess, res, fc = _sync_one(tmp_path, k_true=1.0 / 1.35)
+        saved = fc.saved()
+        assert saved["measured"] and saved["resolve_version"] == "20.0.0.1"
+        assert abs(saved["em_per_size_width"] - 1.0 / 1.35) < 0.002  # le side-bearing non falsano la misura
+        item = res["sections"][0]["item"]
+        # il clip ha un solo comp reale (la sonda temporanea e' stata eliminata) e usa la scala misurata
+        assert item.names == ["DRFC_Prova_end"]
+        text = open(res["sections"][0]["path"], encoding="utf-8").read()
+        import re
+        size = float(re.search(r"Size = Input \{ Value = ([0-9.]+)", text).group(1))
+        assert size * 3840 * (1.0 / 1.35) > 15  # px/em plausibili con la scala vera
+        # seconda generazione: non misura di nuovo
+        sess2 = resolve_bridge.ResolveSession(r)
+        sess2.sync(sample_project(), str(tmp_path), only=["end"])
+        assert sess2._cal_done and fc.saved()["measured"]
+    finally:
+        _restore_probe()
+
+
+def test_auto_calibration_falls_back_silently_when_unreadable(tmp_path):
+    try:
+        r, sess, res, fc = _sync_one(tmp_path, readable=False)
+        assert res["sections"][0]["ok"]
+        saved = fc.saved()
+        assert saved.get("unmeasurable") == "20.0.0.1" and "em_per_size_width" not in saved
+        assert fc.load()["em_per_size_width"] == fc.DEFAULTS["em_per_size_width"]
+        assert res["sections"][0]["item"].names == ["DRFC_Prova_end"]
+    finally:
+        _restore_probe()
+
+
+def test_recalibrate_clears_saved_values(tmp_path):
+    from drfc import calibration, fusion_constants
+    fusion_constants.save({"em_per_size_width": 0.9, "resolve_version": "x"})
+    assert calibration.reset() and fusion_constants.saved() == {}
+
+
+def test_main_shows_error_window_and_logs_instead_of_vanishing(tmp_path, monkeypatch):
+    from drfc import log
+
+    def boom(self):
+        raise RuntimeError("build rotta")
+    monkeypatch.setattr(ui_wizard.Wizard, "build", boom)
+    fu = fakes.FakeFusion()
+    bmd = fakes.FakeBmd()
+    ui_wizard.main(fu, bmd, None)  # non deve sollevare
+    text = open(log.path(), encoding="utf-8").read()
+    assert "build rotta" in text and "Traceback" in text
+
+
+def test_log_rotates(tmp_path):
+    from drfc import log
+    for _ in range(3000):
+        log.write("x" * 200)
+    import os
+    assert os.path.exists(log.path() + ".1") and os.path.getsize(log.path()) < log.MAX_BYTES + 1000

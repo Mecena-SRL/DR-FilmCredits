@@ -15,9 +15,13 @@ def _isolate_user_dirs(tmp_path, monkeypatch):
     monkeypatch.setenv("XDG_CONFIG_HOME", str(tmp_path / "config"))
     monkeypatch.setenv("APPDATA", str(tmp_path / "config"))
     monkeypatch.setenv("LOCALAPPDATA", str(tmp_path / "cache"))
+    from drfc import fusion_constants, fontmetrics
+    monkeypatch.setattr(fusion_constants, "user_dir", lambda: str(tmp_path / "user"))
+    monkeypatch.setattr(fontmetrics, "default_cache_path", lambda: str(tmp_path / "cache" / "fonts.json"))
     yield
 
 
 @pytest.fixture
 def examples_dir():
     return os.path.join(ROOT, "examples")
+

@@ -50,49 +50,83 @@ nuova versione e rilancia l'installer (i tuoi progetti non vengono toccati).
 
 ---
 
-## Uso rapido: 3 passi
+## Interfaccia e flusso di lavoro
 
-**Come funziona, in una riga:** compili il pannello › premi **Metti in timeline** › se cambi
-qualcosa premi di nuovo lo stesso pulsante. Si aggiornano solo le clip cambiate, e quello che hai
-fatto a mano in timeline resta. Non c'è niente da trascinare dagli Effetti: le clip le crea il plugin.
+Il pannello ha quattro viste: **Progetto**, **Editor**, **Timeline** e **Aspetto**.
+La barra inferiore rappresenta il film su V1 e i titoli su V2. Sono corsie schematiche,
+non i numeri effettivi delle tracce Resolve. La vista compatta mostra apertura e coda
+con `//` nell'intervallo omesso, mantenendo i timecode originali. **Mostra tutto il film**
+ripristina la scala continua; un clic su un credito apre il suo editor.
 
-1. **Cosa crei**
-   - Scrivi il titolo, scegli il tipo di opera (corto, lungo, documentario, videoclip…) e dove andrà.
-   - Lascia la spunta **Riempi con NOME COGNOME**: il plugin crea *subito tutto* (ruoli, cast,
-     musiche, loghi, allori…) con nomi segnaposto, così vedi il risultato e riempi dopo.
-   - Spunta solo ciò che c'è davvero (cast, troupe, musiche, location, loghi, festival, ringraziamenti…).
-   - **Crea e continua ›**.
-2. **Compila**
-   - A sinistra c'è l'elenco di tutto. Clicca una voce: a destra scegli il ruolo dal menu (oppure
-     scrivi il tuo), metti i nomi separati da virgola e premi **Salva**: passa alla voce successiva.
-   - Sezioni a testo (musiche, location, noleggi, cast…): incolli l'elenco e premi **Salva**; la
-     dicitura giusta per ogni accordo si scrive da sola (es. gratuito = «Per gentile concessione di…»).
-   - **Loghi**: scegli l'ente dal kit (MiC, Film Commission, Europa Creativa…) o aggiungi un tuo PNG.
-     **Allori**: festival, stato, sezione, anno.
-   - **Su / Giù / Elimina** spostano o tolgono una sezione; **Riordina secondo standard** la mette
-     nell'ordine corretto; **Cosa manca?** suggerisce le sezioni tipiche.
-   - **Elimina i segnaposto rimasti** toglie tutto ciò che non hai compilato.
-3. **Metti in timeline**
-   - **Anteprima nel browser** (animata, da mandare in approvazione) e **Verifica**.
-   - **Metti in timeline / Aggiorna**: crea le clip la prima volta, poi aggiorna solo quelle cambiate.
+1. **Progetto**: titolo, opera, territorio, destinazione e informazioni di base.
+   La checklist prepara i blocchi suggeriti. I requisiti contrattuali e le fonti
+   applicabili devono comunque essere verificati per la singola opera.
+2. **Editor**: scegli una zona o un cartello, modifica il contenuto, controlla la
+   bozza centrale. **Salva** salva il file senza passare al credito successivo;
+   le frecce cambiano selezione. La bozza centrale riguarda il contenuto:
+   loghi, posizione esatta, font e animazione si verificano con **Anteprima completa**.
+   Il cartello società distingue funzione, formula suggerita, dicitura concordata,
+   riferimento al contratto e approvazione del testo. I loghi restano nel blocco dedicato.
+3. **Timeline**: **Genera in timeline** inserisce solo elementi nuovi;
+   **Aggiorna in timeline** modifica solo quelli collegati. Entrambe le operazioni
+   mostrano un riepilogo e richiedono **Applica alla timeline**.
+4. **Aspetto**: stili, durata, finanziamenti, proprietà del blocco e strumenti del progetto.
 
-**Aspetto e avanzate** (scheda a parte, non serve per iniziare): destinazione, tema, set di font,
-densità, interlinea, sfondo, tempi (velocità, durata obiettivo, finale), spaziature per sezione,
-blocco delle clip, dichiarazione IA, import CSV.
+### Prima generazione e frameleader
 
-### Clip in timeline e aggiornamenti
-- Ogni **rullo** diventa **una clip**; ogni **cartello** dei titoli di testa diventa una **clip
-  separata**, da spostare liberamente sopra le inquadrature.
-- Le clip vanno su una traccia dedicata, «DR-FilmCredits».
-- **Metti in timeline / Aggiorna** rigenera solo le sezioni cambiate:
-  - sezione invariata: non viene toccata;
-  - sezione modificata con la stessa durata: nuovo comp **nello stesso clip**. Restano posizione,
-    trasformazioni, opacità, colore e i **nodi Fusion aggiunti a mano** (es. un Glow). La
-    versione precedente rimane nel clip come `…_prev`;
-  - durata cambiata: nuova clip **nella stessa posizione**, con le stesse proprietà;
-  - sezione **bloccata**: non viene mai rigenerata.
-- Ogni cosa resta modificabile anche a mano nella pagina Fusion: i nodi generati iniziano con
-  `DRFC_`, e lo scorrimento è un unico nodo (`DRFC_Scroll`).
+Indica inizio/fine del film, fine del frameleader (esclusiva) e il punto di partenza
+per ciascuna delle quattro zone. La protezione del frameleader impedisce inserimenti
+nel suo intervallo. Puoi scegliere cartelli prima del film oppure titoli sopra le
+immagini: se manca spazio prima del film, lo script si ferma prima di inserire clip.
+
+Lo spostamento generale del montaggio **non è automatizzato**: l'API documentata non
+fornisce un'operazione che mantenga in modo affidabile transizioni, effetti, retiming,
+automazioni e sincronismo. Predisponi il gap manualmente, poi aggiorna l'inizio del film.
+Lo script non applica ripple al montaggio.
+
+Ogni generazione crea tracce sopra l'ultima traccia video, con nomi `DRFC · …` e clip
+viola. Ogni cartello può essere una clip separata; ogni rullo è una clip unica.
+La timeline grafica mostra posizioni **indicative** per gli elementi ancora da generare,
+esplicitamente etichettate come bozza. Per quelli collegati legge le posizioni effettive.
+
+### Stati e aggiornamenti
+
+| Stato | Significato |
+|---|---|
+| Verde | Contenuto sincronizzato |
+| Giallo | Contenuto modificato o durata cambiata manualmente |
+| Blu | Nuovo elemento da generare |
+| Rosso | Elemento eliminato da gestire o collegamento da verificare |
+| Lucchetto | Clip esclusa dagli aggiornamenti |
+
+Il colore viola delle clip Resolve identifica i titoli; i colori di stato sono nel pannello.
+Salvare un progetto non lo rende automaticamente sincronizzato con la timeline.
+
+I collegamenti usano l'identità della clip, del progetto e della timeline Resolve.
+Spostare una clip o rinominarne il media non interrompe il collegamento; le copie manuali
+sono indipendenti e non vengono eliminate. I progetti precedenti vengono adottati tramite
+il nome solo quando il collegamento è univoco; in caso di dubbio non si modifica nulla.
+
+L'aggiornamento conserva posizione e, per default, durata della clip. Quando la durata
+manuale differisce da quella calcolata, controlla l'anteprima: lo scorrimento generato può
+risultare tagliato dall'out della clip. Disattivando **Mantieni le durate modificate in
+timeline**, la durata calcolata viene applicata creando una sostituzione completa su una
+nuova traccia superiore, prima di rimuovere l'originale; conflitti sulla traccia precedente
+bloccano la sostituzione. Non vengono spostate le altre clip.
+
+I nodi Fusion aggiunti a mano vengono ripristinati; modifiche dirette ai nodi `DRFC_`
+possono essere sostituite. Rimane disponibile una composizione precedente negli
+aggiornamenti nella stessa clip. Se un elemento viene eliminato dal configuratore, la sua
+clip resta in timeline: scegli **Conserva clip e scollega** oppure **Rimuovi clip eliminata**.
+La rimozione ha una conferma separata ed esclude le clip bloccate.
+
+Gli aggiornamenti salvano il collegamento nel file del progetto quando il file esiste.
+Salva il progetto prima di chiudere se non hai ancora scelto un file.
+
+**Stato della revisione:** versione in prova. La costruzione dell'editor è stata controllata
+in Resolve 21.1; le operazioni di scrittura sono coperte da Resolve simulato e richiedono
+una prova su una timeline duplicata. La timeline grafica finale richiede ancora verifica
+visiva e dei clic nel pannello nativo. Vedi [note di sviluppo](docs/UI-REDESIGN.md).
 
 ---
 
@@ -169,7 +203,7 @@ la regola d'uso di molti festival.
   (con zone UI), 4:5, 1:1, verticale 4K.
 - **10 set di font**: 8 gratuiti inclusi e installati automaticamente, più 2 solo di sistema.
   Ogni stile resta personalizzabile (font, dimensione, colore, maiuscole, spaziatura, interlinea).
-- **Interfaccia a 3 passi** con segnaposto NOME COGNOME; le opzioni avanzate stanno nella scheda «Aspetto e avanzate».
+- **Quattro viste** con editor e bozza centrale, timeline compatta e operazioni separate.
 - **Import da CSV/Excel** (modello generabile dal pulsante) e uso da riga di comando, anche senza Resolve.
 
 ## Riga di comando (opzionale)
@@ -213,3 +247,4 @@ prima installazione fai una prova su un rullo breve. La calibrazione automatica 
 l'immagine di un Text+ di prova: se Resolve non lo permette si usano i valori standard (al
 massimo i caratteri risultano leggermente più grandi o più piccoli del previsto); in
 modalità Avanzata c'è «Ricalibra Text+».
+

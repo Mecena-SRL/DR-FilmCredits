@@ -112,5 +112,21 @@
     "phonographic": "℗ {year} {owner}",
     "video_copyright": "© {year} {owner}",
     "all_rights": "All rights reserved."
+  },
+  "placeholders": {
+    "name": "NAME SURNAME",
+    "actor": "ACTOR",
+    "character": "CHARACTER",
+    "song": "SONG TITLE",
+    "writers": "WRITER",
+    "performers": "PERFORMER",
+    "company": "COMPANY NAME",
+    "location": "LOCATION NAME",
+    "provider": "OWNER NAME",
+    "production": "PRODUCTION NAME presents",
+    "film_title": "FILM TITLE",
+    "festival": "FESTIVAL NAME",
+    "section": "SECTION NAME",
+    "award": "AWARD NAME"
   }
 }

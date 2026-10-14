@@ -17,7 +17,7 @@ import urllib.request
 import webbrowser
 import zipfile
 
-from . import DATA_DIR, fusion_constants, imageinfo
+from . import DATA_DIR, fusion_constants, imageinfo, placeholders
 
 REGISTRY_URL = "https://raw.githubusercontent.com/ivan-94m/DR-FilmCredits/main/src/drfc/data/logos/registry.json"
 RASTER = (".png", ".tif", ".tiff", ".jpg", ".jpeg")
@@ -94,6 +94,8 @@ def files(logo_id):
 
 def status(logo_id):
     """ready | convert | request | download | page"""
+    if placeholders.is_placeholder_logo(logo_id):
+        return "ready"
     fs = files(logo_id)
     if any(f.lower().endswith(RASTER) for f in fs):
         return "ready"
@@ -243,6 +245,8 @@ def _variant_score(path, light_bg):
 
 def resolve(logo_id, light_bg=False):
     """Percorso del file migliore per lo sfondo, o None se il logo non e' nel kit."""
+    if placeholders.is_placeholder_logo(logo_id):
+        return placeholders.logo_file(logo_id)
     cands = [f for f in files(logo_id) if f.lower().endswith(RASTER)]
     if not cands:
         return None

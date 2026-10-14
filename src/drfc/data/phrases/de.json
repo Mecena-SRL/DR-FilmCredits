@@ -110,5 +110,21 @@
     "phonographic": "℗ {year} {owner}",
     "video_copyright": "© {year} {owner}",
     "all_rights": "Alle Rechte vorbehalten."
+  },
+  "placeholders": {
+    "name": "VORNAME NACHNAME",
+    "actor": "SCHAUSPIELER",
+    "character": "FIGUR",
+    "song": "TITEL DES LIEDES",
+    "writers": "AUTOR",
+    "performers": "INTERPRET",
+    "company": "FIRMENNAME",
+    "location": "NAME DES DREHORTS",
+    "provider": "NAME DES EIGENTÜMERS",
+    "production": "NAME DER PRODUKTION präsentiert",
+    "film_title": "FILMTITEL",
+    "festival": "NAME DES FESTIVALS",
+    "section": "NAME DER SEKTION",
+    "award": "NAME DES PREISES"
   }
 }

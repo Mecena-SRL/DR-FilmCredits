@@ -161,76 +161,41 @@ def _wizard(tmp_path, request=None):
     return w
 
 
-def test_wizard_guided_simple_flow(tmp_path, monkeypatch):
+def _click_row(w, kind, pred=lambda r: True):
+    i = next(i for i, r in enumerate(w.rows) if r["kind"] == kind and pred(r))
+    w.win.fire("Outline", "ItemClicked", item=w.items[i])
+    return i
+
+
+def test_wizard_three_steps_flow(tmp_path, monkeypatch):
     opened = []
     monkeypatch.setattr(ui_wizard.webbrowser, "open", lambda u: opened.append(u))
     monkeypatch.setattr(ui_wizard.resolve_bridge, "default_work_dir", lambda p=None: str(tmp_path / "work"))
     w = _wizard(tmp_path)
     win, it = w.win, w.it
-    # 1. procedura guidata: corto, solo cast + musica + festival + copyright
+    assert it["Stack"].CurrentIndex == 0  # progetto nuovo: parte dal passo 1
+    # passo 1: crea tutto con i segnaposto
     it["Work"].CurrentIndex = ui_wizard.guide.WORK_TYPES.index("corto")
     win.fire("Work", "CurrentIndexChanged")
-    for e in ui_wizard.guide.ELEMENTS:
-        it["E_" + e].Checked = e in ("key_crew", "cast", "crew", "music", "festival", "copyright")
     it["Title"].Text = "Il corto"
-    it["Owner"].Text = "Acme"
+    it["Placeholders"].Checked = True
     win.fire("Create", "Clicked")
-    types = [b["type"] for s in w.project["sequences"] for b in s["blocks"]]
-    assert "laurels" in types and "cast" in types and "agreements" not in types
-    # 2. editor righe a tendina su un credito
-    end_idx = [i for i, s in enumerate(w.project["sequences"]) if s["id"] == "end"][0]
-    it["Seq"].CurrentIndex = end_idx
-    win.fire("Seq", "CurrentIndexChanged")
-    blocks = w.seq()["blocks"]
-    lst = [i for i, b in enumerate(blocks) if b["type"] == "list"][0]
-    win.fire("Blocks", "ItemClicked", item=it["Blocks"].top[lst])
-    it["RDept"].CurrentIndex = w.depts.index("camera") + 1
-    win.fire("RDept", "CurrentIndexChanged")
-    it["RRole"].CurrentIndex = w.role_keys.index("cinematographer") + 1
+    assert it["Stack"].CurrentIndex == 1
+    assert ui_wizard.placeholders.count(w.project) > 0
+    assert w.rows and any(r["kind"] == "entry" for r in w.rows)
+    # passo 2: sostituisco il nome di una voce
+    i = _click_row(w, "entry")
+    row = w.rows[i]
     it["RNames"].Text = "Luca Marini"
-    win.fire("RAdd", "Clicked")
-    it["RRole"].CurrentIndex = 0
-    it["RRoleText"].Text = "Pilota del drone FPV"
-    it["RNames"].Text = "Ada Neri, Bo Rossi"
-    win.fire("RAdd", "Clicked")
-    win.fire("RBreak", "Clicked")
-    rows = w.seq()["blocks"][lst]["rows"]
-    assert {"role": "cinematographer", "names": ["Luca Marini"]} in rows
-    assert {"role": "Pilota del drone FPV", "names": ["Ada Neri", "Bo Rossi"]} in rows
-    assert any(r.get("break") for r in rows) and w.seq()["blocks"][lst]["arrangement"] == "pairs_2"
-    # disposizione dal menu
-    it["Arr"].CurrentIndex = ui_wizard.ARRANGEMENTS.index("pairs_3")
-    win.fire("Apply", "Clicked")
-    assert w.seq()["blocks"][lst]["arrangement"] == "pairs_3"
-    # 3. allori nei titoli di testa
-    it["Seq"].CurrentIndex = 0
-    win.fire("Seq", "CurrentIndexChanged")
-    li = [i for i, b in enumerate(w.seq()["blocks"]) if b["type"] == "laurels"][0]
-    win.fire("Blocks", "ItemClicked", item=it["Blocks"].top[li])
-    it["LFest"].CurrentIndex = w.festivals.index("venezia")
-    win.fire("LFest", "CurrentIndexChanged")
-    it["LSection"].CurrentIndex = w.section_keys.index("orizzonti")
-    win.fire("LAdd", "Clicked")
-    assert w.seq()["blocks"][li]["items"][0]["section"] == "orizzonti"
-    # 4. aggiungi sezione loghi e un logo dal kit
-    it["AddElement"].CurrentIndex = ui_wizard.guide.ELEMENTS.index("funders")
-    win.fire("AddEl", "Clicked")
-    end = [s for s in w.project["sequences"] if s["id"] == "end"][0]
-    assert any(b["type"] == "logos" for b in end["blocks"])
-    # 5. riordino e suggerimenti
-    win.fire("Reorder", "Clicked")
-    win.fire("Suggest", "Clicked")
-    # 6. stile: destinazione verticale, sfondo bianco, densita' ariosa
-    it["SDest"].CurrentIndex = w.dests.index("social_9x16")
-    win.fire("SDest", "CurrentIndexChanged")
-    it["Bg"].CurrentIndex = ui_wizard.BACKGROUNDS.index("white")
-    it["Density"].CurrentIndex = ui_wizard.DENSITIES.index("airy")
-    win.fire("Step3", "Clicked")
-    assert w.project["format"]["height"] == 1920 and w.project["format"]["background"] == "white"
-    assert "px/frame" in it["TimingOut"].PlainText
-    # 7. genera: sezioni, anteprima, sincronizzazione, blocco
-    win.fire("Step4", "Clicked")
-    assert it["Sections"].top
+    win.fire("RSave", "Clicked")
+    _r, names = ui_wizard.outline.entry_values(w.project, row)
+    assert names == ["Luca Marini"]
+    # elimina i segnaposto rimasti
+    win.fire("Unfilled", "Clicked")
+    assert ui_wizard.placeholders.count(w.project) == 0
+    # passo 3: timeline
+    win.fire("Next1", "Clicked")
+    win.fire("Next2", "Clicked") if "Next2" in it else win.fire("Step2", "Clicked")
     win.fire("Preview", "Clicked")
     assert opened and opened[0].endswith(".html")
     win.fire("SyncChanged", "Clicked")
@@ -239,25 +204,47 @@ def test_wizard_guided_simple_flow(tmp_path, monkeypatch):
     assert "Invariata" in it["Results"].PlainText
 
 
-def test_wizard_advanced_text_editor(tmp_path):
+def test_wizard_second_sync_after_edit_updates_only_changed(tmp_path, monkeypatch):
+    monkeypatch.setattr(ui_wizard.resolve_bridge, "default_work_dir", lambda p=None: str(tmp_path / "work"))
     w = _wizard(tmp_path)
-    w.it["Advanced"].Checked = True
-    w.win.fire("Advanced", "Clicked")
-    end_idx = [i for i, s in enumerate(w.project["sequences"]) if s["kind"] == "crawl"][0]
-    w.it["Seq"].CurrentIndex = end_idx
-    w.win.fire("Seq", "CurrentIndexChanged")
-    li = [i for i, b in enumerate(w.seq()["blocks"]) if b["type"] == "list"][0]
-    w.win.fire("Blocks", "ItemClicked", item=w.it["Blocks"].top[li])
-    w.it["BlockText"].PlainText = "gaffer: A, B\n---\nkey_grip: C"
-    w.win.fire("Apply", "Clicked")
-    rows = w.seq()["blocks"][li]["rows"]
-    assert rows[0]["names"] == ["A", "B"] and rows[1] == {"break": True}
+    w.win.fire("Create", "Clicked")
+    w.win.fire("Step2", "Clicked")
+    w.win.fire("SyncChanged", "Clicked")
+    w.win.fire("Step1", "Clicked")
+    _click_row(w, "entry")
+    w.it["RNames"].Text = "Nome Nuovo"
+    w.win.fire("RSave", "Clicked")
+    w.win.fire("Step2", "Clicked")
+    w.win.fire("SyncChanged", "Clicked")
+    txt = w.it["Results"].PlainText
+    assert "\u2714" in txt and "Invariata" not in txt.split("\n")[0]
+
+
+def test_wizard_placeholders_can_be_off(tmp_path):
+    w = _wizard(tmp_path)
+    w.it["Placeholders"].Checked = False
+    w.win.fire("Create", "Clicked")
+    assert ui_wizard.placeholders.count(w.project) == 0
+
+
+def test_wizard_move_and_delete_section(tmp_path):
+    w = _wizard(tmp_path)
+    w.win.fire("Create", "Clicked")
+    i = _click_row(w, "section")
+    r = w.rows[i]
+    blocks = w.project["sequences"][r["seq"]]["blocks"]
+    first, n = blocks[r["block"]], len(blocks)
+    w.win.fire("Down", "Clicked")
+    assert blocks[r["block"] + 1] is first
+    w.win.fire("DelSec", "Clicked")
+    assert len(w.project["sequences"][r["seq"]]["blocks"]) == n - 1
 
 
 def test_wizard_save_and_reopen(tmp_path):
     path = str(tmp_path / "p.drfc.json")
     w = _wizard(tmp_path, request=path)
     w.it["Title"].Text = "Salvato"
+    w.win.fire("Create", "Clicked")
     w.win.fire("Save", "Clicked")
     assert os.path.exists(path)
     w2 = _wizard(tmp_path)

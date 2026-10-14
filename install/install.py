@@ -6,7 +6,8 @@
 Copia:
   - la libreria (src/drfc)            -> <cartella utente>/DR-FilmCredits/lib/drfc
   - lo script di avvio                -> .../Fusion/Scripts/Utility/DR-FilmCredits.py
-  - i Title Fusion manuali (templates)-> .../Fusion/Templates/Edit/Titles/DR-FilmCredits/
+  - i Title manuali NON si installano piu' (le clip le crea il pannello); i Title di una
+    vecchia versione vengono rimossi. Opzione --with-titles per installarli comunque.
   - i font liberi dei set predefiniti   -> cartella font dell'utente (senza permessi admin)
     (opzione --no-fonts per saltarli)
 """
@@ -96,14 +97,20 @@ def install():
                     ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     os.makedirs(os.path.dirname(t["script"]), exist_ok=True)
     shutil.copy2(os.path.join(ROOT, "scripts", "DR-FilmCredits.py"), t["script"])
-    src_tpl = os.path.join(ROOT, "templates")
-    os.makedirs(t["templates"], exist_ok=True)
-    for fn in os.listdir(src_tpl):
-        if fn.endswith(".setting"):
-            shutil.copy2(os.path.join(src_tpl, fn), os.path.join(t["templates"], fn))
+    if "--with-titles" in sys.argv:
+        src_tpl = os.path.join(ROOT, "templates")
+        os.makedirs(t["templates"], exist_ok=True)
+        for fn in os.listdir(src_tpl):
+            if fn.endswith(".setting"):
+                shutil.copy2(os.path.join(src_tpl, fn), os.path.join(t["templates"], fn))
+    elif os.path.isdir(t["templates"]):
+        shutil.rmtree(t["templates"])
+        print("  rimossi i vecchi Title manuali (non servono piu')")
     if "--no-fonts" not in sys.argv:
         print("  font      %d file in %s" % (install_fonts(), font_targets()))
     for k, v in t.items():
+        if k == "templates" and "--with-titles" not in sys.argv:
+            continue
         print("  %-9s %s" % (k, v))
     print("Installato. Riavviare Resolve: Workspace > Scripts > Utility > DR-FilmCredits")
 

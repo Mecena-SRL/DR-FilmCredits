@@ -9,7 +9,6 @@
 6. [Stile](#stile)
 7. [Tempi: velocità, durata, pause](#tempi-velocità-durata-pause)
 8. [Generazione in timeline](#generazione-in-timeline)
-9. [Title manuali](#title-manuali)
 10. [Calibrazione e log](#calibrazione-automatica)
 11. [Problemi frequenti](#problemi-frequenti)
 
@@ -21,13 +20,21 @@ python install/install.py        # oppure doppio clic su install/Installa-Window
 |---|---|
 | Libreria | Windows `%APPDATA%\DR-FilmCredits\lib` · macOS `~/Library/Application Support/DR-FilmCredits/lib` · Linux `~/.config/DR-FilmCredits/lib` |
 | Script di menu | `…/Fusion/Scripts/Utility/DR-FilmCredits.py` |
-| Title manuali | `…/Fusion/Templates/Edit/Titles/DR-FilmCredits/` |
 
 Impostazioni, calibrazione e ultimo progetto aperto si salvano nella stessa cartella utente.
 
+## I 3 passi del pannello
+1. **Cosa crei**: titolo, tipo di opera, destinazione. Con la spunta *Riempi con NOME COGNOME* il progetto
+   nasce completo di segnaposto (si vede subito il risultato). *Crea e continua*.
+2. **Compila**: elenco unico a sinistra, editor a destra. *Elimina i segnaposto rimasti* toglie ciò che non serve.
+3. **Metti in timeline**: un solo pulsante, *Metti in timeline / Aggiorna*. Se cambi qualcosa lo ripremi:
+   si aggiornano solo le clip cambiate; i nodi Fusion aggiunti a mano restano.
+Le opzioni avanzate sono nella scheda *Aspetto e avanzate*. I Title manuali non si installano più
+(`python install/install.py --with-titles` per averli comunque).
+
 ## Prima prova in Resolve
 1. Apri una timeline di prova e lancia **Workspace › Scripts › Utility › DR-FilmCredits**.
-2. Apri `examples/corto_festival_it.drfc.json` (**Apri…**), poi **Aggiorna solo le modifiche** (pagina 5).
+2. Apri `examples/corto_festival_it.drfc.json` (**Apri…**), poi, al passo 3, **Metti in timeline / Aggiorna**.
 3. Controlla: durata del clip = durata indicata nell'esito; scorrimento fluido; colonne allineate.
    Per valutare il judder fai un render a piena risoluzione e guardalo in un player.
 
@@ -142,7 +149,7 @@ La durata obiettivo si imposta **per sequenza** (testa e coda hanno tempi divers
 ## Generazione in timeline
 - **Sezioni**: un clip per rullo; per i cartelli un clip per cartello (default) o uno per sequenza.
   La pagina *Genera* mostra lo stato di ogni sezione: nuova / modificata / invariata / bloccata.
-- **Aggiorna solo le modifiche** (non distruttivo): invariata = intatta; modificata con stessa
+- **Metti in timeline / Aggiorna** (non distruttivo): invariata = intatta; modificata con stessa
   durata = nuovo comp nello stesso clip (proprietà del clip e nodi Fusion aggiunti a mano
   conservati e ricollegati, versione precedente `…_prev`); durata diversa = nuovo clip nella stessa
   posizione/traccia con le stesse proprietà; bloccata = mai toccata. Lo stato è salvato nel
@@ -153,11 +160,6 @@ La durata obiettivo si imposta **per sequenza** (testa e coda hanno tempi divers
 - Il formato (risoluzione, fps) viene preso dalla timeline se è attivo «Usa formato della timeline».
 - In Fusion: `DRFC_Scroll` contiene l'unica espressione di scorrimento; i nodi hanno il nome del
   blocco (`end_list_5_T`, `…_M`, `…_L` per i Loader).
-
-## Title manuali
-In **Effects › Titles › DR-FilmCredits**: *Cartello Ruolo-Nome*, *Due Colonne*, *Lower Third
-Credito*, *Brano Musicale*, *Copyright*. Si trascinano in timeline e si modificano dall'Inspector.
-Rigenerabili con `python -m drfc.templates templates/`.
 
 ## Calibrazione (automatica)
 Non va fatta a mano. Alla prima generazione (e a ogni nuova versione di Resolve) il plugin aggiunge

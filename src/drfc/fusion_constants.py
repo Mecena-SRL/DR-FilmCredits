@@ -37,6 +37,26 @@ def calibration_path():
     return os.path.join(user_dir(), "calibration.json")
 
 
+def saved():
+    """Contenuto grezzo di calibration.json ({} se assente o illeggibile)."""
+    try:
+        with open(calibration_path(), encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (IOError, OSError, ValueError):
+        return {}
+
+
+def save(update):
+    d = os.path.dirname(calibration_path())
+    os.makedirs(d, exist_ok=True)
+    cur = saved()
+    cur.update(update)
+    with open(calibration_path(), "w", encoding="utf-8") as f:
+        json.dump(cur, f, indent=2)
+    return cur
+
+
 def load():
     c = json.loads(json.dumps(DEFAULTS))
     try:

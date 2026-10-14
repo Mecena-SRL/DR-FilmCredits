@@ -14,7 +14,7 @@ import os
 import traceback
 import webbrowser
 
-from . import (__version__, blocktext, design, engine, fusion_constants, guide, i18n, io_import, laurels,
+from . import (__version__, blocktext, log, design, engine, fusion_constants, guide, i18n, io_import, laurels,
                layout, logos, model, presets, resolve_bridge)
 from .model import BLOCK_TYPES
 
@@ -133,23 +133,31 @@ class Wizard(object):
             try:
                 fn(ev)
             except Exception as e:  # mai chiudere il pannello per un errore
-                self.status("Errore: %s" % e)
+                self.status("Errore: %s (dettagli in %s)" % (e, log.path()))
+                log.exception("%s.%s" % (cid, event))
                 traceback.print_exc()
         setattr(getattr(self.win.On, cid), event, wrapped)
 
     def _show(self, ids, visible):
         for cid in ids:
-            w = self.it.get(cid) if hasattr(self.it, "get") else self.it[cid]
-            if w is None:
-                continue
+            try:
+                w = self.it[cid]
+            except Exception:
+                continue  # widget assente: non e' un errore
             try:
                 w.Hidden = not visible
             except Exception:
-                pass
-            try:
-                w.Enabled = bool(visible) or w.Enabled
-            except Exception:
-                pass
+                try:
+                    w.Visible = bool(visible)
+                except Exception:
+                    pass
+
+    def _idx(self, cid):
+        """Indice corrente di un menu (>= 0). Un menu vuoto vale -1 in Qt."""
+        try:
+            return max(0, int(self.it[cid].CurrentIndex))
+        except Exception:
+            return 0
 
     # ------------------------------------------------------------------ finestra
     def build(self):
@@ -412,6 +420,7 @@ class Wizard(object):
         b = self._on
         b("Advanced", "Clicked", self.on_advanced)
         b("Work", "CurrentIndexChanged", self.on_work)
+        b("Territory", "CurrentIndexChanged", self.on_work)
         b("DestFromTl", "Clicked", self.on_dest_from_tl)
         b("Create", "Clicked", self.on_create)
         b("New", "Clicked", self.on_new)
@@ -477,7 +486,7 @@ class Wizard(object):
             self.refresh_sections()
 
     ADV_IDS = ("PresetRow", "AdvStyle1", "OvrLabel", "OvrRow0", "OvrRow1", "OvrRow2", "OvrRow3", "OvrRow4",
-               "SpaceRow", "AddType", "Add", "NewSeq", "Template")
+               "SpaceRow", "AddType", "Add", "NewSeq", "Template", "Calibrate")
 
     def apply_mode(self):
         self._show(self.ADV_IDS, self.advanced)
@@ -633,11 +642,17 @@ class Wizard(object):
 
     # ------------------------------------------------------------------ pagina progetto
     def on_work(self, ev):
-        wt = guide.WORK_TYPES[self.it["Work"].CurrentIndex]
+        # Gli eventi dei menu riempiti dal codice arrivano a RunLoop gia' avviato: se la scelta
+        # coincide con il progetto non e' un'azione dell'utente e non si tocca niente.
+        wt = guide.WORK_TYPES[self._idx("Work")]
+        ter = guide.TERRITORIES[self._idx("Territory")]
+        meta = self.project["meta"]
+        if wt == meta.get("work_type") and ter == meta.get("territory"):
+            return
         defaults = set(guide.DEFAULT_ELEMENTS.get(wt, []))
         for e in guide.ELEMENTS:
             self.it["E_" + e].Checked = e in defaults
-        pid = guide.preset_for(wt, guide.TERRITORIES[self.it["Territory"].CurrentIndex])
+        pid = guide.preset_for(wt, ter)
         dest = presets.load_preset(pid).get("destination")
         if dest in self.dests:
             self.it["Dest"].CurrentIndex = self.dests.index(dest)
@@ -713,8 +728,12 @@ class Wizard(object):
         self.status(self.T("msg.saved", path=path))
 
     def on_ui_lang(self, ev):
+        new = i18n.LANGUAGES[self._idx("UiLang")]
+        if new == self.lang:
+            return  # evento generato dal riempimento del menu, non una scelta dell'utente
+        log.write("cambio lingua interfaccia %s -> %s" % (self.lang, new))
         self.ui_to_project()
-        self.settings["ui_lang"] = i18n.LANGUAGES[self.it["UiLang"].CurrentIndex]
+        self.settings["ui_lang"] = new
         save_settings(self.settings)
         self.restart = True
         self.disp.ExitLoop()
@@ -736,7 +755,10 @@ class Wizard(object):
         self.load_block_to_ui()
 
     def on_seq(self, ev):
-        self.seq_idx = self.it["Seq"].CurrentIndex
+        i = self._idx("Seq")
+        if i == self.seq_idx:
+            return
+        self.seq_idx = i
         self.block_idx = -1
         self.refresh_blocks()
 
@@ -1094,7 +1116,11 @@ class Wizard(object):
 
     # ------------------------------------------------------------------ pagina stile
     def on_style_dest(self, ev):
-        d = self.dests[self.it["SDest"].CurrentIndex]
+        d = self.dests[self._idx("SDest")]
+        f0 = self.project["format"]
+        current = f0.get("destination") or design.guess_destination(f0["width"], f0["height"])
+        if d == current:
+            return  # nessuna scelta nuova (evento di riempimento del menu)
         design.apply_destination(self.project, d)
         self.busy = True
         self.it["Dest"].CurrentIndex = self.it["SDest"].CurrentIndex
@@ -1292,23 +1318,26 @@ class Wizard(object):
 
     def on_calibrate(self, ev):
         from . import calibration
-        res, path = calibration.run(self.fu)
-        self.it["Results"].PlainText = "Calibrazione salvata in %s\n%s" % (path, json.dumps(res, indent=2))
+        calibration.reset()
+        self.status(self.T("generate.recalibrate_done"))
 
     # ------------------------------------------------------------------ ciclo
     def run(self):
-        while True:
+        """Ciclo finestra. Si rilancia solo dopo un reale cambio di lingua (max 5 volte)."""
+        for attempt in range(5):
             self.restart = False
+            log.write("avvio pannello (tentativo %d)" % (attempt + 1))
             self.build()
             self.win.Show()
             self.disp.RunLoop()
+            log.write("pannello chiuso (restart=%s)" % self.restart)
             self.ui_to_project()
             self.win.Hide()
             if self.path:
                 try:
                     model.save(self.project, self.path)
                 except Exception:
-                    pass
+                    log.exception("salvataggio alla chiusura")
             if not self.restart:
                 break
             self.lang = self.settings.get("ui_lang", "it")
@@ -1322,5 +1351,29 @@ def _heading(h, lang):
         return h
 
 
+def show_error(fusion, bmd, text):
+    """Finestra minima con l'errore (invece di una finestra che sparisce)."""
+    try:
+        ui = fusion.UIManager
+        disp = bmd.UIDispatcher(ui)
+        win = disp.AddWindow({"ID": "DRFCErr", "WindowTitle": "DR-FilmCredits \u2013 errore", "Geometry": [200, 200, 760, 420]},
+                             ui.VGroup([ui.Label({"Text": "Qualcosa non ha funzionato. Manda il file di log a Ivan:\n%s" % log.path(),
+                                                  "WordWrap": True, "Weight": 0}),
+                                        ui.TextEdit({"ID": "Err", "ReadOnly": True, "PlainText": text}),
+                                        ui.Button({"ID": "Ok", "Text": "OK", "Weight": 0})]))
+        win.On.DRFCErr.Close = lambda ev: disp.ExitLoop()
+        win.On.Ok.Clicked = lambda ev: disp.ExitLoop()
+        win.Show()
+        disp.RunLoop()
+        win.Hide()
+    except Exception:
+        log.exception("finestra di errore")
+        print(text)
+
+
 def main(fusion, bmd, resolve=None):
-    Wizard(fusion, bmd, resolve).run()
+    try:
+        Wizard(fusion, bmd, resolve).run()
+    except Exception:
+        text = log.exception("main")
+        show_error(fusion, bmd, text)

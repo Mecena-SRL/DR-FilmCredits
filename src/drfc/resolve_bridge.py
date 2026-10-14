@@ -21,7 +21,7 @@ import sys
 import tempfile
 import zlib
 
-from . import engine, fusion_writer
+from . import calibration, engine, fusion_writer, log
 
 MEDIA_FOLDER = "DR-FilmCredits"
 TRACK_NAME = "DR-FilmCredits"
@@ -62,6 +62,11 @@ class ResolveSession(object):
             raise RuntimeError("Nessuna timeline attiva: aprirne una nella pagina Edit.")
         self.mp = self.project.GetMediaPool()
         self.log = []
+        self._cal_done = False
+        try:
+            self.version = str(self.resolve.GetVersionString() or "")
+        except Exception:
+            self.version = ""
 
     # ------------------------------------------------------------------ formato
     def timeline_format(self):
@@ -179,6 +184,7 @@ class ResolveSession(object):
                     self.timeline.DeleteClips([extra], False)
                 if self._duration(item) == sec["frames"]:
                     say("Aggiorno '%s' nello stesso clip..." % sec["label"])
+                    self._ensure_calibration(item, fmt["width"])
                     self._update_in_place(item, sec, comp_path)
                     r = _res(sec, True, "updated", "Aggiornata: %s (stesso clip, nodi manuali conservati)." % sec["label"])
                 else:
@@ -200,6 +206,7 @@ class ResolveSession(object):
                     out.append(_res(sec, False, "setting",
                                     "Inserimento automatico non riuscito: incollare %s nella pagina Fusion." % path, path=path))
                     continue
+                self._ensure_calibration(item, fmt["width"])
                 self._import_comp(item, sec, comp_path)
                 r = _res(sec, True, "inserted", "Inserita: %s, %d frame (%.2fs) su V%d." % (
                     sec["label"], sec["frames"], sec["frames"] / fmt["fps"], track_idx))
@@ -208,6 +215,27 @@ class ResolveSession(object):
             if r["ok"]:
                 state[sid] = {"hash": sec["hash"], "frames": sec["frames"], "stem": stem, "locked": st.get("locked", False)}
         return {"sections": out, "issues": issues, "notes": notes}
+
+    def _ensure_calibration(self, item, width):
+        """Calibra Text+ da soli, una volta per versione di Resolve, su un comp temporaneo del
+        clip (poi eliminato). Qualsiasi problema = si resta sui valori di default."""
+        if self._cal_done:
+            return
+        self._cal_done = True
+        if calibration.is_current(self.version):
+            return
+        probe = None
+        try:
+            before = list(item.GetFusionCompNameList() or [])
+            probe = item.AddFusionComp()
+            names = list(item.GetFusionCompNameList() or [])
+            probe_name = next((n for n in names if n not in before), None)
+            if probe is not None:
+                calibration.ensure(probe, width, self.version)
+            if probe_name:
+                item.DeleteFusionCompByName(probe_name)
+        except Exception:
+            log.exception("calibrazione automatica")
 
     def _import_comp(self, item, sec, comp_path):
         info = fusion_writer.write(sec["project"], sec["layout"], sec["timeline"], comp_path, t0=0)
@@ -279,6 +307,7 @@ class ResolveSession(object):
         item = self._append_holder(sec["stem"], work_dir, fmt, sec["frames"], track_idx, rec)
         if item is None:
             return None
+        self._ensure_calibration(item, fmt["width"])
         comp, info = self._import_comp(item, sec, comp_path)
         paste_item_properties(item, props)
         if user:

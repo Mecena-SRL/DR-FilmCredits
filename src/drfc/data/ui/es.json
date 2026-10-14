@@ -188,7 +188,7 @@
     "sequence": "Secuencia",
     "all": "Todas",
     "results": "Resultados",
-    "calibrate": "Calibrar Text+…",
+    "calibrate": "Recalibrate Text+ (advanced)",
     "ok": "Hecho",
     "errors": "errores",
     "warnings": "avisos",
@@ -204,7 +204,8 @@
     "st_new": "new",
     "st_changed": "changed",
     "st_unchanged": "unchanged",
-    "st_locked": "locked"
+    "st_locked": "locked",
+    "recalibrate_done": "Calibration cleared: it will be redone automatically on next generation."
   },
   "msg": {
     "saved": "Project saved: {path}",

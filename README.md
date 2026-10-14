@@ -19,7 +19,7 @@ quella sezione: il resto del lavoro in timeline non viene toccato.
 
 ### 1. Scarica
 - Dalla pagina GitHub del progetto: pulsante verde **Code › Download ZIP**, poi estrai la cartella.
-- Oppure chiedi a Ivan lo ZIP già pronto (`DR-FilmCredits-v0.2.0.zip`).
+- Oppure chiedi a Ivan lo ZIP già pronto (`DR-FilmCredits-v0.2.1.zip`).
 - Il repository è privato? Ivan deve aggiungerti come collaboratrice (GitHub › Settings ›
   Collaborators) e poi puoi scaricarlo.
 
@@ -42,10 +42,8 @@ L'installer:
 ### 4. Avvia
 Riavvia Resolve e apri una timeline: **Workspace › Scripts › Utility › DR-FilmCredits**.
 
-### 5. Prima volta: calibrazione (10 secondi)
-Apri la pagina **Fusion** su un clip qualsiasi. Nel pannello vai su **5 · Verifica e genera** e
-premi **Calibra Text+**: il plugin misura come Resolve disegna i caratteri, così gli allineamenti
-risultano esatti. Basta farlo una volta sola.
+Non serve altro: la **calibrazione dei caratteri** (come Resolve disegna Text+) si fa da sola alla
+prima generazione, e di nuovo quando cambia la versione di Resolve.
 
 Per disinstallare: `python3 install/install.py --remove`. Per aggiornare il plugin: scarica la
 nuova versione e rilancia l'installer (i tuoi progetti non vengono toccati).
@@ -205,6 +203,7 @@ orizzontale e verticale, corto festival, lungometraggio USA.
 ## Domande frequenti
 | Domanda | Risposta |
 |---|---|
+| La finestra compare e sparisce / errori | Aggiorna all'ultima versione (v0.2.1 risolve la finestra che sparisce). Se capita ancora, manda a Ivan il file `drfc.log` (Windows: `%APPDATA%\DR-FilmCredits`, macOS: `~/Library/Application Support/DR-FilmCredits`, Linux: `~/.config/DR-FilmCredits`): contiene l'errore. In caso di errore il pannello mostra anche una finestra con il testo. |
 | Non vedo la voce nel menu Scripts | Riavvia Resolve; controlla di aver lanciato l'installer e di avere Python 3. |
 | «Font non trovati» nella verifica | Rilancia l'installer (installa i font) oppure scegli un set «solo sistema». |
 | Logo «da richiedere» | L'ente concede il logo su richiesta: usa *Pagina ufficiale*, poi *Importa file ricevuto*. |
@@ -225,4 +224,7 @@ Python puro, nessuna dipendenza.
 - **Architettura e dettagli:** [`docs/GUIDA.md`](docs/GUIDA.md).
 
 **Limiti noti:** l'inserimento in timeline è stato verificato contro un Resolve simulato. Alla
-prima installazione fai la calibrazione e una prova su un rullo breve.
+prima installazione fai una prova su un rullo breve. La calibrazione automatica legge da script
+l'immagine di un Text+ di prova: se Resolve non lo permette si usano i valori standard (al
+massimo i caratteri risultano leggermente più grandi o più piccoli del previsto); in
+modalità Avanzata c'è «Ricalibra Text+».

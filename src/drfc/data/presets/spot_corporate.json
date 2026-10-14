@@ -1,0 +1,140 @@
+{
+ "label": {
+  "it": "Spot / corporate / branded",
+  "en": "Commercial / corporate / branded"
+ },
+ "region": "INT",
+ "theme": "minimal",
+ "language": "it",
+ "work_type": "spot",
+ "territory": "int",
+ "destination": "streaming_hd",
+ "fontset": "neutro",
+ "format": {
+  "width": 1920,
+  "height": 1080,
+  "fps": 25.0
+ },
+ "timing": {
+  "speed": "fast",
+  "end_mode": "hold_last",
+  "hold_last_s": 2.0
+ },
+ "notes": [
+  "Per i commercial i crediti a schermo sono spesso un solo cartello finale: usare un cartello 'Credits' o un rullo breve."
+ ],
+ "sequences": [
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "Crediti",
+   "timing": {
+    "fit": "speed",
+    "target_seconds": 15
+   },
+   "blocks": [
+    {
+     "type": "list",
+     "heading": "",
+     "rows": [
+      {
+       "role": "client",
+       "names": []
+      },
+      {
+       "role": "agency",
+       "names": []
+      },
+      {
+       "role": "creative_director",
+       "names": []
+      },
+      {
+       "role": "copywriter",
+       "names": []
+      },
+      {
+       "role": "account",
+       "names": []
+      }
+     ],
+     "arrangement": "pairs_2"
+    },
+    {
+     "type": "list",
+     "heading": "",
+     "rows": [
+      {
+       "role": "production_company",
+       "names": []
+      },
+      {
+       "role": "director",
+       "names": []
+      },
+      {
+       "role": "executive_producer",
+       "names": []
+      },
+      {
+       "role": "producer",
+       "names": []
+      }
+     ],
+     "arrangement": "pairs_2"
+    },
+    {
+     "type": "list",
+     "heading": "",
+     "rows": [
+      {
+       "role": "cinematographer",
+       "names": []
+      },
+      {
+       "role": "editor",
+       "names": []
+      },
+      {
+       "role": "colorist",
+       "names": []
+      },
+      {
+       "role": "motion_designer",
+       "names": []
+      },
+      {
+       "role": "sound_mix",
+       "names": []
+      },
+      {
+       "role": "composer",
+       "names": []
+      }
+     ],
+     "arrangement": "pairs_2"
+    },
+    {
+     "type": "logos",
+     "caption": "",
+     "items": []
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "copyright"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checks": [
+  {
+   "check": "legal_present",
+   "key": "copyright"
+  }
+ ],
+ "id": "spot_corporate"
+}

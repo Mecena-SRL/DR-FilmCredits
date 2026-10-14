@@ -48,15 +48,15 @@
   "festival": {
     "label": {"it": "Festival / d'autore", "en": "Festival / arthouse", "fr": "Festival / auteur", "de": "Festival / Arthouse", "es": "Festival / autor"},
     "styles": {
-      "title":     {"family": "Playfair Display", "style": "Regular", "size": 62, "tracking": 1.02, "case": "none",  "color": "#F4EFE6", "line_spacing": 1.0},
+      "title":     {"family": "DM Serif Display", "style": "Regular", "size": 62, "tracking": 1.02, "case": "none",  "color": "#F4EFE6", "line_spacing": 1.0},
       "heading":   {"family": "Lato", "style": "Bold",     "size": 20, "tracking": 1.35, "case": "upper", "color": "#F4EFE6", "line_spacing": 1.1},
       "role":      {"family": "Lato", "style": "Regular",  "size": 20, "tracking": 1.2,  "case": "upper", "color": "#B9B2A6", "line_spacing": 1.3},
-      "name":      {"family": "Playfair Display", "style": "Regular", "size": 27, "tracking": 1.0, "case": "none", "color": "#F4EFE6", "line_spacing": 1.25},
-      "character": {"family": "Playfair Display", "style": "Italic",  "size": 24, "tracking": 1.0, "case": "none", "color": "#B9B2A6", "line_spacing": 1.25},
+      "name":      {"family": "DM Serif Display", "style": "Regular", "size": 27, "tracking": 1.0, "case": "none", "color": "#F4EFE6", "line_spacing": 1.25},
+      "character": {"family": "DM Serif Display", "style": "Italic",  "size": 24, "tracking": 1.0, "case": "none", "color": "#B9B2A6", "line_spacing": 1.25},
       "small":     {"family": "Lato", "style": "Regular",  "size": 18, "tracking": 1.05, "case": "none",  "color": "#CFC8BC", "line_spacing": 1.35},
       "legal":     {"family": "Lato", "style": "Light",    "size": 15, "tracking": 1.05, "case": "none",  "color": "#A69F93", "line_spacing": 1.4},
       "card_role": {"family": "Lato", "style": "Regular",  "size": 22, "tracking": 1.3,  "case": "upper", "color": "#B9B2A6", "line_spacing": 1.15},
-      "card_name": {"family": "Playfair Display", "style": "Regular", "size": 50, "tracking": 1.0, "case": "none", "color": "#F4EFE6", "line_spacing": 1.05}
+      "card_name": {"family": "DM Serif Display", "style": "Regular", "size": 50, "tracking": 1.0, "case": "none", "color": "#F4EFE6", "line_spacing": 1.05}
     },
     "metrics": {"gutter": 24, "block_gap": 2.8, "heading_gap": 1.0, "row_gap": 0.45, "logo_height": 80, "logo_gap": 64, "media_height": 320}
   },

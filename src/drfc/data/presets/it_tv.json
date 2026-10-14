@@ -274,5 +274,8 @@
    "check": "ai_disclosure"
   }
  ],
- "id": "it_tv"
+ "id": "it_tv",
+ "work_type": "serie",
+ "territory": "it",
+ "destination": "tv_hd_25"
 }

@@ -1,0 +1,227 @@
+{
+ "label": {
+  "it": "Videoclip musicale",
+  "en": "Music video"
+ },
+ "region": "INT",
+ "theme": "modern",
+ "language": "it",
+ "work_type": "videoclip",
+ "territory": "int",
+ "destination": "streaming_hd",
+ "fontset": "videoclip",
+ "format": {
+  "width": 1920,
+  "height": 1080,
+  "fps": 25.0
+ },
+ "timing": {
+  "speed": "normal",
+  "end_mode": "hold_last",
+  "hold_last_s": 3.0
+ },
+ "notes": [
+  "Crediti essenziali nel video, credito completo nella descrizione della piattaforma.",
+  "℗ (registrazione) e © (video) su righe separate, con anno e titolare (DDEX).",
+  "Esporta anche la versione verticale 9:16 con il profilo destinazione social."
+ ],
+ "sequences": [
+  {
+   "id": "opening",
+   "kind": "cards",
+   "name": "Apertura",
+   "blocks": [
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      },
+      {
+       "text": "",
+       "style": "card_role"
+      }
+     ],
+     "position": "lower_third",
+     "note": "ARTISTA / «Titolo»"
+    },
+    {
+     "type": "card",
+     "role": "director",
+     "names": [],
+     "position": "lower_third"
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "Crediti finali",
+   "timing": {
+    "fit": "speed",
+    "target_seconds": 20
+   },
+   "blocks": [
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "name"
+      },
+      {
+       "text": "",
+       "style": "role"
+      }
+     ],
+     "note": "ARTISTA – «Titolo»"
+    },
+    {
+     "type": "credit",
+     "role": "director",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "list",
+     "heading": "",
+     "rows": [
+      {
+       "role": "production_company",
+       "names": []
+      },
+      {
+       "role": "producer",
+       "names": []
+      },
+      {
+       "role": "executive_producer",
+       "names": []
+      },
+      {
+       "role": "commissioner",
+       "names": []
+      },
+      {
+       "role": "video_commissioner",
+       "names": []
+      },
+      {
+       "role": "label",
+       "names": []
+      }
+     ],
+     "arrangement": "pair"
+    },
+    {
+     "type": "list",
+     "heading": "",
+     "rows": [
+      {
+       "role": "cinematographer",
+       "names": []
+      },
+      {
+       "role": "first_ac",
+       "names": []
+      },
+      {
+       "role": "gaffer",
+       "names": []
+      },
+      {
+       "role": "key_grip",
+       "names": []
+      },
+      {
+       "role": "production_designer",
+       "names": []
+      },
+      {
+       "role": "stylist",
+       "names": []
+      },
+      {
+       "role": "makeup_artist",
+       "names": []
+      },
+      {
+       "role": "hair_stylist",
+       "names": []
+      },
+      {
+       "role": "choreographer",
+       "names": []
+      }
+     ],
+     "arrangement": "pairs_2"
+    },
+    {
+     "type": "list",
+     "heading": "",
+     "rows": [
+      {
+       "role": "editor",
+       "names": []
+      },
+      {
+       "role": "colorist",
+       "names": []
+      },
+      {
+       "role": "vfx_artist",
+       "names": []
+      },
+      {
+       "role": "motion_designer",
+       "names": []
+      }
+     ],
+     "arrangement": "pair"
+    },
+    {
+     "type": "names",
+     "heading": "h:cast",
+     "names": []
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "logos",
+     "caption": "",
+     "items": []
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "phonographic"
+      },
+      {
+       "key": "video_copyright"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checks": [
+  {
+   "check": "legal_present",
+   "key": "phonographic"
+  },
+  {
+   "check": "legal_present",
+   "key": "video_copyright"
+  },
+  {
+   "check": "role_present",
+   "role": "director"
+  }
+ ],
+ "id": "music_video"
+}

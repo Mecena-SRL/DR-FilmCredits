@@ -27,6 +27,11 @@
    "name": "Titoli di testa",
    "blocks": [
     {
+     "type": "laurels",
+     "items": [],
+     "note": "Allori festival (prima del titolo)"
+    },
+    {
      "type": "title",
      "text": ""
     }
@@ -132,5 +137,9 @@
    "check": "ai_disclosure"
   }
  ],
- "id": "documentary"
+ "id": "documentary",
+ "work_type": "documentario",
+ "territory": "int",
+ "destination": "streaming_hd",
+ "fontset": "documentario"
 }

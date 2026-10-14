@@ -790,6 +790,142 @@
       "fr": "Narration",
       "de": "Erzähler",
       "es": "Narrador"
+    },
+    "artist": {
+      "dept": "music",
+      "it": "Artista",
+      "en": "Artist",
+      "fr": "Artiste",
+      "de": "Künstler",
+      "es": "Artista"
+    },
+    "label": {
+      "dept": "music",
+      "it": "Etichetta",
+      "en": "Label",
+      "fr": "Label",
+      "de": "Label",
+      "es": "Sello discográfico"
+    },
+    "commissioner": {
+      "dept": "production",
+      "it": "Commissionato da",
+      "en": "Commissioned by",
+      "fr": "Commandé par",
+      "de": "Beauftragt von",
+      "es": "Encargado por"
+    },
+    "video_commissioner": {
+      "dept": "production",
+      "it": "Video commissioner",
+      "en": "Video Commissioner",
+      "fr": "Video commissioner",
+      "de": "Video Commissioner",
+      "es": "Video commissioner"
+    },
+    "artist_manager": {
+      "dept": "production",
+      "it": "Management",
+      "en": "Artist Management",
+      "fr": "Management",
+      "de": "Management",
+      "es": "Mánager"
+    },
+    "production_company": {
+      "dept": "production",
+      "it": "Casa di produzione",
+      "en": "Production Company",
+      "fr": "Société de production",
+      "de": "Produktionsfirma",
+      "es": "Productora"
+    },
+    "choreographer": {
+      "dept": "art",
+      "it": "Coreografia",
+      "en": "Choreographer",
+      "fr": "Chorégraphe",
+      "de": "Choreografie",
+      "es": "Coreografía"
+    },
+    "stylist": {
+      "dept": "costume",
+      "it": "Styling",
+      "en": "Stylist",
+      "fr": "Stylisme",
+      "de": "Styling",
+      "es": "Estilismo"
+    },
+    "dancer": {
+      "dept": "cast",
+      "it": "Ballerini",
+      "en": "Dancers",
+      "fr": "Danseurs",
+      "de": "Tänzer",
+      "es": "Bailarines"
+    },
+    "creative_director": {
+      "dept": "direction",
+      "it": "Direzione creativa",
+      "en": "Creative Director",
+      "fr": "Direction de création",
+      "de": "Creative Director",
+      "es": "Dirección creativa"
+    },
+    "agency": {
+      "dept": "production",
+      "it": "Agenzia",
+      "en": "Agency",
+      "fr": "Agence",
+      "de": "Agentur",
+      "es": "Agencia"
+    },
+    "client": {
+      "dept": "production",
+      "it": "Cliente",
+      "en": "Client",
+      "fr": "Client",
+      "de": "Kunde",
+      "es": "Cliente"
+    },
+    "account": {
+      "dept": "production",
+      "it": "Account",
+      "en": "Account Director",
+      "fr": "Directeur de clientèle",
+      "de": "Kundenberatung",
+      "es": "Ejecutivo de cuentas"
+    },
+    "copywriter": {
+      "dept": "writing",
+      "it": "Copywriter",
+      "en": "Copywriter",
+      "fr": "Concepteur-rédacteur",
+      "de": "Texter",
+      "es": "Redactor creativo"
+    },
+    "motion_designer": {
+      "dept": "vfx",
+      "it": "Motion design",
+      "en": "Motion Designer",
+      "fr": "Motion designer",
+      "de": "Motion Design",
+      "es": "Motion design"
+    },
+    "animator": {
+      "dept": "vfx",
+      "it": "Animazione",
+      "en": "Animator",
+      "fr": "Animateur",
+      "de": "Animation",
+      "es": "Animación"
+    },
+    "sound_mix": {
+      "dept": "post_sound",
+      "it": "Mix audio",
+      "en": "Sound Mix",
+      "fr": "Mixage",
+      "de": "Tonmischung",
+      "es": "Mezcla de sonido"
     }
   }
 }

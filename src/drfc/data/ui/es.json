@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "DR-FilmCredits – Títulos de crédito",
-    "subtitle": "Guiado · modular · preciso al píxel"
+    "subtitle": "Guiado · modular · preciso al píxel",
+    "advanced": "Advanced mode"
   },
   "steps": {
     "project": "1 · Proyecto",
@@ -63,7 +64,11 @@
     "col_on": "On",
     "new_seq": "+ Secuencia",
     "help": "Sintaxis",
-    "side_lane": "Carril lateral"
+    "side_lane": "Carril lateral",
+    "add_block": "+ Empty block",
+    "reorder": "Reorder by standard",
+    "suggest": "What's missing?",
+    "arrangement": "Arrangement"
   },
   "help": {
     "credit": "role: Name One, Name Two\n(role = key, e.g. director, or free text)",
@@ -78,7 +83,8 @@
     "legal": "@copyright\n@fiction\n@ai_disclosure uses=editing, visual effects\n@mic_tax_credit\nor free text",
     "title": "Title of the work (empty = project title)",
     "text": "Free text",
-    "spacer": "Lines of space (e.g. 3)"
+    "spacer": "Lines of space (e.g. 3)",
+    "laurels": "Pick festival, status, section and year and press '+ Add laurel'. If the festival gave you the official laurel, use it."
   },
   "types": {
     "title": "Título",
@@ -93,7 +99,8 @@
     "legal": "Avisos legales",
     "media": "Making of",
     "text": "Texto",
-    "spacer": "Espacio"
+    "spacer": "Espacio",
+    "laurels": "Laureles"
   },
   "style": {
     "theme": "Tema",
@@ -120,7 +127,27 @@
     "render_auto": "Automático (recomendado)",
     "render_block": "Compacto",
     "render_line": "Preciso",
-    "axis": "Eje central (%)"
+    "axis": "Eje central (%)",
+    "fontset": "Font set",
+    "fontset_theme": "Theme fonts",
+    "density": "Density",
+    "density_compact": "Compact",
+    "density_normal": "Normal",
+    "density_airy": "Airy",
+    "leading": "Line spacing",
+    "leading_tight": "Tight",
+    "leading_normal": "Normal",
+    "leading_wide": "Wide",
+    "bg_transparent": "Transparent (over picture)",
+    "bg_black": "Black",
+    "bg_white": "White",
+    "bg_color": "Colour",
+    "bg_gradient": "Gradient",
+    "bg_media": "Background image/video",
+    "bg_dim": "Darken picture below",
+    "bg_panel": "Panel behind text",
+    "dim": "Darken",
+    "blur": "Blur"
   },
   "timing": {
     "speed": "Velocidad",
@@ -164,7 +191,20 @@
     "calibrate": "Calibrar Text+…",
     "ok": "Hecho",
     "errors": "errores",
-    "warnings": "avisos"
+    "warnings": "avisos",
+    "card_mode": "Cards",
+    "per_card": "One clip per card",
+    "per_sequence": "One clip per sequence",
+    "refresh": "Refresh status",
+    "lock": "Lock/Unlock",
+    "update_changed": "Update changes only",
+    "regenerate_all": "Regenerate all",
+    "col_section": "Section",
+    "col_status": "Status",
+    "st_new": "new",
+    "st_changed": "changed",
+    "st_unchanged": "unchanged",
+    "st_locked": "locked"
   },
   "msg": {
     "saved": "Project saved: {path}",
@@ -173,6 +213,60 @@
     "imported": "Imported {n} entries.",
     "need_save": "Save the project first.",
     "confirm_new": "New project created from preset.",
-    "select_block": "Select a block."
+    "select_block": "Select a block.",
+    "added": "Added {n} sections.",
+    "reordered": "Blocks reordered by standard.",
+    "suggestions": "Recommended:",
+    "nothing_missing": "Nothing essential is missing.",
+    "logo_imported": "{n} files imported into the logo kit.",
+    "select_section": "Select a section."
+  },
+  "guided": {
+    "title": "New guided project",
+    "work": "Type of work",
+    "territory": "Standard / territory",
+    "destination": "Destination and format",
+    "from_timeline": "From timeline",
+    "what": "What do you have? (only these sections are created; add more later)",
+    "create": "Create project"
+  },
+  "rows": {
+    "dept": "Department",
+    "role": "Role",
+    "custom": "Custom role…",
+    "names": "Names",
+    "names_hint": "First Last, First Last",
+    "add": "+ Add row",
+    "set": "Update row",
+    "delete": "Remove",
+    "column_break": "New column",
+    "any_dept": "All departments"
+  },
+  "arr": {
+    "pair": "Two columns (role | name)",
+    "single": "Single column (role above name)",
+    "pairs_2": "2 side-by-side groups",
+    "pairs_3": "3 side-by-side groups (left, centre, right)",
+    "stacked_2": "2-column grid",
+    "stacked_3": "3-column grid",
+    "stacked_4": "4-column grid",
+    "names": "Names only in columns"
+  },
+  "logos": {
+    "pick": "Logo from kit",
+    "add": "+ Add",
+    "own": "Add my PNG…",
+    "import": "Import received file…",
+    "page": "Official page",
+    "update": "Update logo kit"
+  },
+  "laurels": {
+    "festival": "Festival",
+    "status": "Status",
+    "section": "Section",
+    "year": "Year",
+    "award": "Award (opt.)",
+    "add": "+ Add laurel",
+    "official": "Use official laurel (PNG)…"
   }
 }

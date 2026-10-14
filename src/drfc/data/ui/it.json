@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "DR-FilmCredits – Titoli di testa e di coda",
-    "subtitle": "Guidato · modulare · preciso al pixel"
+    "subtitle": "Guidato · modulare · preciso al pixel",
+    "advanced": "Modalità avanzata"
   },
   "steps": {
     "project": "1 · Progetto",
@@ -33,7 +34,7 @@
   "data": {
     "sequence": "Sequenza",
     "blocks": "Blocchi",
-    "add": "+ Aggiungi",
+    "add": "+ Aggiungi sezione",
     "up": "▲",
     "down": "▼",
     "dup": "Duplica",
@@ -63,12 +64,16 @@
     "col_on": "On",
     "new_seq": "+ Sequenza",
     "help": "Sintassi",
-    "side_lane": "Corsia laterale (media a lato)"
+    "side_lane": "Corsia laterale (media a lato)",
+    "add_block": "+ Blocco vuoto",
+    "reorder": "Riordina secondo standard",
+    "suggest": "Cosa manca?",
+    "arrangement": "Disposizione"
   },
   "help": {
     "credit": "ruolo: Nome Uno, Nome Due\n(ruolo = chiave, es. director, oppure testo libero)",
     "card": "ruolo: Nomi\noppure una riga per riga:\n[card_name] Ottobre Film presenta",
-    "list": "Una riga per ruolo:\ncinematographer: Luca Marini\nfirst_ac: Anna Costa, Ivo Serra",
+    "list": "Scegli reparto e ruolo dai menu (o scrivi un ruolo personalizzato), inserisci i nomi separati da virgola e premi '+ Aggiungi riga'. 'Nuova colonna' crea sezioni affiancate.",
     "cast": "Attore = Personaggio",
     "names": "Un nome per riga (impaginati in colonne automatiche)",
     "music": "Un brano per paragrafo:\ntitolo: Il mare\nautori: A, B\ninterpreti: Band\nedizioni: Edizioni X\naccordo: licensed | courtesy | library | original | public_domain | creative_commons | artist_owned\nlicenziante: Etichetta srl",
@@ -78,7 +83,8 @@
     "legal": "@copyright\n@fiction\n@ai_disclosure uses=montaggio, effetti visivi\n@mic_tax_credit\noppure testo libero",
     "title": "Titolo dell'opera (vuoto = titolo del progetto)",
     "text": "Testo libero",
-    "spacer": "Righe di spazio (es. 3)"
+    "spacer": "Righe di spazio (es. 3)",
+    "laurels": "Scegli festival, stato, sezione e anno e premi '+ Aggiungi alloro'. Se il festival ti ha dato l'alloro ufficiale usa quello."
   },
   "types": {
     "title": "Titolo",
@@ -93,7 +99,8 @@
     "legal": "Diciture legali",
     "media": "Foto/video backstage",
     "text": "Testo",
-    "spacer": "Spazio"
+    "spacer": "Spazio",
+    "laurels": "Allori festival"
   },
   "style": {
     "theme": "Tema",
@@ -120,7 +127,27 @@
     "render_auto": "Automatico (consigliato)",
     "render_block": "Compatto (1 nodo per colonna)",
     "render_line": "Preciso (1 nodo per riga)",
-    "axis": "Asse centrale (%)"
+    "axis": "Asse centrale (%)",
+    "fontset": "Set di font",
+    "fontset_theme": "Quelli del tema",
+    "density": "Densità",
+    "density_compact": "Compatta",
+    "density_normal": "Normale",
+    "density_airy": "Ariosa",
+    "leading": "Interlinea",
+    "leading_tight": "Stretta",
+    "leading_normal": "Normale",
+    "leading_wide": "Larga",
+    "bg_transparent": "Trasparente (sopra le immagini)",
+    "bg_black": "Nero",
+    "bg_white": "Bianco",
+    "bg_color": "Colore",
+    "bg_gradient": "Gradiente",
+    "bg_media": "Immagine/video di sfondo",
+    "bg_dim": "Oscura le immagini sotto",
+    "bg_panel": "Pannello dietro il testo",
+    "dim": "Oscuramento",
+    "blur": "Sfocatura"
   },
   "timing": {
     "speed": "Velocità scorrimento",
@@ -164,7 +191,20 @@
     "calibrate": "Calibra Text+…",
     "ok": "Fatto",
     "errors": "errori",
-    "warnings": "avvisi"
+    "warnings": "avvisi",
+    "card_mode": "Cartelli",
+    "per_card": "Un clip per cartello",
+    "per_sequence": "Un clip per sequenza",
+    "refresh": "Aggiorna stato",
+    "lock": "Blocca/Sblocca",
+    "update_changed": "Aggiorna solo le modifiche",
+    "regenerate_all": "Rigenera tutto",
+    "col_section": "Sezione",
+    "col_status": "Stato",
+    "st_new": "nuova",
+    "st_changed": "modificata",
+    "st_unchanged": "invariata",
+    "st_locked": "bloccata"
   },
   "msg": {
     "saved": "Progetto salvato: {path}",
@@ -173,6 +213,60 @@
     "imported": "Importate {n} voci.",
     "need_save": "Salva prima il progetto.",
     "confirm_new": "Creato nuovo progetto da preset.",
-    "select_block": "Seleziona un blocco."
+    "select_block": "Seleziona un blocco.",
+    "added": "Aggiunte {n} sezioni.",
+    "reordered": "Blocchi riordinati secondo lo standard.",
+    "suggestions": "Consigliati:",
+    "nothing_missing": "Niente di essenziale manca.",
+    "logo_imported": "{n} file importati nel kit loghi.",
+    "select_section": "Seleziona una sezione."
+  },
+  "guided": {
+    "title": "Nuovo progetto guidato",
+    "work": "Tipo di opera",
+    "territory": "Standard / territorio",
+    "destination": "Destinazione e formato",
+    "from_timeline": "Dalla timeline",
+    "what": "Cosa hai? (crea solo queste sezioni, puoi aggiungerne altre dopo)",
+    "create": "Crea progetto"
+  },
+  "rows": {
+    "dept": "Reparto",
+    "role": "Ruolo",
+    "custom": "Ruolo personalizzato…",
+    "names": "Nomi",
+    "names_hint": "Nome Cognome, Nome Cognome",
+    "add": "+ Aggiungi riga",
+    "set": "Aggiorna riga",
+    "delete": "Rimuovi",
+    "column_break": "Nuova colonna",
+    "any_dept": "Tutti i reparti"
+  },
+  "arr": {
+    "pair": "Due colonne (ruolo | nome)",
+    "single": "Colonna singola (ruolo sopra nome)",
+    "pairs_2": "2 gruppi affiancati",
+    "pairs_3": "3 gruppi affiancati (sx, centro, dx)",
+    "stacked_2": "Griglia 2 colonne",
+    "stacked_3": "Griglia 3 colonne",
+    "stacked_4": "Griglia 4 colonne",
+    "names": "Solo nomi in colonne"
+  },
+  "logos": {
+    "pick": "Logo dal kit",
+    "add": "+ Aggiungi",
+    "own": "Aggiungi PNG mio…",
+    "import": "Importa file ricevuto…",
+    "page": "Pagina ufficiale",
+    "update": "Aggiorna kit loghi"
+  },
+  "laurels": {
+    "festival": "Festival",
+    "status": "Stato",
+    "section": "Sezione",
+    "year": "Anno",
+    "award": "Premio (opz.)",
+    "add": "+ Aggiungi alloro",
+    "official": "Usa alloro ufficiale (PNG)…"
   }
 }

@@ -19,7 +19,7 @@ import json
 import math
 import os
 
-from . import DATA_DIR, i18n, imageinfo, phrases
+from . import DATA_DIR, design, i18n, imageinfo, phrases
 from .fontmetrics import Measurer
 from .model import resolve_path
 
@@ -53,18 +53,23 @@ class Ctx(object):
         self.lang = project["meta"].get("language", "it")
         fmt = project["format"]
         self.W, self.H = float(fmt["width"]), float(fmt["height"])
-        self.scale = self.H / REF_H
+        self.scale = design.text_scale(fmt)
         self.m = measurer or Measurer()
         self.cards = sequence.get("kind") == "cards"
         theme_name = project["style"].get("theme", "classic")
         self.theme = themes().get(theme_name) or themes()["classic"]
         self.metrics = dict(self.theme["metrics"])
         self.metrics.update(project["style"].get("metrics", {}))
+        dens = design.density_factors(project["style"])
+        for k, f in dens.items():
+            if k in self.metrics:
+                self.metrics[k] = self.metrics[k] * f
+        self.leading = design.leading_factor(project["style"])
+        self.light = design.is_light(fmt)
+        self.fontset = project["style"].get("fontset")
         self.gap_scale = gap_scale
         self.warnings = []
-        safe = float(fmt.get("safe_title", 0.9))
-        mx, my = self.W * (1 - safe) / 2, self.H * (1 - safe) / 2
-        self.safe = (mx, my, self.W - mx, self.H - my)
+        self.safe = design.safe_box(fmt)
         lay = project["layout"]
         split = lay.get("split", "none")
         sl, _, sr, _ = self.safe
@@ -81,7 +86,8 @@ class Ctx(object):
         else:
             self.lane = (sl, sr)
             self.side_lane = None
-            self.axis = self.W * float(lay.get("axis", 0.5))
+            # asse al centro della safe area (in verticale la safe area e' asimmetrica)
+            self.axis = sl + (sr - sl) * float(lay.get("axis", 0.5))
         mode = lay.get("render_mode", "auto")
         self.line_mode = mode == "line"
         self.auto_mode = mode == "auto"
@@ -94,6 +100,12 @@ class Ctx(object):
         if self.cards and key in ("role", "name"):
             key = "card_" + key
         base = copy.deepcopy(self.theme["styles"].get(key) or self.theme["styles"]["name"])
+        if self.fontset:
+            base.update(design.fontset_style(self.fontset, key))
+        if self.light:
+            # sfondo chiaro: palette invertita (testo scuro); sovrascrivibile con color_light
+            base["color"] = base.get("color_light") or design.invert_color(base.get("color", "#FFFFFF"))
+        base["line_spacing"] = float(base.get("line_spacing", 1.0)) * self.leading
         base.update(self.project["style"].get("overrides", {}).get(key, {}))
         if block:
             base.update(block.get("style", {}).get(key, {}))
@@ -165,13 +177,14 @@ class Ctx(object):
 
 
 # ======================================================================= builders
-def _stack(ctx, block, y, groups, align="center", x=None):
+def _stack(ctx, block, y, groups, align="center", x=None, max_w=None):
     """Pila verticale di gruppi (righe, style_key) o ('gap', px)."""
     els, cur = [], y
     if x is None:
         x = {"center": ctx.axis, "left": ctx.lane[0], "right": ctx.lane[1]}[align]
-    max_w = (ctx.lane[1] - ctx.lane[0]) * float(ctx.project["layout"].get("max_text_width", 0.8)) \
-        if align == "center" else (ctx.lane[1] - ctx.lane[0])
+    if max_w is None:
+        max_w = (ctx.lane[1] - ctx.lane[0]) * float(ctx.project["layout"].get("max_text_width", 0.8)) \
+            if align == "center" else (ctx.lane[1] - ctx.lane[0])
     for g in groups:
         if g[0] == "gap":
             cur += g[1]
@@ -202,11 +215,14 @@ def _role_text(ctx, role):
     return phrases.role_text(role, ctx.lang)
 
 
-def _two_column(ctx, block, y, rows):
-    """rows: lista di (righe_sinistra, style_sx, righe_destra, style_dx)."""
+def _two_column(ctx, block, y, rows, axis=None, bounds=None):
+    """rows: lista di (righe_sinistra, style_sx, righe_destra, style_dx).
+    axis/bounds: asse e limiti (sx, dx) del gruppo; default = corsia testo."""
     g = ctx.px(ctx.metrics["gutter"])
-    left_x, right_x = ctx.axis - g, ctx.axis + g
-    left_max, right_max = left_x - ctx.lane[0], ctx.lane[1] - right_x
+    axis = ctx.axis if axis is None else axis
+    lo, hi = bounds or ctx.lane
+    left_x, right_x = axis - g, axis + g
+    left_max, right_max = left_x - lo, hi - right_x
     if not rows:
         return [], 0.0
     l_st = ctx.style(rows[0][1], block)
@@ -290,7 +306,14 @@ def _image_rows(ctx, block, y, items, target_h, mode="logo"):
     lane_w = ctx.lane[1] - ctx.lane[0]
     sized = []
     for it in items:
-        path = resolve_path(ctx.project, it.get("path", ""))
+        if it.get("logo") and not it.get("path"):
+            from . import logos
+            path = logos.resolve(it["logo"], ctx.light)
+            if not path:
+                ctx.warn(block, "Logo '%s' non presente nel kit loghi (scaricalo o importalo)" % it["logo"])
+                continue
+        else:
+            path = resolve_path(ctx.project, it.get("path", ""))
         kind = it.get("kind") or imageinfo.media_kind(path)
         size = imageinfo.image_size(path) if kind == "image" else None
         if size is None:
@@ -379,23 +402,147 @@ def b_credit(ctx, block, y):
     return _stack(ctx, block, y, groups)
 
 
+ARRANGEMENTS = ("pair", "single", "pairs_2", "pairs_3", "stacked_2", "stacked_3", "stacked_4", "names")
+
+
+def list_arrangement(block):
+    a = block.get("arrangement")
+    if a in ARRANGEMENTS:
+        return a
+    return "single" if block.get("layout") == "stacked" else "pair"
+
+
+def _col_gap(ctx):
+    return max(ctx.px(ctx.metrics["gutter"]) * 3, ctx.W * 0.025)
+
+
+def _pair_rows(ctx, rows):
+    return [([_role_text(ctx, r.get("role", ""))], "role", list(r.get("names") or []), "name") for r in rows]
+
+
+def _pairs_fit(ctx, block, rows, k):
+    """True se ruoli e nomi stanno nei gruppi affiancati senza andare a capo."""
+    lane_w = ctx.lane[1] - ctx.lane[0]
+    group_w = (lane_w - _col_gap(ctx) * (k - 1)) / k
+    half = group_w / 2 - ctx.px(ctx.metrics["gutter"])
+    rs, ns = ctx.style("role", block), ctx.style("name", block)
+    for r in rows:
+        if ctx.width(_role_text(ctx, r.get("role", "")), rs) > half:
+            return False
+        for n in r.get("names") or []:
+            if ctx.width(n, ns) > half:
+                return False
+    return True
+
+
+def _split_groups(rows, k):
+    """Divide le righe in k gruppi contigui: interruzioni manuali ('break') oppure
+    bilanciamento sul numero di righe di testo."""
+    if any(r.get("break") for r in rows):
+        groups, cur = [], []
+        for r in rows:
+            if r.get("break") and cur:
+                groups.append(cur)
+                cur = []
+            if r.get("role") or r.get("names"):
+                cur.append(r)
+        if cur:
+            groups.append(cur)
+        return groups
+    weights = [max(1, len(r.get("names") or [])) for r in rows]
+    total = float(sum(weights))
+    groups, cur, acc = [], [], 0.0
+    for r, w in zip(rows, weights):
+        remaining_groups = k - len(groups)
+        if cur and remaining_groups > 1 and acc + w / 2.0 > total / k * (len(groups) + 1):
+            groups.append(cur)
+            cur = []
+        cur.append(r)
+        acc += w
+    if cur:
+        groups.append(cur)
+    return groups
+
+
+def _pairs(ctx, block, y, rows, k):
+    groups = _split_groups(rows, k)
+    k = len(groups)
+    lane_w = ctx.lane[1] - ctx.lane[0]
+    gap = _col_gap(ctx)
+    group_w = (lane_w - gap * (k - 1)) / k
+    els, h = [], 0.0
+    for i, grp in enumerate(groups):
+        lo = ctx.lane[0] + i * (group_w + gap)
+        gels, gh = _two_column(ctx, block, y, _pair_rows(ctx, grp), axis=lo + group_w / 2, bounds=(lo, lo + group_w))
+        els += gels
+        h = max(h, gh)
+    return els, h
+
+
+def _stacked_grid(ctx, block, y, rows, n):
+    lane_w = ctx.lane[1] - ctx.lane[0]
+    gap = _col_gap(ctx)
+    rs, ns = ctx.style("role", block), ctx.style("name", block)
+    widest = max([ctx.width(_role_text(ctx, r.get("role", "")), rs) for r in rows] +
+                 [ctx.width(nm, ns) for r in rows for nm in (r.get("names") or [])] + [1])
+    while n > 1 and widest > (lane_w - gap * (n - 1)) / n:
+        n -= 1
+    cell_w = (lane_w - gap * (n - 1)) / n
+    els, cur = [], y
+    row_gap = ctx.name_advance(block) * 0.8
+    for start in range(0, len(rows), n):
+        line = rows[start:start + n]
+        x0 = ctx.axis - (len(line) * cell_w + (len(line) - 1) * gap) / 2 + cell_w / 2
+        hmax = 0.0
+        for i, r in enumerate(line):
+            groups = []
+            role = _role_text(ctx, r.get("role", ""))
+            if role:
+                groups += [([role], "role"), ("gap", ctx.name_advance(block) * 0.1)]
+            groups.append((list(r.get("names") or []), "name"))
+            cels, ch = _stack(ctx, block, cur, groups, x=x0 + i * (cell_w + gap), max_w=cell_w)
+            els += cels
+            hmax = max(hmax, ch)
+        cur += hmax + (row_gap if start + n < len(rows) else 0)
+    return els, cur - y
+
+
 def b_list(ctx, block, y, rows=None):
     rows = block.get("rows", []) if rows is None else rows
     head_els, head_h = _stack(ctx, block, y, _heading_groups(ctx, block)) if block.get("heading") else ([], 0)
     y2 = y + head_h
-    if block.get("layout") == "stacked":
+    arr = list_arrangement(block)
+    real = [r for r in rows if r.get("role") or r.get("names")]
+    if arr.startswith("pairs_"):
+        k = int(arr.split("_")[1])
+        while k > 1 and not _pairs_fit(ctx, block, real, k):
+            k -= 1
+        if k < int(arr.split("_")[1]):
+            ctx.warn(block, "Formato stretto: %s gruppi affiancati ridotti a %d" % (arr.split("_")[1], k))
+        arr = "pairs_%d" % k if k > 1 else "pair"
+    if arr == "pair" and real and not _pairs_fit(ctx, block, real, 1):
+        ctx.warn(block, "Ruoli/nomi troppo larghi per due colonne: impaginati uno sopra l'altro")
+        arr = "single"
+    if arr.startswith("pairs_"):
+        els, h = _pairs(ctx, block, y2, [r for r in rows if r.get("role") or r.get("names") or r.get("break")],
+                        int(arr.split("_")[1]))
+    elif arr.startswith("stacked_"):
+        els, h = _stacked_grid(ctx, block, y2, real, int(arr.split("_")[1]))
+    elif arr == "names":
+        els, h = _grid(ctx, block, y2, [n for r in real for n in (r.get("names") or [])], "name",
+                       block.get("columns", "auto"))
+    elif arr == "single":
         groups = []
-        for i, r in enumerate(rows):
+        for i, r in enumerate(real):
             role = _role_text(ctx, r.get("role", ""))
             if role:
                 groups += [([role], "role")]
             groups.append((list(r.get("names") or []), "name"))
-            if i < len(rows) - 1:
+            if i < len(real) - 1:
                 groups.append(("gap", ctx.name_advance(block) * 0.6))
         els, h = _stack(ctx, block, y2, groups)
     else:
-        els, h = _two_column(ctx, block, y2, [([_role_text(ctx, r.get("role", ""))], "role",
-                                               list(r.get("names") or []), "name") for r in rows])
+        els, h = _two_column(ctx, block, y2, _pair_rows(ctx, real))
     return head_els + els, head_h + h
 
 
@@ -494,6 +641,86 @@ def b_media(ctx, block, y):
     return els, h
 
 
+def b_laurels(ctx, block, y):
+    """Allori: corona generata (o file ufficiale) + testo centrato tra i rami."""
+    from . import laurels
+    items = block.get("items", [])
+    if not items:
+        return [], 0.0
+    h = ctx.px(float(block.get("height") or 300))
+    style_name = block.get("laurel_style", "classic")
+    gen = laurels.laurel_path(style_name if style_name in laurels.STYLES else "classic", ctx.light)
+    aspect = laurels.CANVAS[0] / float(laurels.CANVAS[1])
+    lane_w = ctx.lane[1] - ctx.lane[0]
+    gap = h * 0.12
+    sized = []
+    for it in items:
+        path = resolve_path(ctx.project, it["path"]) if it.get("path") else gen
+        size = imageinfo.image_size(path)
+        a = size[0] / float(size[1]) if (size and it.get("path")) else aspect
+        hh = h
+        w = hh * a
+        if w > lane_w:
+            w, hh = lane_w, lane_w / a
+        sized.append((it, path, w, hh))
+    per_row = max(1, int((lane_w + gap) // (sized[0][2] + gap)))
+    els, cur = [], y
+    for start in range(0, len(sized), per_row):
+        row = sized[start:start + per_row]
+        rw = sum(e[2] for e in row) + gap * (len(row) - 1)
+        rh = max(e[3] for e in row)
+        x = ctx.axis - rw / 2
+        for it, path, w, hh in row:
+            top = cur + (rh - hh) / 2
+            els.append({"kind": "image", "path": path, "x": x + w / 2, "y": top, "w": w, "h": hh, "top": top,
+                        "bottom": top + hh, "loop": False, "name": "laurel", "block": block.get("id")})
+            if not it.get("path"):
+                els += _laurel_text(ctx, block, it, x + w / 2, top, w, hh)
+            x += w + gap
+        cur += rh + (gap if start + per_row < len(sized) else 0)
+    return els, cur - y
+
+
+def _laurel_text(ctx, block, item, cx, top, w, h):
+    """Testo dentro la corona: si riduce in blocco finche' sta nello spazio tra i rami."""
+    from . import laurels
+    lines = laurels.laurel_lines(item, ctx.lang)
+    inner_w, inner_h = w * 0.5, h * 0.5
+    sizes = {"status": 0.07, "festival": 0.1, "section": 0.062, "year": 0.07}
+    base = ctx.style("heading", block)
+    name_font = {k: v for k, v in ctx.style("name", block).items() if k in ("family", "style")}
+
+    def build(k):
+        groups = []
+        for text, role in lines:
+            st = dict(base)
+            st["size_px"] = h * sizes.get(role, 0.065) * k
+            st["case"] = "upper" if role in ("status", "section") else "none"
+            st["tracking"] = 1.1 if role in ("status", "section") else 1.0
+            st["line_spacing"] = 1.0
+            if role == "festival":
+                st.update(name_font)
+            wrapped = ctx.wrap(text, st, inner_w) if ctx.width(text, st) > inner_w else [text]
+            groups.append((wrapped, st))
+        total = sum(ctx.m.line_height(st) * len(ls) for ls, st in groups)
+        widest = max(ctx.width(l, st) for ls, st in groups for l in ls)
+        return groups, total, widest
+    k = 1.0
+    groups, total, widest = build(k)
+    for _ in range(20):
+        if total <= inner_h and widest <= inner_w * 1.02:
+            break
+        k *= 0.92
+        groups, total, widest = build(k)
+    cur = top + h * (laurels.CENTER[1] / laurels.CANVAS[1]) - total / 2
+    els = []
+    for ls, st in groups:
+        adv = ctx.m.line_height(st)
+        els += ctx.emit_column(ls, st, cx, "center", cur, adv, st, block)
+        cur += adv * len(ls)
+    return els
+
+
 def b_text(ctx, block, y):
     return _stack(ctx, block, y, [(block.get("text", "").split("\n"), block.get("style_key", "small"))],
                   align=block.get("align", "center"))
@@ -506,7 +733,7 @@ def b_spacer(ctx, block, y):
 BUILDERS = {
     "title": b_title, "card": b_card, "credit": b_credit, "list": b_list, "names": b_names,
     "cast": b_cast, "music": b_music, "agreements": b_agreements, "logos": b_logos,
-    "legal": b_legal, "media": b_media, "text": b_text, "spacer": b_spacer,
+    "legal": b_legal, "media": b_media, "text": b_text, "spacer": b_spacer, "laurels": b_laurels,
 }
 
 # blocchi i cui elementi possono essere divisi su piu' cartelli: (campo, builder)

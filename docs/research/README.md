@@ -12,6 +12,11 @@ documenti.
 | [broadcast-streaming.md](broadcast-streaming.md) | TV e piattaforme: safe area, leggibilità, durata, velocità di scorrimento e judder |
 | [music-rights.md](music-rights.md) | Crediti musicali e diciture per tipo di accordo |
 | [rentals-locations-legal.md](rentals-locations-legal.md) | Location, noleggi, repertorio, product placement, diciture legali |
+| [festivals.md](festivals.md) | Festival, sezioni, allori e regole d'uso |
+| [music-video.md](music-video.md) | Videoclip: struttura crediti, ℗ e © |
+| [formats-destinations.md](formats-destinations.md) | Cinema, TV, streaming, social verticale: risoluzioni e safe area |
+| [typography.md](typography.md) | Dimensioni, densità, interlinea, sfondi, set di font |
+| [logos.md](logos.md) | Registro loghi, regole d'uso, aggiornatore |
 | [resolve-fusion.md](resolve-fusion.md) | Note tecniche su API Resolve e Text+ usate dal plugin |
 
 ## Livelli di affidabilità

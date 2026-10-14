@@ -15,7 +15,7 @@
 
 ## Installazione
 ```
-python install/install.py
+python install/install.py        # oppure doppio clic su install/Installa-Windows.bat / Installa-macOS.command
 ```
 | Cosa | Dove |
 |---|---|
@@ -61,14 +61,15 @@ Campi comuni: `enabled`, `spacing_before`/`spacing_after` (in righe, vuoto = tem
 | `title` | titolo dell'opera | testo |
 | `card` | cartello (testa) | `ruolo: Nomi` oppure righe `[card_name] testo` |
 | `credit` | credito singolo (impilato o a 2 colonne) | `director: Giulia Ferri` |
-| `list` | reparto a due colonne | `ruolo: nome, nome` una riga per ruolo |
+| `list` | reparto: 1 colonna, 2 colonne, 2–3 gruppi affiancati, griglie | `ruolo: nome, nome` una riga per ruolo; `---` = nuova colonna |
 | `names` | nomi multicolonna (ringraziamenti, comparse) | un nome per riga |
 | `cast` | interpreti | `Attore = Personaggio` |
 | `music` | brani | paragrafo per brano: `titolo:`, `autori:`, `interpreti:`, `edizioni:`, `accordo:`, `licenziante:`, `agente:`, `cc:`, `team: si`, `extra:` |
 | `agreements` | location, noleggi, repertorio, prodotti, opere | `nome \| fornitore \| accordo` |
 | `logos` | loghi | `percorso \| tag \| scala \| nome` |
 | `media` | foto/video backstage | `percorso \| didascalia \| scala` |
-| `legal` | diciture | `@chiave campo=valore` o testo libero |
+| `legal` | diciture | `@chiave campo=valore` o testo libero (es. `@phonographic owner=Etichetta`) |
+| `laurels` | allori festival | (editor dedicato) festival, stato, sezione, anno, premio, oppure PNG ufficiale |
 | `text`, `spacer` | testo libero, spazio | testo / numero di righe |
 
 **Ruoli**: si possono usare le chiavi del dizionario (tradotte automaticamente nella lingua delle
@@ -76,6 +77,13 @@ diciture: `cinematographer` → «Direttore della fotografia» / «Director of P
 scrivere il ruolo per esteso. Il menu **Ruoli** inserisce le chiavi.
 
 **Intestazioni**: `dept:camera` (reparto tradotto), `h:thanks` (intestazione standard) o testo libero.
+
+**Disposizione** (`arrangement` dei reparti): `pair` (ruolo | nome), `single` (ruolo sopra nome),
+`pairs_2` / `pairs_3` (gruppi affiancati sinistra–centro–destra), `stacked_2..4` (griglia),
+`names` (solo nomi). Sui formati stretti degrada da sola (3 → 2 → coppia → impilato) con avviso.
+
+**Loghi dal kit**: nel progetto `{"logo": "mic_dgca"}` al posto del percorso; il file viene preso
+dal kit utente nella variante adatta allo sfondo (vedi [logos.md](research/logos.md)).
 
 **Tag dei loghi** usati dai controlli: `mic`, `creative_europe`, `eurimages`, `film_commission`,
 `cnc`, `ffa`, `dfff`, `icaa`. Usare PNG con trasparenza (Fusion non legge SVG).
@@ -94,8 +102,22 @@ scrivere il ruolo per esteso. Il menu **Ruoli** inserisce le chiavi.
 
 ## Stile
 - **Temi**: Classico cinema (Cormorant Garamond), Moderno (Montserrat), Minimale (Inter),
-  Festival (Playfair Display + Lato), Broadcast TV (Arial, alta leggibilità). I font devono essere
-  installati nel sistema (Resolve li usa da lì).
+  Festival (DM Serif Display + Lato), Broadcast TV (Arial, alta leggibilità).
+- **Set di font** (sovrascrivono i font del tema): Classico (EB Garamond), Elegante (Cormorant
+  Garamond), Moderno (Montserrat), Neutro (Inter), Festival (DM Serif Display + Lato), Videoclip
+  (Bebas Neue + Inter), Documentario (IBM Plex), Broadcast (Roboto), Solo sistema (Arial, Georgia).
+  I font liberi sono in `fonts/` e l'installer li installa per l'utente.
+- **Densità**: compatta / normale / ariosa (spazi tra blocchi, tra righe e sotto le intestazioni).
+  **Interlinea**: stretta / normale / larga.
+- **Sfondo**: `transparent`, `black`, `white`, `#RRGGBB` oppure un oggetto:
+  `{"mode": "gradient", "colors": ["#000", "#223"]}`,
+  `{"mode": "media", "path": "sfondo.mov", "dim": 0.5, "blur": 10}`,
+  `{"mode": "dim", "opacity": 0.5}` (oscura l'immagine sottostante),
+  `{"mode": "panel", "color": "#000", "opacity": 0.85}` (pannello dietro la corsia del testo).
+  Su sfondi chiari la palette si inverte da sola (testo scuro, loghi in variante scura).
+- **Destinazione** (`format.destination`): imposta risoluzione, fps, safe area anche asimmetrica
+  (verticale 9:16 con zone UI di TikTok/Reels), scala del testo e velocità consigliata. Elenco:
+  `python -m drfc destinations`.
 - Dimensioni in px riferiti a 1080 di altezza: in UHD vengono raddoppiate automaticamente.
 - **Personalizza stile**: font, stile, dimensione, colore, maiuscole, spaziatura lettere,
   interlinea per ciascuno stile (titolo, intestazione, ruolo, nome, personaggio, piccolo, legale,
@@ -120,11 +142,17 @@ scrivere il ruolo per esteso. Il menu **Ruoli** inserisce le chiavi.
 La durata obiettivo si imposta **per sequenza** (testa e coda hanno tempi diversi).
 
 ## Generazione in timeline
-- **Posizione**: testina, inizio, fine timeline, oppure *Sostituisci* (stessa posizione della
-  versione precedente).
+- **Sezioni**: un clip per rullo; per i cartelli un clip per cartello (default) o uno per sequenza.
+  La pagina *Genera* mostra lo stato di ogni sezione: nuova / modificata / invariata / bloccata.
+- **Aggiorna solo le modifiche** (non distruttivo): invariata = intatta; modificata con stessa
+  durata = nuovo comp nello stesso clip (proprietà del clip e nodi Fusion aggiunti a mano
+  conservati e ricollegati, versione precedente `…_prev`); durata diversa = nuovo clip nella stessa
+  posizione/traccia con le stesse proprietà; bloccata = mai toccata. Lo stato è salvato nel
+  progetto (`render_state`).
+- **Posizione** delle nuove sezioni: testina, inizio o fine timeline (i cartelli mantengono la
+  distanza calcolata tra loro; poi si spostano liberamente).
 - **Traccia**: traccia dedicata «DR-FilmCredits» (creata se manca) o nuova traccia.
 - Il formato (risoluzione, fps) viene preso dalla timeline se è attivo «Usa formato della timeline».
-- Ogni rigenerazione sostituisce il clip precedente della stessa sequenza.
 - In Fusion: `DRFC_Scroll` contiene l'unica espressione di scorrimento; i nodi hanno il nome del
   blocco (`end_list_5_T`, `…_M`, `…_L` per i Loader).
 

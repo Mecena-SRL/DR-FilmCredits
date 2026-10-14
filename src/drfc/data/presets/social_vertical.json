@@ -1,0 +1,96 @@
+{
+ "label": {
+  "it": "Social verticale 9:16",
+  "en": "Social vertical 9:16"
+ },
+ "region": "INT",
+ "theme": "modern",
+ "language": "it",
+ "work_type": "social",
+ "territory": "int",
+ "destination": "social_9x16",
+ "fontset": "neutro",
+ "format": {
+  "width": 1080,
+  "height": 1920,
+  "fps": 30.0,
+  "safe": {
+   "top": 0.14,
+   "bottom": 0.35,
+   "left": 0.065,
+   "right": 0.17
+  },
+  "type_scale": 1.35
+ },
+ "timing": {
+  "speed": "fast",
+  "end_mode": "hold_last",
+  "hold_last_s": 2.0
+ },
+ "notes": [
+  "Zone UI di TikTok/Reels: il testo resta nella fascia centrale, lontano dai pulsanti a destra e dalle didascalie in basso.",
+  "Le sezioni affiancate diventano automaticamente impilate."
+ ],
+ "sequences": [
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "Crediti",
+   "timing": {
+    "fit": "speed",
+    "target_seconds": 15
+   },
+   "blocks": [
+    {
+     "type": "credit",
+     "role": "director",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "list",
+     "heading": "",
+     "rows": [
+      {
+       "role": "producer",
+       "names": []
+      },
+      {
+       "role": "cinematographer",
+       "names": []
+      },
+      {
+       "role": "editor",
+       "names": []
+      },
+      {
+       "role": "composer",
+       "names": []
+      }
+     ],
+     "arrangement": "single"
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "copyright"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checks": [
+  {
+   "check": "max_duration",
+   "seconds": 30
+  }
+ ],
+ "id": "social_vertical"
+}

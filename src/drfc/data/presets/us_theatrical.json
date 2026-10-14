@@ -59,6 +59,11 @@
      "note": "Starring (lead cast)"
     },
     {
+     "type": "laurels",
+     "items": [],
+     "note": "Allori festival (prima del titolo)"
+    },
+    {
      "type": "title",
      "text": ""
     },
@@ -599,5 +604,8 @@
    "check": "wga_team_hint"
   }
  ],
- "id": "us_theatrical"
+ "id": "us_theatrical",
+ "work_type": "lungo",
+ "territory": "us",
+ "destination": "cinema_dci_2k_full"
 }

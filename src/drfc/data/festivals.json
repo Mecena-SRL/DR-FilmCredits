@@ -1,0 +1,424 @@
+{
+ "_doc": "Festival, sezioni, premi e diciture degli allori. Fonti: docs/research/festivals.md. Le sezioni cambiano ogni anno: il testo resta modificabile.",
+ "status": {
+  "official_selection": {
+   "it": "Selezione Ufficiale",
+   "en": "Official Selection",
+   "fr": "Sélection Officielle",
+   "de": "Offizielle Auswahl",
+   "es": "Selección Oficial"
+  },
+  "in_competition": {
+   "it": "In Concorso",
+   "en": "In Competition",
+   "fr": "En Compétition",
+   "de": "Im Wettbewerb",
+   "es": "En Competición"
+  },
+  "out_of_competition": {
+   "it": "Fuori Concorso",
+   "en": "Out of Competition",
+   "fr": "Hors Compétition",
+   "de": "Außer Konkurrenz",
+   "es": "Fuera de Competición"
+  },
+  "winner": {
+   "it": "Vincitore",
+   "en": "Winner",
+   "fr": "Lauréat",
+   "de": "Gewinner",
+   "es": "Ganador"
+  },
+  "nominee": {
+   "it": "Candidato",
+   "en": "Nominee",
+   "fr": "Nommé",
+   "de": "Nominiert",
+   "es": "Nominado"
+  },
+  "special_mention": {
+   "it": "Menzione Speciale",
+   "en": "Special Mention",
+   "fr": "Mention Spéciale",
+   "de": "Lobende Erwähnung",
+   "es": "Mención Especial"
+  },
+  "world_premiere": {
+   "it": "Prima Mondiale",
+   "en": "World Premiere",
+   "fr": "Première Mondiale",
+   "de": "Weltpremiere",
+   "es": "Estreno Mundial"
+  },
+  "international_premiere": {
+   "it": "Prima Internazionale",
+   "en": "International Premiere",
+   "fr": "Première Internationale",
+   "de": "Internationale Premiere",
+   "es": "Estreno Internacional"
+  },
+  "opening_film": {
+   "it": "Film d'Apertura",
+   "en": "Opening Film",
+   "fr": "Film d'Ouverture",
+   "de": "Eröffnungsfilm",
+   "es": "Película de Apertura"
+  }
+ },
+ "festivals": {
+  "venezia": {
+   "name": "Mostra Internazionale d'Arte Cinematografica – La Biennale di Venezia",
+   "city": "Venezia",
+   "laurel_lang": "it",
+   "short": "La Biennale di Venezia",
+   "sections": {
+    "concorso": "Venezia {edition} – Concorso",
+    "fuori_concorso": "Fuori Concorso",
+    "orizzonti": "Orizzonti",
+    "orizzonti_corti": "Orizzonti Corti",
+    "spotlight": "Venezia Spotlight",
+    "classici": "Venezia Classici",
+    "college": "Biennale College Cinema",
+    "immersive": "Venice Immersive",
+    "sic": "Settimana Internazionale della Critica",
+    "giornate": "Giornate degli Autori"
+   },
+   "awards": [
+    "Leone d'Oro",
+    "Leone d'Argento – Gran Premio della Giuria",
+    "Leone d'Argento – Premio per la Migliore Regia",
+    "Coppa Volpi",
+    "Premio Orizzonti",
+    "Leone del Futuro – Premio Luigi De Laurentiis"
+   ]
+  },
+  "cannes": {
+   "name": "Festival de Cannes",
+   "city": "Cannes",
+   "laurel_lang": "fr",
+   "short": "Festival de Cannes",
+   "sections": {
+    "competition": "Compétition",
+    "hors_competition": "Hors Compétition",
+    "ucr": "Un Certain Regard",
+    "premiere": "Cannes Première",
+    "seances_speciales": "Séances Spéciales",
+    "courts": "Compétition Courts Métrages",
+    "cinef": "La Cinef",
+    "classics": "Cannes Classics",
+    "quinzaine": "Quinzaine des Cinéastes",
+    "semaine": "Semaine de la Critique",
+    "acid": "ACID Cannes"
+   },
+   "awards": [
+    "Palme d'Or",
+    "Grand Prix",
+    "Prix de la Mise en Scène",
+    "Prix du Jury",
+    "Caméra d'Or",
+    "Prix Un Certain Regard"
+   ]
+  },
+  "berlinale": {
+   "name": "Berlinale – Internationale Filmfestspiele Berlin",
+   "city": "Berlin",
+   "laurel_lang": "en",
+   "short": "Berlinale",
+   "sections": {
+    "competition": "Competition",
+    "special": "Berlinale Special",
+    "perspectives": "Perspectives",
+    "panorama": "Panorama",
+    "forum": "Forum",
+    "generation": "Generation",
+    "shorts": "Berlinale Shorts",
+    "classics": "Berlinale Classics",
+    "encounters": "Encounters"
+   },
+   "awards": [
+    "Golden Bear",
+    "Silver Bear Grand Jury Prize",
+    "Silver Bear for Best Director",
+    "Best First Feature Award"
+   ]
+  },
+  "locarno": {
+   "name": "Locarno Film Festival",
+   "city": "Locarno",
+   "laurel_lang": "it",
+   "short": "Locarno Film Festival",
+   "sections": {
+    "concorso": "Concorso internazionale",
+    "cineasti": "Concorso Cineasti del presente",
+    "pardi_domani": "Pardi di domani",
+    "piazza": "Piazza Grande",
+    "fuori_concorso": "Fuori concorso"
+   },
+   "awards": [
+    "Pardo d'oro",
+    "Premio speciale della giuria",
+    "Pardo per la miglior regia"
+   ]
+  },
+  "roma": {
+   "name": "Festa del Cinema di Roma",
+   "city": "Roma",
+   "laurel_lang": "it",
+   "short": "Festa del Cinema di Roma",
+   "sections": {
+    "progressive": "Concorso Progressive Cinema",
+    "freestyle": "Freestyle",
+    "grand_public": "Grand Public",
+    "special": "Proiezioni Speciali",
+    "storia": "Storia del Cinema",
+    "alice": "Alice nella Città"
+   },
+   "awards": [
+    "Miglior Film",
+    "Premio del Pubblico",
+    "Miglior Opera Prima"
+   ]
+  },
+  "torino": {
+   "name": "Torino Film Festival",
+   "city": "Torino",
+   "laurel_lang": "it",
+   "short": "Torino Film Festival",
+   "sections": {
+    "concorso": "Concorso Lungometraggi",
+    "fuori_concorso": "Fuori Concorso",
+    "corti": "Concorso Cortometraggi"
+   },
+   "awards": [
+    "Miglior Film"
+   ]
+  },
+  "sundance": {
+   "name": "Sundance Film Festival",
+   "city": "Park City",
+   "laurel_lang": "en",
+   "short": "Sundance Film Festival",
+   "sections": {
+    "us_dramatic": "U.S. Dramatic Competition",
+    "us_doc": "U.S. Documentary Competition",
+    "world_dramatic": "World Cinema Dramatic Competition",
+    "world_doc": "World Cinema Documentary Competition",
+    "next": "NEXT",
+    "premieres": "Premieres",
+    "midnight": "Midnight",
+    "shorts": "Short Film Program"
+   },
+   "awards": [
+    "Grand Jury Prize",
+    "Audience Award",
+    "Directing Award"
+   ]
+  },
+  "tiff": {
+   "name": "Toronto International Film Festival",
+   "city": "Toronto",
+   "laurel_lang": "en",
+   "short": "TIFF",
+   "sections": {
+    "gala": "Gala Presentations",
+    "special": "Special Presentations",
+    "platform": "Platform",
+    "discovery": "Discovery",
+    "wavelengths": "Wavelengths",
+    "docs": "TIFF Docs",
+    "midnight": "Midnight Madness",
+    "centrepiece": "Centrepiece",
+    "short_cuts": "Short Cuts"
+   },
+   "awards": [
+    "People's Choice Award",
+    "Platform Prize"
+   ]
+  },
+  "rotterdam": {
+   "name": "International Film Festival Rotterdam",
+   "city": "Rotterdam",
+   "laurel_lang": "en",
+   "short": "IFFR Rotterdam",
+   "sections": {
+    "tiger": "Tiger Competition",
+    "big_screen": "Big Screen Competition",
+    "harbour": "Harbour",
+    "limelight": "Limelight",
+    "bright_future": "Bright Future",
+    "short": "Short & Mid-length"
+   },
+   "awards": [
+    "Tiger Award"
+   ]
+  },
+  "sansebastian": {
+   "name": "Festival de San Sebastián",
+   "city": "Donostia / San Sebastián",
+   "laurel_lang": "es",
+   "short": "San Sebastián",
+   "sections": {
+    "oficial": "Sección Oficial",
+    "new_directors": "New Directors",
+    "horizontes": "Horizontes Latinos",
+    "perlak": "Perlak",
+    "zabaltegi": "Zabaltegi-Tabakalera"
+   },
+   "awards": [
+    "Concha de Oro",
+    "Premio Especial del Jurado"
+   ]
+  },
+  "karlovyvary": {
+   "name": "Karlovy Vary International Film Festival",
+   "city": "Karlovy Vary",
+   "laurel_lang": "en",
+   "short": "Karlovy Vary",
+   "sections": {
+    "crystal": "Crystal Globe Competition",
+    "proxima": "Proxima Competition",
+    "horizons": "Horizons"
+   },
+   "awards": [
+    "Crystal Globe"
+   ]
+  },
+  "clermont": {
+   "name": "Festival International du Court Métrage de Clermont-Ferrand",
+   "city": "Clermont-Ferrand",
+   "laurel_lang": "fr",
+   "short": "Clermont-Ferrand",
+   "sections": {
+    "international": "Compétition Internationale",
+    "nationale": "Compétition Nationale",
+    "labo": "Compétition Labo"
+   },
+   "awards": [
+    "Grand Prix"
+   ]
+  },
+  "tribeca": {
+   "name": "Tribeca Festival",
+   "city": "New York",
+   "laurel_lang": "en",
+   "short": "Tribeca Festival",
+   "sections": {
+    "us_narrative": "U.S. Narrative Competition",
+    "international": "International Narrative Competition",
+    "documentary": "Documentary Competition",
+    "spotlight": "Spotlight Narrative"
+   },
+   "awards": [
+    "Founders Award"
+   ]
+  },
+  "sxsw": {
+   "name": "SXSW Film & TV Festival",
+   "city": "Austin",
+   "laurel_lang": "en",
+   "short": "SXSW",
+   "sections": {
+    "narrative": "Narrative Feature Competition",
+    "documentary": "Documentary Feature Competition",
+    "headliners": "Headliners",
+    "visions": "Visions",
+    "shorts": "Shorts"
+   },
+   "awards": [
+    "Grand Jury Award"
+   ]
+  },
+  "annecy": {
+   "name": "Festival International du Film d'Animation d'Annecy",
+   "city": "Annecy",
+   "laurel_lang": "fr",
+   "short": "Annecy",
+   "sections": {
+    "officielle": "Sélection Officielle",
+    "contrechamp": "Contrechamp",
+    "courts": "Courts métrages"
+   },
+   "awards": [
+    "Cristal"
+   ]
+  },
+  "idfa": {
+   "name": "International Documentary Film Festival Amsterdam",
+   "city": "Amsterdam",
+   "laurel_lang": "en",
+   "short": "IDFA",
+   "sections": {
+    "international": "International Competition",
+    "envision": "Envision Competition",
+    "luminous": "Luminous"
+   },
+   "awards": [
+    "Best Film"
+   ]
+  },
+  "cphdox": {
+   "name": "CPH:DOX",
+   "city": "København",
+   "laurel_lang": "en",
+   "short": "CPH:DOX",
+   "sections": {
+    "dox": "DOX:AWARD",
+    "nextwave": "NEXT:WAVE"
+   },
+   "awards": [
+    "DOX:AWARD"
+   ]
+  },
+  "visions_reel": {
+   "name": "Visions du Réel",
+   "city": "Nyon",
+   "laurel_lang": "fr",
+   "short": "Visions du Réel",
+   "sections": {
+    "internationale": "Compétition Internationale",
+    "burning_lights": "Burning Lights"
+   },
+   "awards": [
+    "Sesterce d'or"
+   ]
+  },
+  "biografilm": {
+   "name": "Biografilm Festival",
+   "city": "Bologna",
+   "laurel_lang": "it",
+   "short": "Biografilm Festival",
+   "sections": {
+    "concorso": "Concorso Internazionale",
+    "italia": "Biografilm Italia"
+   },
+   "awards": [
+    "Best Film"
+   ]
+  },
+  "giffoni": {
+   "name": "Giffoni Film Festival",
+   "city": "Giffoni Valle Piana",
+   "laurel_lang": "it",
+   "short": "Giffoni Film Festival",
+   "sections": {
+    "elements": "Concorso Elements",
+    "generator": "Concorso Generator"
+   },
+   "awards": [
+    "Gryphon Award"
+   ]
+  },
+  "bif_est": {
+   "name": "Bif&st – Bari International Film&TV Festival",
+   "city": "Bari",
+   "laurel_lang": "it",
+   "short": "Bif&st",
+   "sections": {
+    "concorso": "Concorso"
+   },
+   "awards": [
+    "Premio"
+   ]
+  }
+ }
+}

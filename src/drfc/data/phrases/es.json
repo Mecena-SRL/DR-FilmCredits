@@ -79,7 +79,8 @@
     "with_participation": "Con la participación de {name}",
     "in_collaboration": "En colaboración con {name}",
     "distributed_by": "Distribuida por {name}",
-    "film_by": "Una película de {name}"
+    "film_by": "Una película de {name}",
+    "artist_song": "{artist} – {title}"
   },
   "legal": {
     "copyright": "© {year} {owner}. Todos los derechos reservados.",
@@ -104,6 +105,9 @@
     "mpa_cert": "MPA Certificate No. {cert_no}",
     "union_bug": "Realizada con {unions}",
     "country_of_origin": "{country}",
-    "no_endorsement": "La aparición de marcas o productos no implica patrocinio."
+    "no_endorsement": "La aparición de marcas o productos no implica patrocinio.",
+    "phonographic": "℗ {year} {owner}",
+    "video_copyright": "© {year} {owner}",
+    "all_rights": "Todos los derechos reservados."
   }
 }

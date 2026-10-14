@@ -35,7 +35,7 @@ def test_long_role_wraps_with_warning():
     p = sample_project()
     p["sequences"][1]["blocks"][1]["rows"][0]["role"] = "Una qualifica lunghissima " * 6
     lay = _lay(p)
-    assert any("a capo" in w["message"] for w in lay["warnings"])
+    assert any("uno sopra l'altro" in w["message"] for w in lay["warnings"])
 
 
 def test_names_grid_uses_columns():

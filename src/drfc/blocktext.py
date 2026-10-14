@@ -87,8 +87,11 @@ def parse(block, text):
     elif t == "list":
         rows = []
         for l in nonempty:
+            if l.strip("- ") == "" and l.startswith("---"):
+                rows.append({"break": True})  # nuova colonna manuale (sezioni affiancate)
+                continue
             role, names = _role_names(l)
-            if not role and rows:
+            if not role and rows and not rows[-1].get("break"):
                 rows[-1]["names"] += names  # riga di continuazione
             else:
                 rows.append({"role": role, "names": names})
@@ -216,7 +219,8 @@ def render(block):
             return "\n".join("[%s] %s" % (l.get("style", "card_name"), l.get("text", "")) for l in block["lines"])
         return "%s: %s" % (block.get("role", ""), ", ".join(block.get("names", [])))
     if t == "list":
-        return "\n".join("%s: %s" % (r.get("role", ""), ", ".join(r.get("names", []))) for r in block.get("rows", []))
+        return "\n".join("---" if r.get("break") else "%s: %s" % (r.get("role", ""), ", ".join(r.get("names", [])))
+                         for r in block.get("rows", []))
     if t == "cast":
         return "\n".join("%s = %s" % (r.get("actor", ""), r.get("character", "")) for r in block.get("rows", []))
     if t == "names":

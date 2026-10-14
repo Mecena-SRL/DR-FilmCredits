@@ -36,9 +36,12 @@ DEFAULT_PROJECT = {
         "height": 1080,
         "fps": 24.0,
         "safe_title": 0.9,
-        "background": "transparent",
+        "safe": None,               # {top,bottom,left,right} da profilo destinazione (prevale su safe_title)
+        "type_scale": 1.0,
+        "destination": None,        # id in data/destinations.json
+        "background": "transparent",  # transparent | black | white | #hex | {mode: gradient|media|dim|panel, ...}
     },
-    "style": {"theme": "classic", "overrides": {}},
+    "style": {"theme": "classic", "fontset": None, "density": "normal", "leading": "normal", "overrides": {}},
     "timing": {
         "speed": "normal",          # slow | normal | fast | custom
         "px_per_frame": None,       # usato se speed == custom (intero consigliato)
@@ -68,7 +71,7 @@ BLOCK_TYPES = {
     "title":      {"fields": {"text": ""}, "style": "title"},
     "card":       {"fields": {"role": "", "names": [], "lines": [], "position": "center"}},
     "credit":     {"fields": {"role": "", "names": [], "layout": "stacked", "team": False}},
-    "list":       {"fields": {"heading": "", "rows": [], "layout": "two_column"}},
+    "list":       {"fields": {"heading": "", "rows": [], "layout": "two_column", "arrangement": None}},
     "names":      {"fields": {"heading": "", "names": [], "columns": "auto"}},
     "cast":       {"fields": {"heading": "", "rows": [], "order": "actor_character"}},
     "music":      {"fields": {"heading": "", "cues": []}},
@@ -78,6 +81,7 @@ BLOCK_TYPES = {
     "media":      {"fields": {"items": [], "arrangement": "row", "height": None, "lane": "main"}},
     "text":       {"fields": {"text": "", "style_key": "small", "align": "center"}},
     "spacer":     {"fields": {"lines": 2.0}},
+    "laurels":    {"fields": {"items": [], "height": None, "laurel_style": "classic"}},
 }
 
 COMMON_BLOCK_FIELDS = {
@@ -139,6 +143,8 @@ def normalize(project):
     """Completa un progetto (anche parziale o scritto a mano) con tutti i default."""
     p = copy.deepcopy(project)
     _merge_defaults(p, DEFAULT_PROJECT)
+    used = set()
+    reserved = {b.get("id") for seq in p["sequences"] for b in seq.get("blocks", []) if b.get("id")}
     for si, seq in enumerate(p["sequences"]):
         seq.setdefault("id", "seq%d" % (si + 1))
         seq.setdefault("kind", "crawl")
@@ -152,8 +158,14 @@ def normalize(project):
                 b.setdefault(k, copy.deepcopy(v))
             for k, v in BLOCK_TYPES[bt]["fields"].items():
                 b.setdefault(k, copy.deepcopy(v))
-            if not b.get("id"):
-                b["id"] = "%s_%s_%d" % (seq["id"], bt, bi + 1)
+            if not b.get("id") or b["id"] in used:
+                base = "%s_%s_%d" % (seq["id"], bt, bi + 1)
+                bid, k = base, 1
+                while bid in used or bid in reserved:
+                    k += 1
+                    bid = "%s_%d" % (base, k)
+                b["id"] = bid
+            used.add(b["id"])
             if isinstance(b.get("names"), str):
                 b["names"] = [n.strip() for n in b["names"].split(",") if n.strip()]
     return p

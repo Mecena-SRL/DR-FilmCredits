@@ -155,16 +155,49 @@ class FakeFusion(object):
 
 
 # --------------------------------------------------------------------- Resolve
+class FakeOutput(object):
+    def __init__(self, tool):
+        self.tool = tool
+
+    def GetTool(self):
+        return self.tool
+
+
+class FakeInput(object):
+    def __init__(self, tool, iid):
+        self.tool, self.iid = tool, iid
+
+    def GetConnectedOutput(self):
+        src = self.tool.links.get(self.iid)
+        return FakeOutput(src) if src is not None else None
+
+    def GetAttrs(self):
+        return {"INPS_ID": self.iid}
+
+
 class FakeTool(object):
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, name, reg="Tool"):
+        self.Name = name
+        self.reg = reg
         self.inputs = {}
+        self.links = {}
 
     def SetInput(self, k, v, *a):
         self.inputs[k] = v
 
     def GetAttrs(self, *a):
-        return {"TOOLIT_Clip_Width": {1: 1000}}
+        return {"TOOLIT_Clip_Width": {1: 1000}, "TOOLS_Name": self.Name, "TOOLS_RegID": self.reg}
+
+    def ConnectInput(self, iid, tool):
+        self.links[iid] = tool
+        return True
+
+    def GetInputList(self):
+        return {i + 1: FakeInput(self, k) for i, k in enumerate(self.links)}
+
+    @property
+    def Input(self):
+        return FakeInput(self, "Input")
 
 
 class FakeComp(object):
@@ -172,12 +205,33 @@ class FakeComp(object):
         self.path = path
         self.start = start
         self.tools = {}
+        if path and os.path.exists(path):
+            import re
+            text = open(path, encoding="utf-8").read()
+            for name, reg in re.findall(r"\n\t\t(\w+) = (\w+) \{", text):
+                self.tools[name] = FakeTool(name, reg)
+            last = re.search(r"MediaOut1 = MediaOut \{.*?SourceOp = \"(\w+)\"", text, re.S)
+            if last and "MediaOut1" in self.tools:
+                self.tools["MediaOut1"].links["Input"] = self.tools.get(last.group(1))
+        self.pasted = []
 
     def GetAttrs(self):
         return {"COMPN_RenderStart": self.start, "COMPN_GlobalStart": self.start}
 
     def FindTool(self, name):
         return self.tools.setdefault(name, FakeTool(name))
+
+    def GetToolList(self, selected=False):
+        return {i + 1: t for i, t in enumerate(self.tools.values())}
+
+    def CopySettings(self, tools):
+        return {"tools": [t.Name for t in tools]}
+
+    def Paste(self, settings):
+        for n in settings["tools"]:
+            self.tools[n] = FakeTool(n)
+        self.pasted.append(settings)
+        return True
 
     def Lock(self):
         pass
@@ -187,10 +241,14 @@ class FakeComp(object):
 
 
 class FakeItem(object):
+    comp_start = 0
+
     def __init__(self, mpi, start, dur, track):
         self.mpi, self.start, self.dur, self.track = mpi, start, dur, track
         self.comps = []
         self.names = []
+        self.props = {}
+        self.color = ""
 
     def GetDuration(self, *a):
         return self.dur
@@ -207,10 +265,17 @@ class FakeItem(object):
         self.names.append("Composition %d" % len(self.comps))
         return c
 
-    comp_start = 0
-
     def GetFusionCompNameList(self):
         return list(self.names)
+
+    def GetFusionCompCount(self):
+        return len(self.comps)
+
+    def GetFusionCompByIndex(self, i):
+        return self.comps[i - 1]
+
+    def GetFusionCompByName(self, n):
+        return self.comps[self.names.index(n)] if n in self.names else None
 
     def DeleteFusionCompByName(self, n):
         i = self.names.index(n)
@@ -222,6 +287,19 @@ class FakeItem(object):
 
     def LoadFusionCompByName(self, n):
         return True
+
+    def GetProperty(self, k):
+        return self.props.get(k)
+
+    def SetProperty(self, k, v):
+        self.props[k] = v
+        return True
+
+    def GetClipColor(self):
+        return self.color
+
+    def SetClipColor(self, c):
+        self.color = c
 
 
 class FakeMPI(object):

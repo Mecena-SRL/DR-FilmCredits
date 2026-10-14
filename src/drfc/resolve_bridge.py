@@ -13,6 +13,8 @@ Fallback: Fusion Composition standard (da allungare a mano) e, in ultima istanza
 .setting da incollare nella pagina Fusion.
 """
 
+import hashlib
+import json
 import os
 import struct
 import sys
@@ -129,70 +131,181 @@ class ResolveSession(object):
         return self._new_track()
 
     # ------------------------------------------------------------------ inserimento
-    def insert(self, project, seq_id, work_dir, where="playhead", track="dr", replace=True, progress=None):
-        """Genera e inserisce una sequenza. Ritorna dict con esito e messaggi."""
+    # ------------------------------------------------------------------ sezioni
+    def insert(self, project, seq_id, work_dir, where="playhead", track="dr", replace=True, progress=None,
+               card_mode="per_card"):
+        """Genera (o rigenera) una sequenza. Compatibilita': aggiorna sempre le sue sezioni."""
+        res = self.sync(project, work_dir, only=[seq_id], where=where, track=track, only_changed=False,
+                        progress=progress, card_mode=card_mode, replace=replace)
+        if not res["sections"]:
+            raise RuntimeError("La sequenza '%s' e' vuota." % seq_id)
+        first = res["sections"][0]
+        out = dict(first)
+        out.update({"issues": res["issues"], "notes": res["notes"], "message": "\n".join(r["message"] for r in res["sections"]),
+                    "ok": all(r["ok"] for r in res["sections"])})
+        return out
+
+    def sync(self, project, work_dir, only=None, where="playhead", track="dr", only_changed=True,
+             progress=None, card_mode="per_card", replace=True):
+        """Allinea la timeline al progetto, sezione per sezione, senza distruggere il lavoro fatto:
+        - sezione invariata (stesso hash) -> non toccata
+        - modificata, stessa durata -> nuovo comp sullo stesso clip; nodi aggiunti a mano conservati,
+          versione precedente tenuta come '<nome>_prev'
+        - modificata, durata diversa -> nuovo clip nella stessa posizione/traccia con le stesse proprieta'
+        - bloccata -> mai rigenerata
+        - nuova -> inserita alla posizione scelta (i cartelli mantengono la loro distanza)."""
         say = progress or (lambda m: None)
         fmt = self.apply_timeline_format(project)
-        clean, results, issues = engine.solve_all(project, only=[seq_id])
-        if not results:
-            raise RuntimeError("La sequenza '%s' e' vuota." % seq_id)
-        seq, lay, tl, notes = results[0]
-        total = int(tl["total_frames"])
-        stem = "%s%s_%s" % (COMP_PREFIX, engine.model_slug(project), seq_id)
+        secs, issues, notes = plan_sections(project, only=only, card_mode=card_mode)
         if not os.path.isdir(work_dir):
             os.makedirs(work_dir)
+        state = project.setdefault("render_state", {})
+        base_rec = None
+        out = []
+        for sec in secs:
+            sid, stem = sec["id"], sec["stem"]
+            st = state.get(sid, {})
+            existing = self.find_existing(stem) if replace else []
+            if st.get("locked") and existing:
+                out.append(_res(sec, True, "locked", "Bloccata: '%s' non modificata." % sec["label"]))
+                continue
+            if existing and only_changed and st.get("hash") == sec["hash"]:
+                out.append(_res(sec, True, "unchanged", "Invariata: %s." % sec["label"]))
+                continue
+            comp_path = os.path.join(work_dir, stem + ".comp")
+            if existing:
+                item, track_idx = existing[0]
+                for extra, _t in existing[1:]:
+                    self.timeline.DeleteClips([extra], False)
+                if self._duration(item) == sec["frames"]:
+                    say("Aggiorno '%s' nello stesso clip..." % sec["label"])
+                    self._update_in_place(item, sec, comp_path)
+                    r = _res(sec, True, "updated", "Aggiornata: %s (stesso clip, nodi manuali conservati)." % sec["label"])
+                else:
+                    say("Aggiorno '%s' (nuova durata %d frame)..." % (sec["label"], sec["frames"]))
+                    new_item = self._replace_item(item, track_idx, sec, work_dir, fmt, comp_path)
+                    r = _res(sec, new_item is not None, "replaced",
+                             "Aggiornata: %s, nuova durata %d frame (posizione e proprieta' conservate)." % (sec["label"], sec["frames"]))
+                    item = new_item
+            else:
+                if base_rec is None:
+                    base_rec = self.record_frame(where if where != "replace" else "playhead")
+                track_idx = self._track_for(track)
+                say("Inserisco '%s' (%d frame)..." % (sec["label"], sec["frames"]))
+                self.mp.SetCurrentFolder(self._folder())
+                item = self._append_holder(stem, work_dir, fmt, sec["frames"], track_idx, base_rec + sec["offset"])
+                if item is None:
+                    path = os.path.join(work_dir, stem + ".setting")
+                    fusion_writer.write(sec["project"], sec["layout"], sec["timeline"], path, kind="setting")
+                    out.append(_res(sec, False, "setting",
+                                    "Inserimento automatico non riuscito: incollare %s nella pagina Fusion." % path, path=path))
+                    continue
+                self._import_comp(item, sec, comp_path)
+                r = _res(sec, True, "inserted", "Inserita: %s, %d frame (%.2fs) su V%d." % (
+                    sec["label"], sec["frames"], sec["frames"] / fmt["fps"], track_idx))
+            r.update({"item": item, "path": comp_path})
+            out.append(r)
+            if r["ok"]:
+                state[sid] = {"hash": sec["hash"], "frames": sec["frames"], "stem": stem, "locked": st.get("locked", False)}
+        return {"sections": out, "issues": issues, "notes": notes}
 
-        old = self.find_existing(stem) if replace else []
-        rec = self.record_frame(where)
-        track_idx = None
-        if old:
-            item0, track_idx = old[0]
-            if where == "replace":
-                rec = item0.GetStart()
-            self.timeline.DeleteClips([o[0] for o in old], False)
-            say("Rimossa la versione precedente.")
-        if track_idx is None:
-            track_idx = self._track_for(track)
-
-        say("Creo il supporto (%d frame)..." % total)
-        self.mp.SetCurrentFolder(self._folder())
-        item = self._append_holder(stem, work_dir, fmt, total, track_idx, rec)
-        method = "clip"
-        if item is None:
-            say("Supporto non disponibile: uso una Fusion Composition.")
-            item = self.timeline.InsertFusionCompositionIntoTimeline()
-            method = "fusion_composition"
-            if item is None:
-                path = os.path.join(work_dir, stem + ".setting")
-                fusion_writer.write(clean, lay, tl, path, kind="setting")
-                return {"ok": False, "method": "setting", "path": path, "issues": issues, "notes": notes,
-                        "message": "Inserimento automatico non riuscito: incollare %s nella pagina Fusion." % path}
-
-        say("Importo la composizione Fusion...")
-        comp_path = os.path.join(work_dir, stem + ".comp")
-        info = fusion_writer.write(clean, lay, tl, comp_path, t0=0)
+    def _import_comp(self, item, sec, comp_path):
+        info = fusion_writer.write(sec["project"], sec["layout"], sec["timeline"], comp_path, t0=0)
         comp = item.ImportFusionComp(comp_path)
         if comp is None:
             raise RuntimeError("ImportFusionComp non riuscito (%s)." % comp_path)
         start = self._comp_start(comp)
         if start:
-            say("Allineo il comp al frame %d..." % start)
             first = list(item.GetFusionCompNameList() or [])
-            info = fusion_writer.write(clean, lay, tl, comp_path, t0=start)
+            info = fusion_writer.write(sec["project"], sec["layout"], sec["timeline"], comp_path, t0=start)
             comp = item.ImportFusionComp(comp_path) or comp
             for n in first:
                 try:
                     item.DeleteFusionCompByName(n)
                 except Exception:
                     pass
-        self._rename_active(item, stem)
+        self._rename_active(item, sec["stem"])
         self._fix_loaders(comp, info, start)
-        dur = self._duration(item)
-        msg = "Inserito '%s': %d frame (%.2fs) sulla traccia V%d." % (seq.get("name", seq_id), total, total / fmt["fps"], track_idx)
-        if method == "fusion_composition" or (dur and dur != total):
-            msg += " ATTENZIONE: allungare il clip a %d frame (durata attuale %s)." % (total, dur)
-        return {"ok": True, "method": method, "item": item, "path": comp_path, "issues": issues, "notes": notes,
-                "message": msg, "frames": total}
+        return comp, info
+
+    def _current_comp(self, item, stem):
+        try:
+            c = item.GetFusionCompByName(stem)
+            if c:
+                return c
+        except Exception:
+            pass
+        try:
+            n = item.GetFusionCompCount()
+            return item.GetFusionCompByIndex(n) if n else None
+        except Exception:
+            return None
+
+    def _update_in_place(self, item, sec, comp_path):
+        stem = sec["stem"]
+        old = self._current_comp(item, stem)
+        user = collect_user_nodes(old) if old else None
+        start = self._comp_start(old) if old else 0
+        info = fusion_writer.write(sec["project"], sec["layout"], sec["timeline"], comp_path, t0=start)
+        names_before = list(item.GetFusionCompNameList() or [])
+        comp = item.ImportFusionComp(comp_path)
+        if comp is None:
+            raise RuntimeError("ImportFusionComp non riuscito (%s)." % comp_path)
+        if self._comp_start(comp) != start:
+            info = fusion_writer.write(sec["project"], sec["layout"], sec["timeline"], comp_path, t0=self._comp_start(comp))
+            item.DeleteFusionCompByName((item.GetFusionCompNameList() or [None])[-1])
+            comp = item.ImportFusionComp(comp_path)
+        # la versione precedente resta disponibile come <stem>_prev
+        try:
+            if stem + "_prev" in names_before:
+                item.DeleteFusionCompByName(stem + "_prev")
+            if stem in names_before:
+                item.RenameFusionCompByName(stem, stem + "_prev")
+        except Exception:
+            pass
+        self._rename_active(item, stem)
+        self._fix_loaders(comp, info, self._comp_start(comp))
+        if user:
+            restore_user_nodes(comp, user, info["last_merge"], self.log)
+        return comp
+
+    def _replace_item(self, old_item, track_idx, sec, work_dir, fmt, comp_path):
+        rec = old_item.GetStart()
+        old_comp = self._current_comp(old_item, sec["stem"])
+        user = collect_user_nodes(old_comp) if old_comp else None
+        props = copy_item_properties(old_item)
+        self.timeline.DeleteClips([old_item], False)
+        self.mp.SetCurrentFolder(self._folder())
+        item = self._append_holder(sec["stem"], work_dir, fmt, sec["frames"], track_idx, rec)
+        if item is None:
+            return None
+        comp, info = self._import_comp(item, sec, comp_path)
+        paste_item_properties(item, props)
+        if user:
+            restore_user_nodes(comp, user, info["last_merge"], self.log)
+        return item
+
+    def set_locked(self, project, section_id, locked=True):
+        project.setdefault("render_state", {}).setdefault(section_id, {})["locked"] = bool(locked)
+
+    def section_status(self, project, only=None, card_mode="per_card"):
+        """[(id, etichetta, stato)] con stato: nuova | modificata | invariata | bloccata."""
+        secs, _i, _n = plan_sections(project, only=only, card_mode=card_mode)
+        state = project.get("render_state") or {}
+        out = []
+        for sec in secs:
+            st = state.get(sec["id"], {})
+            on_tl = bool(self.find_existing(sec["stem"]))
+            if st.get("locked") and on_tl:
+                s = "locked"
+            elif not on_tl:
+                s = "new"
+            elif st.get("hash") == sec["hash"]:
+                s = "unchanged"
+            else:
+                s = "changed"
+            out.append((sec["id"], sec["label"], s))
+        return out
 
     def _append_holder(self, stem, work_dir, fmt, total, track_idx, rec):
         png = os.path.join(work_dir, stem + "_holder.png")
@@ -278,7 +391,13 @@ class ResolveSession(object):
                         w = attrs.get("TOOLIT_Clip_Width")
                         if isinstance(w, dict):
                             w = list(w.values())[0]
-                        if w:
+                        h = attrs.get("TOOLIT_Clip_Height")
+                        if isinstance(h, dict):
+                            h = list(h.values())[0]
+                        if w and ld.get("cover") and h:
+                            size = max(float(ld["w"]) / float(w), float(ld["h"]) / float(h))
+                            comp.FindTool(ld["merge"]).SetInput("Size", size)
+                        elif w:
                             comp.FindTool(ld["merge"]).SetInput("Size", float(ld["w"]) / float(w))
                     except Exception:
                         self.log.append("Scala non impostata per %s" % ld["path"])
@@ -299,6 +418,154 @@ class ResolveSession(object):
                 if name.startswith(stem + "_holder"):
                     out.append((it, i))
         return out
+
+
+# ---------------------------------------------------------------------- sezioni (logica pura)
+def _res(sec, ok, action, message, path=None):
+    return {"ok": ok, "id": sec["id"], "label": sec["label"], "action": action, "message": message,
+            "frames": sec["frames"], "path": path, "method": "clip" if ok else action}
+
+
+def _section_hash(lay_part, tl_part):
+    def clean(o):
+        if isinstance(o, float):
+            return round(o, 3)
+        if isinstance(o, dict):
+            return {k: clean(v) for k, v in o.items() if k not in ("block",)}
+        if isinstance(o, list):
+            return [clean(x) for x in o]
+        return o
+    blob = json.dumps({"lay": clean(lay_part), "tl": clean(tl_part)}, sort_keys=True, default=str)
+    return hashlib.sha1(blob.encode("utf-8")).hexdigest()[:16]
+
+
+def plan_sections(project, only=None, card_mode="per_card"):
+    """Divide il progetto in sezioni da mettere in timeline: un clip per rullo e, per i
+    cartelli, un clip per cartello (spostabili liberamente) oppure uno per sequenza.
+    Ogni sezione ha id stabile, hash del contenuto, durata, offset e dati per il writer."""
+    clean, results, issues = engine.solve_all(project, only=only)
+    slug = engine.model_slug(project)
+    secs, notes = [], []
+    for seq, lay, tl, n in results:
+        notes += n
+        if tl["kind"] == "crawl" or card_mode == "per_sequence":
+            secs.append({"id": seq["id"], "label": seq.get("name", seq["id"]), "stem": "%s%s_%s" % (COMP_PREFIX, slug, seq["id"]),
+                         "project": clean, "layout": lay, "timeline": tl, "frames": int(tl["total_frames"]), "offset": 0,
+                         "hash": _section_hash(lay.get("elements") or lay.get("cards"), tl)})
+            continue
+        seen = {}
+        for card, ctl in zip(lay["cards"], tl["cards"]):
+            bid = card["blocks"][0] if card.get("blocks") else "card"
+            seen[bid] = seen.get(bid, 0) + 1
+            sid = "%s_%s" % (seq["id"], bid) + ("_p%d" % seen[bid] if seen[bid] > 1 else "")
+            sub_lay = dict(lay, cards=[card])
+            sub_tl = dict(tl, cards=[dict(ctl, start=0)], total_frames=int(ctl["frames"]), lead_in=0, lead_out=0)
+            label = " / ".join(" ".join(e["lines"]) for e in card["elements"] if e["kind"] == "text")[:48] or sid
+            secs.append({"id": sid, "label": "%s: %s" % (seq.get("name", seq["id"]), label),
+                         "stem": "%s%s_%s" % (COMP_PREFIX, slug, sid), "project": clean, "layout": sub_lay,
+                         "timeline": sub_tl, "frames": int(ctl["frames"]), "offset": int(ctl["start"]),
+                         "hash": _section_hash(card["elements"], sub_tl["cards"])})
+    return secs, issues, notes
+
+
+ITEM_PROPERTIES = ("Pan", "Tilt", "ZoomX", "ZoomY", "ZoomGang", "RotationAngle", "AnchorPointX", "AnchorPointY",
+                   "Pitch", "Yaw", "FlipX", "FlipY", "CropLeft", "CropRight", "CropTop", "CropBottom",
+                   "CropSoftness", "CropRetain", "CompositeMode", "Opacity", "Distortion", "Scaling",
+                   "ResizeFilter")
+
+
+def copy_item_properties(item):
+    props = {}
+    for k in ITEM_PROPERTIES:
+        try:
+            v = item.GetProperty(k)
+            if v is not None:
+                props[k] = v
+        except Exception:
+            pass
+    try:
+        props["__color"] = item.GetClipColor()
+    except Exception:
+        pass
+    return props
+
+
+def paste_item_properties(item, props):
+    for k, v in props.items():
+        try:
+            if k == "__color":
+                if v:
+                    item.SetClipColor(v)
+            else:
+                item.SetProperty(k, v)
+        except Exception:
+            pass
+
+
+def _tool_name(t):
+    try:
+        return t.Name
+    except Exception:
+        return (t.GetAttrs() or {}).get("TOOLS_Name", "")
+
+
+def _tool_id(t):
+    try:
+        return (t.GetAttrs() or {}).get("TOOLS_RegID", "")
+    except Exception:
+        return ""
+
+
+def collect_user_nodes(comp):
+    """Nodi aggiunti a mano (nome non 'DRFC_'): impostazioni + punto di aggancio alla catena."""
+    try:
+        tools = comp.GetToolList(False) or {}
+    except Exception:
+        return None
+    tools = list(tools.values()) if isinstance(tools, dict) else list(tools)
+    user = [t for t in tools if not _tool_name(t).startswith(COMP_PREFIX)
+            and _tool_id(t) not in ("MediaOut", "MediaIn") and not _tool_name(t).startswith(("MediaOut", "MediaIn"))]
+    if not user:
+        return None
+    names = {_tool_name(t) for t in user}
+    try:
+        settings = comp.CopySettings(user)
+    except Exception:
+        settings = None
+    head = tail = None
+    for t in user:
+        try:
+            for inp in (t.GetInputList() or {}).values():
+                out = inp.GetConnectedOutput()
+                if out is not None and _tool_name(out.GetTool()).startswith(COMP_PREFIX):
+                    head = (_tool_name(t), (inp.GetAttrs() or {}).get("INPS_ID", "Input"))
+        except Exception:
+            continue
+    try:
+        mo = comp.FindTool("MediaOut1")
+        src = mo.Input.GetConnectedOutput() if mo else None
+        if src is not None and _tool_name(src.GetTool()) in names:
+            tail = _tool_name(src.GetTool())
+    except Exception:
+        pass
+    return {"settings": settings, "names": sorted(names), "head": head, "tail": tail}
+
+
+def restore_user_nodes(comp, user, last_merge, log=None):
+    """Incolla i nodi utente nel nuovo comp e li ricollega tra l'ultimo Merge e MediaOut."""
+    try:
+        if user.get("settings") is not None:
+            comp.Paste(user["settings"])
+        if user.get("head"):
+            tool, inp = user["head"]
+            comp.FindTool(tool).ConnectInput(inp, comp.FindTool(last_merge))
+        if user.get("tail"):
+            comp.FindTool("MediaOut1").ConnectInput("Input", comp.FindTool(user["tail"]))
+        return True
+    except Exception as e:
+        if log is not None:
+            log.append("Nodi manuali non ricollegati: %s" % e)
+        return False
 
 
 # ---------------------------------------------------------------------- PNG

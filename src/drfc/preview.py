@@ -9,6 +9,8 @@ import html
 import json
 import os
 
+from . import design
+
 
 def _el_json(e, base_dir):
     if e["kind"] == "text":
@@ -37,20 +39,70 @@ def build_html(project, results, out_path):
         else:
             d["cards"] = [[_el_json(e, base_dir) for e in c["elements"]] for c in lay["cards"]]
         seqs.append(d)
-    data = {"W": project["format"]["width"], "H": project["format"]["height"], "fps": project["format"]["fps"],
-            "safe": project["format"].get("safe_title", 0.9), "bg": project["format"].get("background", "transparent"),
+    bg = design.background(project["format"])
+    if bg.get("path"):
+        try:
+            bg["src"] = os.path.relpath(bg["path"], base_dir).replace(os.sep, "/")
+        except ValueError:
+            bg["src"] = "file:///" + bg["path"].replace(os.sep, "/")
+    sl, st, sr, sb = design.safe_box(project["format"])
+    W = project["format"]["width"]
+    lane = None
+    if bg["mode"] == "panel":
+        split = project["layout"].get("split", "none")
+        tl_ = float(project["layout"].get("text_lane", 0.5))
+        x0, x1 = (sr - (sr - sl) * tl_, W) if split == "media_left" else ((0, sl + (sr - sl) * tl_) if split == "media_right" else (0, W))
+        lane = [max(0, x0 - W * 0.02), min(W, x1 + W * 0.02)]
+    data = {"W": W, "H": project["format"]["height"], "fps": project["format"]["fps"],
+            "safebox": [sl, st, sr, sb], "bg": bg, "lane": lane,
             "title": project["meta"].get("title", ""), "seqs": seqs}
-    page = TEMPLATE.replace("/*DATA*/", json.dumps(data, ensure_ascii=False)).replace(
+    page = TEMPLATE.replace("/*FONTS*/", _font_faces(results, base_dir))
+    page = page.replace("/*DATA*/", json.dumps(data, ensure_ascii=False)).replace(
         "<!--TITLE-->", html.escape(project["meta"].get("title") or "DR-FilmCredits"))
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(page)
     return out_path
 
 
+def _weight(style):
+    st = (style or "").lower()
+    for k, w in (("thin", 100), ("extralight", 200), ("light", 300), ("semibold", 600), ("extrabold", 800),
+                 ("bold", 700), ("black", 900), ("medium", 500)):
+        if k in st:
+            return w
+    return 400
+
+
+def _font_faces(results, base_dir):
+    """@font-face per i font usati, cosi' l'anteprima usa gli stessi file del rendering."""
+    from . import engine
+    from .fontmetrics import FontIndex, default_cache_path
+    used = set()
+    for _seq, lay, _tl, _n in results:
+        els = lay.get("elements") or [e for c in lay.get("cards", []) for e in c["elements"]]
+        for e in els:
+            if e["kind"] == "text":
+                used.add((e["style"]["family"], e["style"].get("style", "Regular")))
+    idx = FontIndex(extra_dirs=engine.font_dirs_extra(), cache_path=default_cache_path())
+    css = []
+    for fam, sty in sorted(used):
+        rec, score = idx.find(fam, sty)
+        if not rec or score < 2:
+            continue
+        try:
+            url = os.path.relpath(rec["path"], base_dir).replace(os.sep, "/")
+        except ValueError:
+            url = "file:///" + rec["path"].replace(os.sep, "/")
+        css.append("@font-face{font-family:'%s';src:url('%s');font-weight:%d;font-style:%s}" % (
+            fam.replace("'", ""), url, _weight(sty), "italic" if "italic" in sty.lower() or "oblique" in sty.lower() else "normal"))
+    return "\n".join(css)
+
+
 TEMPLATE = r"""<!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title><!--TITLE--> – anteprima titoli</title>
 <style>
+/*FONTS*/
 :root{--bg:#0e0e10;--panel:#18181b;--fg:#e7e7ea;--muted:#9a9aa3;--accent:#e0b04a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px system-ui,sans-serif}
 header{display:flex;gap:12px;align-items:center;padding:10px 16px;background:var(--panel);flex-wrap:wrap}
@@ -92,11 +144,18 @@ function mk(e,dy,op){
  im.setAttribute('x',e.x-e.w/2);im.setAttribute('y',e.y+dy);im.setAttribute('width',e.w);im.setAttribute('height',e.h);if(op<1)im.setAttribute('opacity',op);
  if(e.k==='v'){im.innerHTML='<video xmlns="http://www.w3.org/1999/xhtml" src="'+e.src+'" muted autoplay loop style="width:100%;height:100%;object-fit:contain;background:#222"></video>'}
  else im.setAttribute('href',e.src);return im}
+function rect(x,y,w,h,fill,op){const r=document.createElementNS(NS,'rect');r.setAttribute('x',x);r.setAttribute('y',y);r.setAttribute('width',w);r.setAttribute('height',h);r.setAttribute('fill',fill);if(op!==undefined)r.setAttribute('fill-opacity',op);svg.appendChild(r);return r}
+function drawBg(){const b=D.bg;if(!b)return;
+ if(b.mode==='color')rect(0,0,D.W,D.H,b.color);
+ else if(b.mode==='gradient'){const c=b.colors||['#000','#222'];const d=document.createElementNS(NS,'defs');d.innerHTML='<linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+c[0]+'"/><stop offset="1" stop-color="'+c[c.length-1]+'"/></linearGradient>';svg.appendChild(d);rect(0,0,D.W,D.H,'url(#g)')}
+ else if(b.mode==='media'){const im=document.createElementNS(NS,'image');im.setAttribute('href',b.src||'');im.setAttribute('width',D.W);im.setAttribute('height',D.H);im.setAttribute('preserveAspectRatio','xMidYMid slice');if(b.blur)im.setAttribute('style','filter:blur('+(b.blur/4)+'px)');svg.appendChild(im);rect(0,0,D.W,D.H,'#000',b.dim===undefined?0.5:b.dim)}
+ else if(b.mode==='dim')rect(0,0,D.W,D.H,'#000',b.opacity===undefined?0.5:b.opacity);
+ else if(b.mode==='panel'&&D.lane)rect(D.lane[0],0,D.lane[1]-D.lane[0],D.H,b.color||'#000',b.opacity===undefined?0.85:b.opacity)}
 function draw(){svg.textContent='';
- if(D.bg&&D.bg!=='transparent'){const r=document.createElementNS(NS,'rect');r.setAttribute('width',D.W);r.setAttribute('height',D.H);r.setAttribute('fill',D.bg);svg.appendChild(r)}
+ drawBg();
  if(S.kind==='crawl'){const s=scrollAt(S.tl,frame),dy=D.H-s;for(const e of S.els){const top=(e.k==='t'?e.b-e.size:e.y)+dy,bot=(e.k==='t'?e.b+e.lines.length*e.adv:e.y+e.h)+dy;if(bot<-50||top>D.H+50)continue;svg.appendChild(mk(e,dy,1))}}
  else{S.tl.cards.forEach((c,i)=>{const op=cardOp(c,frame);if(op<=0)return;for(const e of S.cards[i])svg.appendChild(mk(e,0,op))})}
- if(showSafe){const m=(1-D.safe)/2;const r=document.createElementNS(NS,'rect');r.setAttribute('x',D.W*m);r.setAttribute('y',D.H*m);r.setAttribute('width',D.W*(1-2*m));r.setAttribute('height',D.H*(1-2*m));r.setAttribute('fill','none');r.setAttribute('stroke','#e0b04a');r.setAttribute('stroke-opacity','.45');r.setAttribute('stroke-dasharray','8 8');r.setAttribute('vector-effect','non-scaling-stroke');svg.appendChild(r)}
+ if(showSafe){const b=D.safebox;const r=document.createElementNS(NS,'rect');r.setAttribute('x',b[0]);r.setAttribute('y',b[1]);r.setAttribute('width',b[2]-b[0]);r.setAttribute('height',b[3]-b[1]);r.setAttribute('fill','none');r.setAttribute('stroke','#e0b04a');r.setAttribute('stroke-opacity','.45');r.setAttribute('stroke-dasharray','8 8');r.setAttribute('vector-effect','non-scaling-stroke');svg.appendChild(r)}
  const fps=S.tl.fps,secs=frame/fps;tc.textContent='frame '+frame+' / '+(S.tl.total_frames-1)+'  ·  '+secs.toFixed(2)+'s / '+(S.tl.total_frames/fps).toFixed(2)+'s';scrub.value=frame}
 function pick(i){S=D.seqs[i];frame=0;scrub.max=S.tl.total_frames-1;
  const tl=S.tl;let h='<ul>';if(S.kind==='crawl')h+='<li>Velocità: <b>'+tl.speed_px+' px/frame</b> · durata '+(tl.total_frames/tl.fps).toFixed(2)+'s · '+tl.holds.length+' pause</li>';

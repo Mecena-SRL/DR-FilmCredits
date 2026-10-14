@@ -1,0 +1,341 @@
+{
+  "schema": "drfc/1",
+  "meta": {
+    "title": "Notte Elettrica",
+    "original_title": "",
+    "year": 2026,
+    "language": "it",
+    "preset": "music_video",
+    "copyright_owner": "Lumen Produzioni srl",
+    "country": "",
+    "funding": [],
+    "work_type": "videoclip",
+    "territory": "int"
+  },
+  "format": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24.0,
+    "safe_title": 0.9,
+    "safe": {
+      "top": 0.05,
+      "bottom": 0.05,
+      "left": 0.05,
+      "right": 0.05
+    },
+    "type_scale": 1.0,
+    "destination": "streaming_hd",
+    "background": "black"
+  },
+  "style": {
+    "theme": "modern",
+    "fontset": "videoclip",
+    "density": "normal",
+    "leading": "normal",
+    "overrides": {}
+  },
+  "timing": {
+    "speed": "normal",
+    "px_per_frame": null,
+    "fit": "none",
+    "target_seconds": null,
+    "lead_in_s": 0.0,
+    "lead_out_s": 0.0,
+    "end_mode": "hold_last",
+    "hold_last_s": 3.0,
+    "card_pace": "normal",
+    "card_fade_s": 0.5,
+    "card_gap_s": 0.25,
+    "allow_fractional_speed": false
+  },
+  "layout": {
+    "split": "none",
+    "axis": 0.5,
+    "text_lane": 0.5,
+    "max_text_width": 0.8,
+    "render_mode": "auto"
+  },
+  "sequences": [
+    {
+      "id": "opening",
+      "kind": "cards",
+      "name": "Apertura",
+      "blocks": [
+        {
+          "type": "card",
+          "lines": [
+            {
+              "text": "NOVA",
+              "style": "card_name"
+            },
+            {
+              "text": "«Notte Elettrica»",
+              "style": "card_role"
+            }
+          ],
+          "position": "lower_third",
+          "note": "ARTISTA / «Titolo»",
+          "id": "opening_card_1",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "role": "",
+          "names": []
+        },
+        {
+          "type": "card",
+          "role": "director",
+          "names": [
+            "Ivan Mazzone"
+          ],
+          "position": "lower_third",
+          "id": "opening_card_2",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "lines": []
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "kind": "crawl",
+      "name": "Crediti finali",
+      "timing": {
+        "fit": "speed",
+        "target_seconds": 20
+      },
+      "blocks": [
+        {
+          "type": "card",
+          "lines": [
+            {
+              "text": "NOVA – «Notte Elettrica»",
+              "style": "name"
+            }
+          ],
+          "note": "ARTISTA – «Titolo»",
+          "id": "end_card_1",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "role": "",
+          "names": [],
+          "position": "center"
+        },
+        {
+          "type": "credit",
+          "role": "director",
+          "names": [
+            "Ivan Mazzone"
+          ],
+          "layout": "stacked",
+          "id": "end_credit_2",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "list",
+          "heading": "",
+          "rows": [
+            {
+              "role": "production_company",
+              "names": [
+                "Lumen Produzioni"
+              ]
+            },
+            {
+              "role": "producer",
+              "names": [
+                "Sara Bello"
+              ]
+            },
+            {
+              "role": "executive_producer",
+              "names": [
+                "Marco Riva"
+              ]
+            },
+            {
+              "role": "commissioner",
+              "names": [
+                "Etichetta Esempio"
+              ]
+            },
+            {
+              "role": "video_commissioner",
+              "names": [
+                "Anna Volpe"
+              ]
+            },
+            {
+              "role": "label",
+              "names": [
+                "Etichetta Esempio"
+              ]
+            }
+          ],
+          "arrangement": "pair",
+          "id": "end_list_3",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "",
+          "rows": [
+            {
+              "role": "cinematographer",
+              "names": [
+                "Luca Marini"
+              ]
+            },
+            {
+              "role": "first_ac",
+              "names": [
+                "Ivo Serra"
+              ]
+            },
+            {
+              "role": "gaffer",
+              "names": [
+                "Gianni Moretti"
+              ]
+            },
+            {
+              "role": "key_grip",
+              "names": [
+                "Paolo Ferri"
+              ]
+            },
+            {
+              "role": "production_designer",
+              "names": [
+                "Fabio Greco"
+              ]
+            },
+            {
+              "role": "stylist",
+              "names": [
+                "Irene Bassi"
+              ]
+            },
+            {
+              "role": "makeup_artist",
+              "names": [
+                "Laura Pini"
+              ]
+            },
+            {
+              "role": "hair_stylist",
+              "names": [
+                "Elena Sala"
+              ]
+            },
+            {
+              "role": "choreographer",
+              "names": [
+                "Dario Fo"
+              ]
+            }
+          ],
+          "arrangement": "pairs_2",
+          "id": "end_list_4",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "",
+          "rows": [
+            {
+              "role": "editor",
+              "names": [
+                "Chiara Neri"
+              ]
+            },
+            {
+              "role": "colorist",
+              "names": [
+                "Simone Galli"
+              ]
+            },
+            {
+              "role": "vfx_artist",
+              "names": [
+                "Teo Lanza"
+              ]
+            },
+            {
+              "role": "motion_designer",
+              "names": [
+                "Rita Moro"
+              ]
+            }
+          ],
+          "arrangement": "pair",
+          "id": "end_list_5",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "legal",
+          "items": [
+            {
+              "key": "phonographic",
+              "values": {
+                "owner": "Etichetta Esempio srl"
+              }
+            },
+            {
+              "key": "video_copyright"
+            }
+          ],
+          "id": "end_legal_9",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

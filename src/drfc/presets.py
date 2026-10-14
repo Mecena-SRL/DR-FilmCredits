@@ -32,8 +32,14 @@ def project_from_preset(preset_id, language=None, **meta):
     pr = load_preset(preset_id)
     p = model.new_project(preset=preset_id, language=language or pr.get("language", "it"), **meta)
     p["style"]["theme"] = pr.get("theme", "classic")
+    if pr.get("fontset"):
+        p["style"]["fontset"] = pr["fontset"]
     p["format"].update(pr.get("format", {}))
     p["timing"].update(pr.get("timing", {}))
+    if pr.get("destination"):
+        from . import design
+        design.apply_destination(p, pr["destination"])
+        p["timing"].update({k: v for k, v in pr.get("timing", {}).items() if k == "speed"})
     p["meta"].setdefault("funding", [])
     p["sequences"] = copy.deepcopy(pr["sequences"])
     return model.normalize(p)

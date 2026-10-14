@@ -6,8 +6,16 @@ from . import fusion_writer, model, preview, timing, validate
 from .fontmetrics import FontIndex, Measurer, default_cache_path
 
 
+def font_dirs_extra():
+    """Font inclusi nel pacchetto (cartella fonts/ del repository o della libreria installata)."""
+    from . import PKG_DIR, fusion_constants
+    cands = [os.path.join(PKG_DIR, "..", "..", "fonts"), os.path.join(PKG_DIR, "..", "fonts"),
+             os.path.join(fusion_constants.user_dir(), "fonts")]
+    return [os.path.normpath(c) for c in cands if os.path.isdir(c)]
+
+
 def make_measurer(project=None):
-    extra = []
+    extra = font_dirs_extra()
     if project and project.get("_base_dir"):
         fonts = os.path.join(project["_base_dir"], "fonts")
         if os.path.isdir(fonts):

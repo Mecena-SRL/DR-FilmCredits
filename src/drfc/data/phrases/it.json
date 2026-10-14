@@ -79,7 +79,8 @@
     "with_participation": "Con la partecipazione di {name}",
     "in_collaboration": "In collaborazione con {name}",
     "distributed_by": "Distribuito da {name}",
-    "film_by": "Un film di {name}"
+    "film_by": "Un film di {name}",
+    "artist_song": "{artist} – {title}"
   },
   "legal": {
     "copyright": "© {year} {owner}. Tutti i diritti riservati.",
@@ -107,6 +108,9 @@
     "cnc": "Con il sostegno del Centre national du cinéma et de l'image animée (CNC)",
     "ffa": "Con il sostegno della Filmförderungsanstalt (FFA)",
     "dfff": "Con il sostegno del Deutscher Filmförderfonds (DFFF)",
-    "icaa": "Con la partecipazione dell'Instituto de la Cinematografía y de las Artes Audiovisuales (ICAA)"
+    "icaa": "Con la partecipazione dell'Instituto de la Cinematografía y de las Artes Audiovisuales (ICAA)",
+    "phonographic": "℗ {year} {owner}",
+    "video_copyright": "© {year} {owner}",
+    "all_rights": "Tutti i diritti riservati."
   }
 }

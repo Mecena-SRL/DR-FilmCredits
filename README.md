@@ -1,120 +1,228 @@
 # DR-FilmCredits
 
-**Titoli di testa e di coda per DaVinci Resolve Studio: guidati, modulari, a norma, precisi al pixel.**
+**Titoli di testa e di coda per DaVinci Resolve Studio.** Il pannello è guidato, a norma
+(Italia, Europa, USA, TV, festival, social) e scrive il risultato direttamente in timeline come
+clip Fusion modificabili, con allineamenti calcolati al pixel.
 
-Si compilano i contenuti (a mano, incollando elenchi o importando un CSV/Excel), si sceglie lo
-standard (Italia cinema/TV, USA WGA/DGA, coproduzione europea, streaming, corto/festival,
-documentario) e si preme **Genera**: il plugin impagina tutto, calcola velocità e durata, scrive le
-diciture legali giuste per ogni accordo e inserisce nella timeline una **composizione Fusion
-nativa**, che resta modificabile.
+Scegli che cosa stai facendo (corto, lungo, documentario, videoclip, serie, spot, social) e che
+cosa hai (cast, troupe, musiche, location, finanziatori, festival…). Compili con i menu a tendina e
+premi **Aggiorna**. Il plugin impagina, calcola velocità e durata, scrive le diciture legali
+corrette per ogni accordo e mette le clip in timeline. Se poi cambi un nome, si aggiorna **solo**
+quella sezione: il resto del lavoro in timeline non viene toccato.
 
-> Supporto: Resolve **Studio 19/20** (Windows, macOS, Linux). Python 3.6+ di sistema, nessuna dipendenza.
+> Richiede **DaVinci Resolve Studio 19 o 20** (Windows, macOS, Linux) e **Python 3** installato
+> (lo stesso che Resolve usa per gli script).
 
-## Cosa fa
+---
 
-- **Struttura guidata per standard**: 7 preset con ordine dei blocchi, reparti e controlli
-  obbligatori (MiC tax credit e dichiarazione IA, Eurimages, Creative Europe MEDIA, Film Commission,
-  WGA/DGA, safe area, durata TV…). Ricerca e fonti in [`docs/research/`](docs/research/README.md).
-- **Blocchi modulari**: cartello singolo, credito, reparto a due colonne (ruolo | nome su asse
-  centrale), nomi multicolonna, cast (attore | personaggio), brani musicali, location / noleggi /
-  repertorio / prodotti, loghi, diciture legali, foto e video di backstage, testo, spazio.
-- **Diciture per tipo di accordo** in 5 lingue (it, en, fr, de, es): es. un brano concesso
-  gratis diventa «Per gentile concessione di…», uno su licenza «Su licenza di…» (*Courtesy of…*).
-- **Loghi bilanciati automaticamente** per peso ottico (un logo largo e uno quadrato risultano
-  equivalenti), su righe che vanno a capo da sole.
-- **Foto/video di backstage** in riga dentro il rullo oppure in una **corsia laterale** che scorre
-  accanto ai crediti.
-- **Velocità sempre a pixel interi** (niente judder): lenta / normale / veloce / personalizzata;
-  **Adatta a durata** (velocità) o **Adatta spaziatura** (allarga o stringe gli spazi tra i
-  blocchi) per arrivare al fotogramma esatto. **Pause** sui blocchi (es. loghi, dedica) e
-  finale fermo sull'ultimo blocco.
-- **Cartelli** con durata calcolata sulla lettura, dissolvenze, paginazione automatica se un
-  elenco non entra, posizioni centro / lower third / upper third.
-- **Anteprima nel browser** fedele al frame (stessa funzione di scorrimento), da mandare in
-  approvazione.
-- **Verifica** prima di generare: crediti e diciture obbligatorie mancanti, loghi richiesti dai
-  finanziamenti, accordi musicali incompleti, file mancanti, testo fuori dalla safe area, rullo
-  troppo veloce, durata oltre il limite del preset.
-- **Pacchetto Title** da trascinare dalla libreria Effetti (cartello, due colonne, lower third,
-  brano, copyright) per gli interventi rapidi.
+## Installazione (5 minuti)
 
-## Installazione
+### 1. Scarica
+- Dalla pagina GitHub del progetto: pulsante verde **Code › Download ZIP**, poi estrai la cartella.
+- Oppure chiedi a Ivan lo ZIP già pronto (`DR-FilmCredits-v0.2.0.zip`).
+- Il repository è privato? Ivan deve aggiungerti come collaboratrice (GitHub › Settings ›
+  Collaborators) e poi puoi scaricarlo.
 
-```bash
-python install/install.py          # oppure: python3 install/install.py
-```
-Riavviare Resolve → **Workspace › Scripts › Utility › DR-FilmCredits**.
-I Title manuali compaiono in **Effects › Titles › DR-FilmCredits**. Per disinstallare:
-`python install/install.py --remove`.
+### 2. Controlla Python
+Resolve usa il Python di sistema per gli script.
+- **macOS**: in genere è già presente. Se manca, installa Python 3 da python.org.
+- **Windows**: installa Python 3 da python.org e spunta **«Add python.exe to PATH»**.
 
-## Uso in 5 passi
+### 3. Installa
+- **Windows**: doppio clic su `install/Installa-Windows.bat`
+- **macOS**: doppio clic su `install/Installa-macOS.command` (la prima volta: tasto destro › Apri)
+- Da terminale (tutti i sistemi): `python3 install/install.py`
 
-1. **Progetto** – scegli il preset, titolo, titolare del ©, lingua delle diciture e i
-   finanziamenti (attivano i controlli). Spunta «usata l'IA» se serve la dichiarazione.
-2. **Contenuti** – scegli la sequenza (testa/coda), seleziona un blocco e scrivi nel riquadro.
-   Sintassi rapida:
-   ```
-   cinematographer: Luca Marini          ← reparto: ruolo: nomi (chiave o testo libero)
-   first_ac: Anna Costa, Ivo Serra
-   Marta Lodi = Elena                    ← cast
-   titolo: Il mare / autori: A, B / accordo: courtesy / licenziante: Band   ← brano (una riga per campo)
-   Villa Rossi | Famiglia Rossi | free   ← location: nome | fornitore | accordo
-   loghi/mic.png | mic | 1.0             ← logo: percorso | tag | scala
-   @copyright   @ai_disclosure uses=montaggio   ← diciture legali
-   ```
-   Oppure **Importa CSV/XLSX** (modello generabile dal pulsante, colonne in italiano o inglese).
-3. **Stile** – tema (Classico, Moderno, Minimale, Festival, Broadcast), safe area, sfondo,
-   corsia media laterale, personalizzazione di ogni stile (font, dimensione, colore, maiuscole,
-   spaziatura, interlinea).
-4. **Tempi** – velocità, finale, pause, ritmo dei cartelli; per ogni sequenza durata obiettivo e
-   modalità di adattamento. «Risultato» mostra subito durata e px/frame.
-5. **Verifica e genera** – *Verifica*, *Anteprima nel browser*, **Genera nella timeline**
-   (testina / inizio / fine / sostituisci la versione precedente; traccia dedicata), oppure
-   *Esporta .comp/.setting*.
+L'installer:
+- copia il plugin nella cartella utente;
+- aggiunge la voce di menu in Resolve;
+- installa i **Title** da trascinare;
+- installa i **font gratuiti** dei set predefiniti, solo per il tuo utente e senza permessi di amministratore.
 
-Guida completa: [`docs/GUIDA.md`](docs/GUIDA.md).
+### 4. Avvia
+Riavvia Resolve e apri una timeline: **Workspace › Scripts › Utility › DR-FilmCredits**.
 
-## Anche da riga di comando (senza Resolve)
+### 5. Prima volta: calibrazione (10 secondi)
+Apri la pagina **Fusion** su un clip qualsiasi. Nel pannello vai su **5 · Verifica e genera** e
+premi **Calibra Text+**: il plugin misura come Resolve disegna i caratteri, così gli allineamenti
+risultano esatti. Basta farlo una volta sola.
 
+Per disinstallare: `python3 install/install.py --remove`. Per aggiornare il plugin: scarica la
+nuova versione e rilancia l'installer (i tuoi progetti non vengono toccati).
+
+---
+
+## Uso rapido: un cortometraggio in 5 minuti
+
+1. **Progetto**
+   - Tipo di opera: *Cortometraggio*.
+   - Standard: *Italia*.
+   - Destinazione: scegline una o premi **Dalla timeline**.
+   - In **Cosa hai?** spunta solo quello che c'è davvero (es. cast, troupe, musiche, festival, copyright).
+   - Premi **Crea progetto**, poi compila titolo, anno e titolare dei diritti.
+2. **Contenuti**: a sinistra c'è l'elenco delle sezioni. Selezionane una:
+   - **reparti e crediti**: scegli *Reparto* e poi *Ruolo* dai menu (oppure scrivi un ruolo
+     personalizzato), inserisci i nomi separati da virgola e premi **+ Aggiungi riga**;
+   - **Disposizione**:
+     - *Due colonne* (ruolo | nome);
+     - *Colonna singola*;
+     - *2 o 3 gruppi affiancati* (sinistra, centro, destra);
+     - *Griglie*;
+     - *Solo nomi*.
+     Il pulsante **Nuova colonna** sceglie a mano dove inizia il gruppo successivo;
+   - **musiche, location, noleggi, repertorio**: indica il tipo di accordo e la dicitura giusta
+     viene scritta da sola (es. concessione gratuita = «Per gentile concessione di…»);
+   - **loghi**: scegli l'ente dal kit (MiC, Film Commission, Europa Creativa, Eurimages…) oppure
+     aggiungi un tuo PNG;
+   - **allori**: scegli festival, stato (Selezione ufficiale, In concorso, Vincitore…), sezione e anno.
+   - **Riordina secondo standard** mette tutto nell'ordine corretto; **Cosa manca?** suggerisce le
+     sezioni tipiche o obbligatorie.
+3. **Stile**:
+   - **Destinazione**: cinema, TV, streaming, verticale 9:16, 4:5, 1:1;
+   - **Tema** e **Set di font** (Classico, Elegante, Moderno, Neutro, Festival, Videoclip,
+     Documentario, Broadcast, solo font di sistema);
+   - **Densità** (compatta / normale / ariosa) e **Interlinea** (stretta / normale / larga);
+   - **Sfondo**: trasparente sopra le immagini, nero, bianco, colore, gradiente, immagine o video
+     di sfondo oscurato e sfocato, oscura le immagini sotto, pannello dietro il testo.
+4. **Tempi**:
+   - velocità lenta, normale o veloce, sempre a pixel interi quindi senza scatti;
+   - per ogni sequenza puoi indicare la **durata obiettivo**: *Adatta velocità* oppure *Adatta
+     spaziatura*, che allarga o stringe gli spazi finché la durata coincide al fotogramma.
+5. **Verifica e genera**:
+   - **Verifica**: controlla crediti obbligatori, loghi richiesti dai finanziamenti, diciture,
+     testo fuori dalla safe area, velocità;
+   - **Anteprima nel browser**: animata e fedele, da mandare in approvazione;
+   - **Aggiorna solo le modifiche**: crea o aggiorna le clip in timeline.
+
+### Clip in timeline e aggiornamenti
+- Ogni **rullo** diventa **una clip**; ogni **cartello** dei titoli di testa diventa una **clip
+  separata**, da spostare liberamente sopra le inquadrature.
+- Le clip vanno su una traccia dedicata, «DR-FilmCredits».
+- **Aggiorna solo le modifiche** rigenera solo le sezioni cambiate:
+  - sezione invariata: non viene toccata;
+  - sezione modificata con la stessa durata: nuovo comp **nello stesso clip**. Restano posizione,
+    trasformazioni, opacità, colore e i **nodi Fusion aggiunti a mano** (es. un Glow). La
+    versione precedente rimane nel clip come `…_prev`;
+  - durata cambiata: nuova clip **nella stessa posizione**, con le stesse proprietà;
+  - sezione **bloccata**: non viene mai rigenerata.
+- Ogni cosa resta modificabile anche a mano nella pagina Fusion: i nodi generati iniziano con
+  `DRFC_`, e lo scorrimento è un unico nodo (`DRFC_Scroll`).
+
+---
+
+## Kit loghi (aggiornabile)
+Il plugin contiene un registro di **41 enti**:
+- MiC/DGCA e Italian Tax Credit;
+- tutte le **Film Commission regionali**;
+- Rai/Rai Cinema, Cinecittà/Luce, SIAE;
+- Europa Creativa MEDIA, emblema UE, Eurimages;
+- CNC, FFA, DFFF, ICAA, BFI, UFC, SRG SSR, ÖFI, PGA, American Humane.
+
+Per ciascuno il registro indica:
+- la pagina ufficiale;
+- se il logo **va richiesto** all'ente (es. MiC tramite DGCA, CNC previa approvazione);
+- le regole d'uso essenziali.
+
+I file non sono inclusi perché vanno presi dalla fonte ufficiale nella versione in vigore:
+1. nel blocco Loghi scegli l'ente e premi **Pagina ufficiale**, oppure fai la richiesta all'ente;
+2. con **Importa file ricevuto…** carichi il PNG o lo ZIP; il plugin estrae i PNG e sceglie da solo
+   la variante chiara o scura in base allo sfondo;
+3. **Aggiorna kit loghi** scarica i loghi disponibili e l'elenco enti aggiornato dal repository.
+
+Da terminale: `python -m drfc logos list | update | open ID | import ID file | update-registry`.
+
+> Fusion non legge **SVG/PDF**: servono PNG con trasparenza (meglio una versione chiara e una scura).
+
+## Allori dei festival
+Il plugin genera allori tipografici eleganti (corona disegnata, stato, festival, sezione, anno).
+Le diciture sono nella lingua del festival: «Selezione Ufficiale», «Sélection Officielle»,
+«Official Selection». Conosce Venezia, Cannes, Berlinale, Locarno, Roma, Torino, Sundance, TIFF,
+Rotterdam, San Sebastián, Karlovy Vary, Clermont-Ferrand, Tribeca, SXSW, Annecy, IDFA, CPH:DOX,
+Visions du Réel, Biografilm, Giffoni e Bif&st. Le sezioni parallele (SIC, Giornate, Quinzaine,
+Semaine, ACID) sono intestate correttamente.
+
+**Se il festival ti fornisce l'alloro ufficiale, usa quello** (pulsante *Usa alloro ufficiale*): è
+la regola d'uso di molti festival.
+
+## Videoclip, spot, social verticale
+- **Videoclip**:
+  - apertura «ARTISTA – «Titolo»» come lower third;
+  - crediti finali brevi (regia, produzione, commissioner, etichetta, reparti);
+  - **℗** per la registrazione e **©** per il video, su righe separate;
+  - versione verticale con un clic, scegliendo la destinazione 9:16.
+- **Social verticale**: la safe area tiene conto dell'interfaccia di TikTok/Reels (pulsanti a
+  destra, didascalie in basso); le sezioni affiancate diventano automaticamente impilate.
+
+---
+
+## Cosa sa fare (riepilogo)
+- **10 preset**:
+  - Italia cinema e TV;
+  - USA WGA/DGA;
+  - USA/streaming;
+  - coproduzione europea;
+  - corto/festival;
+  - documentario;
+  - videoclip;
+  - spot/corporate;
+  - social verticale.
+- **Ricerca sugli standard** con le fonti in [`docs/research/`](docs/research/README.md):
+  - MiC/DGCA, tax credit e dichiarazione IA, Film Commission;
+  - Eurimages, Europa Creativa MEDIA, CNC, FFA, ICAA;
+  - WGA, DGA, PGA, American Humane;
+  - EBU/SMPTE/Netflix, safe area social;
+  - diritti musicali, festival, videoclip, tipografia, loghi.
+- **Diciture in 5 lingue** (it, en, fr, de, es) secondo il tipo di accordo: musica, location,
+  noleggi, repertorio, prodotti e diciture legali.
+- **Impaginazione**:
+  - colonna singola, due colonne, 2–3 gruppi affiancati, griglie, nomi multicolonna;
+  - cast, brani, loghi bilanciati per peso ottico;
+  - foto/video di backstage in riga o in una corsia laterale;
+  - cartelli che si dividono da soli se un elenco non entra.
+- **15 profili di destinazione**: cinema DCI flat/scope 2K/4K, TV EBU/SMPTE, streaming, 9:16
+  (con zone UI), 4:5, 1:1, verticale 4K.
+- **10 set di font**: 8 gratuiti inclusi e installati automaticamente, più 2 solo di sistema.
+  Ogni stile resta personalizzabile (font, dimensione, colore, maiuscole, spaziatura, interlinea).
+- **Modalità Semplice** (predefinita) e **Avanzata**: l'avanzata aggiunge l'editor testuale veloce,
+  le spaziature per blocco, le personalizzazioni di stile e la granularità dei nodi Fusion.
+- **Title manuali** da trascinare (Effetti › Titles › DR-FilmCredits): cartello, due colonne,
+  lower third, brano, copyright.
+- **Import da CSV/Excel** (modello generabile dal pulsante) e uso da riga di comando, anche senza Resolve.
+
+## Riga di comando (opzionale)
 ```bash
 cd src
-python -m drfc presets
-python -m drfc new it_cinema ../mio_film.drfc.json --title "Il mio film"
-python -m drfc template ../crediti.csv && python -m drfc import ../mio_film.drfc.json ../crediti.csv
-python -m drfc check ../mio_film.drfc.json
-python -m drfc preview ../mio_film.drfc.json
-python -m drfc build ../mio_film.drfc.json ../out/      # .comp + .setting + anteprima
+python -m drfc presets | destinations | festivals
+python -m drfc new short_festival ../mio_corto.drfc.json --title "Il mio corto"
+python -m drfc check ../mio_corto.drfc.json
+python -m drfc preview ../mio_corto.drfc.json
+python -m drfc build ../mio_corto.drfc.json ../out/      # .comp + .setting + anteprima
+python -m drfc logos list
 ```
-Esempi pronti in [`examples/`](examples/).
+Esempi pronti in [`examples/`](examples/): corto su sfondo bianco con allori, videoclip
+orizzontale e verticale, corto festival, lungometraggio USA.
 
-## Architettura
+## Domande frequenti
+| Domanda | Risposta |
+|---|---|
+| Non vedo la voce nel menu Scripts | Riavvia Resolve; controlla di aver lanciato l'installer e di avere Python 3. |
+| «Font non trovati» nella verifica | Rilancia l'installer (installa i font) oppure scegli un set «solo sistema». |
+| Logo «da richiedere» | L'ente concede il logo su richiesta: usa *Pagina ufficiale*, poi *Importa file ricevuto*. |
+| Ho spostato o modificato una clip a mano | *Aggiorna solo le modifiche* mantiene posizione, proprietà e nodi aggiunti. Per non toccarla mai più: **Blocca**. |
+| Voglio tornare alla versione precedente | Nella pagina Fusion del clip scegli il comp `…_prev`. |
+| La clip è più corta del rullo | Rara: l'esito te lo segnala; allunga la coda della clip fino alla durata indicata. |
+| Le diciture legali sono vincolanti? | Sono modelli basati sulle fonti citate: la formula vincolante è quella del tuo contratto o bando. |
 
-```
-src/drfc/
-  model.py         progetto .drfc.json, tipi di blocco, default
-  presets.py       preset per standard (data/presets/*.json)
-  i18n.py          ruoli/reparti (data/roles.json), diciture (data/phrases/*.json), UI (data/ui/*.json)
-  phrases.py       diciture per tipo di accordo
-  fontmetrics.py   parser TrueType/OpenType: larghezze e interlinea reali dei font installati
-  layout.py        impaginazione (colonne, griglie, loghi, media, paginazione cartelli)
-  timing.py        velocità intere, adatta-a-durata, spaziatura elastica, pause, cartelli
-  validate.py      obblighi da preset/finanziamenti + controlli di qualità
-  fusion_writer.py composizione Fusion (.comp / .setting) con scorrimento a espressione unica
-  preview.py       anteprima HTML animata
-  resolve_bridge.py inserimento in timeline (durata esatta, offset, aggiornamento, fallback)
-  ui_wizard.py     pannello guidato UIManager (5 lingue)
-  blocktext.py     sintassi rapida dei blocchi · io_import.py CSV/XLSX · templates.py Title manuali
-  calibration.py   calibrazione di Text+ dentro Resolve
-```
+## Per sviluppatori
+Python puro, nessuna dipendenza.
+- **Test:** `python -m pytest`. Coprono motore, writer Fusion, diciture, preset, loghi, allori,
+  e wizard e bridge contro un Resolve simulato.
+- **Rigenerare gli asset:**
+  - allori: `python -m drfc.laurels`;
+  - Title: `python -m drfc.templates templates/`;
+  - font: `python tools/fetch_fonts.py`;
+  - release: `python tools/make_release.py`.
+- **Architettura e dettagli:** [`docs/GUIDA.md`](docs/GUIDA.md).
 
-Test: `python -m pytest tests` (motore, writer, diciture, preset, import, e wizard/bridge con
-un Resolve simulato).
-
-## Limiti noti
-
-- L'inserimento automatico è stato verificato contro un Resolve **simulato**: alla prima prova
-  su Resolve reale eseguire **Calibra Text+** e controllare un rullo breve (vedi
-  [`docs/GUIDA.md`](docs/GUIDA.md#prima-prova-in-resolve)).
-- Le misure dei testi usano i file dei font installati; se un font manca, le larghezze sono
-  stimate e il validatore lo segnala.
-- Le diciture legali sono modelli: la formula vincolante è sempre quella del proprio contratto o bando.
+**Limiti noti:** l'inserimento in timeline è stato verificato contro un Resolve simulato. Alla
+prima installazione fai la calibrazione e una prova su un rullo breve.

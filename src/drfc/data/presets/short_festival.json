@@ -37,6 +37,11 @@
      "note": "Produzione presenta"
     },
     {
+     "type": "laurels",
+     "items": [],
+     "note": "Allori festival (prima del titolo)"
+    },
+    {
      "type": "title",
      "text": ""
     }
@@ -181,5 +186,8 @@
    "seconds": 120
   }
  ],
- "id": "short_festival"
+ "id": "short_festival",
+ "work_type": "corto",
+ "territory": "int",
+ "destination": "streaming_hd"
 }

@@ -4,3 +4,4 @@ __pycache__/
 drfc_render/
 preview/
 *.tmp
+dist/

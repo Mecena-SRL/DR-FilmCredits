@@ -77,6 +77,11 @@
      "note": "Cast principale (un nome per cartello o a coppie)"
     },
     {
+     "type": "laurels",
+     "items": [],
+     "note": "Allori festival (prima del titolo)"
+    },
+    {
      "type": "title",
      "text": ""
     },
@@ -683,5 +688,8 @@
    "check": "ai_disclosure"
   }
  ],
- "id": "it_cinema"
+ "id": "it_cinema",
+ "work_type": "lungo",
+ "territory": "it",
+ "destination": "cinema_dci_2k_flat"
 }

@@ -55,6 +55,11 @@ def main(argv=None):
     p_b = sub.add_parser("build")
     p_b.add_argument("project")
     p_b.add_argument("out_dir")
+    p_lg = sub.add_parser("logos", help="kit loghi: list | update | open ID | import ID FILE [TAG] | update-registry")
+    p_lg.add_argument("action", choices=["list", "update", "open", "import", "update-registry"])
+    p_lg.add_argument("args", nargs="*")
+    sub.add_parser("destinations")
+    sub.add_parser("festivals")
     p_pv = sub.add_parser("preview")
     p_pv.add_argument("project")
     p_pv.add_argument("--no-open", action="store_true")
@@ -63,6 +68,29 @@ def main(argv=None):
     if a.cmd == "presets":
         for pr in presets.list_presets():
             print("%-18s %s" % (pr["id"], presets.preset_label(pr, "it")))
+    elif a.cmd == "logos":
+        from . import logos
+        if a.action == "list":
+            for lid, name, tag, st in logos.list_status():
+                print("%-22s %-18s %-26s %s" % (lid, tag, st, name))
+        elif a.action == "update":
+            logos.update(a.args or None)
+        elif a.action == "open":
+            print(logos.open_page(a.args[0]) or "Pagina non disponibile")
+        elif a.action == "import":
+            tag = a.args[2] if len(a.args) > 2 else None
+            for f in logos.import_file(a.args[0], a.args[1], tag=tag):
+                print("  -> %s" % f)
+        elif a.action == "update-registry":
+            print("Registro aggiornato: %d enti" % logos.update_registry())
+    elif a.cmd == "destinations":
+        from . import design
+        for k, d in design.destinations().items():
+            print("%-22s %5dx%-5d %6s fps  %s" % (k, d["width"], d["height"], d["fps"], design.label(d, "it")))
+    elif a.cmd == "festivals":
+        from . import laurels
+        for k, f in laurels.festivals()["festivals"].items():
+            print("%-14s %s  [%s]" % (k, f["name"], ", ".join(f["sections"])))
     elif a.cmd == "new":
         p = presets.project_from_preset(a.preset, language=a.lang, title=a.title)
         model.save(p, a.path)

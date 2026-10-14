@@ -70,6 +70,11 @@
      "names": []
     },
     {
+     "type": "laurels",
+     "items": [],
+     "note": "Allori festival (prima del titolo)"
+    },
+    {
      "type": "title",
      "text": ""
     }
@@ -581,5 +586,8 @@
    "check": "ai_disclosure"
   }
  ],
- "id": "eu_coproduction"
+ "id": "eu_coproduction",
+ "work_type": "lungo",
+ "territory": "eu",
+ "destination": "cinema_dci_2k_full"
 }

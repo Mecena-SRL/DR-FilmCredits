@@ -437,5 +437,8 @@
    "key": "copyright"
   }
  ],
- "id": "us_tv_streaming"
+ "id": "us_tv_streaming",
+ "work_type": "serie",
+ "territory": "us",
+ "destination": "streaming_uhd"
 }

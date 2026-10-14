@@ -17,7 +17,7 @@ calcola i titoli fuori schermo (rullo lunghi fluidi anche con centinaia di righe
 import os
 import re
 
-from . import fusion_constants, imageinfo, timing
+from . import design, fusion_constants, imageinfo, timing
 
 LOADER_FORMATS = {
     ".png": "PNGFormat", ".jpg": "JpegFormat", ".jpeg": "JpegFormat", ".tif": "TiffFormat",
@@ -186,6 +186,91 @@ def _loader_tool(path, total, t0, pos):
     return _tool("Loader", ins, pos, extra=clip)
 
 
+def _bg_tool(W, H, rgba, rgba2=None, frame=True):
+    r, g, b, a = rgba
+    ins = [_inp("Width", num(int(W))), _inp("Height", num(int(H))),
+           _inp("UseFrameFormatSettings", "1" if frame else "0"),
+           _inp("TopLeftRed", num(r)), _inp("TopLeftGreen", num(g)), _inp("TopLeftBlue", num(b)),
+           _inp("TopLeftAlpha", num(a))]
+    if rgba2:
+        # gradiente verticale: colore 1 in alto, colore 2 in basso
+        r2, g2, b2, a2 = rgba2
+        ins = [_inp("Type", "2")] + ins + [
+            _inp("TopRightRed", num(r)), _inp("TopRightGreen", num(g)), _inp("TopRightBlue", num(b)), _inp("TopRightAlpha", num(a)),
+            _inp("BottomLeftRed", num(r2)), _inp("BottomLeftGreen", num(g2)), _inp("BottomLeftBlue", num(b2)),
+            _inp("BottomLeftAlpha", num(a2)),
+            _inp("BottomRightRed", num(r2)), _inp("BottomRightGreen", num(g2)), _inp("BottomRightBlue", num(b2)),
+            _inp("BottomRightAlpha", num(a2))]
+    return ins
+
+
+def _background(comp, project, lay, total, t0):
+    """Sfondo: trasparente, colore, gradiente, immagine/video (oscurato e sfocato),
+    oscuramento dell'immagine sottostante, pannello dietro la corsia del testo."""
+    W, H = float(lay["width"]), float(lay["height"])
+    bg = design.background(project["format"])
+    mode = bg["mode"]
+    name = comp.unique("DRFC_Bg")
+    if mode == "color":
+        comp.add(name, _tool("Background", _bg_tool(W, H, hex_rgba(bg.get("color", "#000000"))), (0, -110)))
+        return name
+    if mode == "gradient":
+        cols = bg.get("colors") or ["#000000", "#202020"]
+        comp.add(name, _tool("Background", _bg_tool(W, H, hex_rgba(cols[0]), hex_rgba(cols[-1])), (0, -110)))
+        return name
+    comp.add(name, _tool("Background", _bg_tool(W, H, (0, 0, 0, 0)), (0, -110)))
+    prev = name
+    if mode == "media" and bg.get("path"):
+        path = bg["path"]
+        ld = comp.unique("DRFC_BgMedia_L")
+        comp.add(ld, _loader_tool(path, total, t0, (-110, -330)))
+        src = ld
+        if float(bg.get("blur", 0)) > 0:
+            bl = comp.unique("DRFC_BgMedia_Blur")
+            comp.add(bl, _tool("Blur", [_inp("Input", source=src), _inp("XBlurSize", num(float(bg["blur"])))], (0, -330)))
+            src = bl
+        size = imageinfo.image_size(path) if imageinfo.media_kind(path) == "image" else None
+        scale = max(W / size[0], H / size[1]) if size else 1.0  # riempie il quadro
+        m = comp.unique("DRFC_BgMedia_M")
+        comp.add(m, _merge_tool(prev, src, (110, -330), size=scale))
+        comp.loaders.append({"loader": ld, "merge": m, "path": path, "w": W, "h": H, "scaled": bool(size),
+                             "kind": imageinfo.media_kind(path), "cover": True})
+        prev = m
+        dim = float(bg.get("dim", 0.5))
+        if dim > 0:
+            d = comp.unique("DRFC_BgDim")
+            comp.add(d, _tool("Background", _bg_tool(W, H, (0, 0, 0, dim)), (220, -440)))
+            md = comp.unique("DRFC_BgDim_M")
+            comp.add(md, _merge_tool(prev, d, (220, -330)))
+            prev = md
+    elif mode == "dim":
+        d = comp.unique("DRFC_BgDim")
+        comp.add(d, _tool("Background", _bg_tool(W, H, (0, 0, 0, float(bg.get("opacity", 0.5)))), (0, -440)))
+        md = comp.unique("DRFC_BgDim_M")
+        comp.add(md, _merge_tool(prev, d, (110, -330)))
+        prev = md
+    elif mode == "panel":
+        sl, _st, sr, _sb = design.safe_box(project["format"])
+        split = project["layout"].get("split", "none")
+        lane = float(project["layout"].get("text_lane", 0.5))
+        sw = sr - sl
+        if split == "media_left":
+            x0, x1 = sr - sw * lane, W
+        elif split == "media_right":
+            x0, x1 = 0, sl + sw * lane
+        else:
+            x0, x1 = 0, W
+        margin = W * 0.02
+        x0, x1 = max(0, x0 - margin), min(W, x1 + margin)
+        r, g, b, _a = hex_rgba(bg.get("color", "#000000"))
+        pn = comp.unique("DRFC_Panel")
+        comp.add(pn, _tool("Background", _bg_tool(x1 - x0, H, (r, g, b, float(bg.get("opacity", 0.85))), frame=False), (0, -440)))
+        mp = comp.unique("DRFC_Panel_M")
+        comp.add(mp, _merge_tool(prev, pn, (110, -330), center=_inp("Center", "{ %s, 0.5 }" % num((x0 + x1) / 2 / W))))
+        prev = mp
+    return prev
+
+
 # ---------------------------------------------------------------------- build
 def build(project, lay, tl, t0=0, name="DRFC"):
     """Ritorna (testo_comp, info). `t0` = primo frame del comp nel clip Resolve."""
@@ -199,15 +284,7 @@ def build(project, lay, tl, t0=0, name="DRFC"):
         cols["x"] += 1
         return (cols["x"] * 110, 0)
 
-    bg_name = comp.unique("DRFC_Bg")
-    bgc = project["format"].get("background", "transparent")
-    r, g, b, a = (0, 0, 0, 0) if bgc in (None, "", "transparent") else hex_rgba(bgc)
-    comp.add(bg_name, _tool("Background", [
-        _inp("Width", num(int(W))), _inp("Height", num(int(H))), _inp("UseFrameFormatSettings", "1"),
-        _inp("TopLeftRed", num(r)), _inp("TopLeftGreen", num(g)), _inp("TopLeftBlue", num(b)),
-        _inp("TopLeftAlpha", num(a)),
-    ], (0, -110)))
-    prev = bg_name
+    prev = _background(comp, project, lay, total, t0)
 
     if lay["kind"] == "crawl":
         scroll = comp.unique("DRFC_Scroll")
@@ -230,7 +307,7 @@ def build(project, lay, tl, t0=0, name="DRFC"):
             blend = "max(0, min(1, min((time - %s) / %s, (%s - time) / %s)))" % (num(s), num(fi), num(s + n), num(fo))
             rng_card = (card_tl["start"], card_tl["start"] + n)
         for el in elements:
-            prefix = safe_name("%s" % (el.get("block") or "el"))
+            prefix = safe_name("DRFC_%s" % (el.get("block") or "el"))
             if el["kind"] == "text":
                 count["text"] += 1
                 yc = el["center_y"] + baseline_fix * el["style"]["size_px"]

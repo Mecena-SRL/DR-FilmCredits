@@ -50,7 +50,14 @@ def _has_logo_tag(project, tag, opening_only=False):
     seqs = None
     if opening_only:
         seqs = [s["id"] for s in project["sequences"] if s.get("kind") == "cards"]
-    return any(b["type"] == "logos" and any(i.get("tag") == tag for i in b.get("items", []))
+    from . import logos
+
+    def item_tag(i):
+        if i.get("tag"):
+            return i["tag"]
+        e = logos.entry(i["logo"]) if i.get("logo") else None
+        return e.get("tag") if e else None
+    return any(b["type"] == "logos" and any(item_tag(i) == tag for i in b.get("items", []))
                for _s, b in _blocks(project, seqs))
 
 
@@ -82,8 +89,10 @@ def check_project(project, layouts=None):
                 issues.append(_issue("error", "funding_legal", "%s: manca la dicitura obbligatoria." % label))
             if c.get("logo_tag") and not _has_logo_tag(project, c["logo_tag"], c.get("opening", False)):
                 where = " nei titoli di testa" if c.get("opening") else ""
+                from . import logos
+                sugg = ", ".join(e["id"] for e in logos.by_tag(c["logo_tag"]))[:120]
                 issues.append(_issue("error", "funding_logo",
-                                     "%s: manca il logo%s (tag '%s')." % (label, where, c["logo_tag"])))
+                                     "%s: manca il logo%s (tag '%s'; dal kit: %s)." % (label, where, c["logo_tag"], sugg)))
         elif kind == "ai_disclosure":
             if meta.get("ai_used") and not _has_legal(project, "ai_disclosure"):
                 issues.append(_issue("error", "ai", "Uso di IA dichiarato: aggiungere la dicitura nei titoli "
@@ -124,6 +133,16 @@ def check_project(project, layouts=None):
                     issues.append(_issue("warning", "music_writers", "Brano %s: autori mancanti." % name, bid))
         if t in ("logos", "media"):
             for it in b.get("items", []):
+                if it.get("logo") and not it.get("path"):
+                    from . import logos
+                    st = logos.status(it["logo"])
+                    if st != "ready":
+                        e = logos.entry(it["logo"]) or {}
+                        issues.append(_issue("error", "logo_kit", "Logo '%s' %s. %s" % (
+                            e.get("name", it["logo"]), logos.STATUS_LABEL["it"].get(st, st),
+                            ("Contatto: " + e["request_contact"]) if e.get("request_contact") else
+                            "Pagina: %s" % e.get("official_page", "")), bid))
+                    continue
                 p = resolve_path(project, it.get("path", ""))
                 if not p or not os.path.exists(p):
                     issues.append(_issue("error", "file", "File mancante: %s" % it.get("path"), bid))
@@ -180,12 +199,12 @@ def strip_empty(project):
                 (t == "names" and not b.get("names")) or
                 (t == "music" and not b.get("cues")) or
                 (t == "agreements" and not b.get("entries")) or
-                (t in ("logos", "media") and not b.get("items")) or
+                (t in ("logos", "media", "laurels") and not b.get("items")) or
                 (t == "legal" and not b.get("items") and not b.get("text")) or
                 (t == "text" and not b.get("text"))
             )
             if t == "list" and not empty:
-                b["rows"] = [r for r in b["rows"] if r.get("names")]
+                b["rows"] = [r for r in b["rows"] if r.get("names") or r.get("break")]
             if t == "title" and not b.get("text") and p["meta"].get("title"):
                 b["text"] = p["meta"]["title"]
                 empty = False

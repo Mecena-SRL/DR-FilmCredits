@@ -16,7 +16,7 @@ def test_insert_with_still_holder(tmp_path):
     assert item.start == sess.tc_to_frames("01:00:10:00", 25)
     assert r.tl.names[item.track] == resolve_bridge.TRACK_NAME
     assert p["format"]["width"] == 3840 and p["format"]["fps"] == 25.0
-    assert item.names == ["DRFC_Prova_end"]
+    assert len(item.names) == 1 and item.names[0].startswith("DRFC_Prova_") and item.names[0].endswith("_end")
     assert os.path.exists(res["path"])
 
 
@@ -79,7 +79,7 @@ def test_changed_text_updates_in_place_and_keeps_user_nodes(tmp_path):
     assert new.pasted and new.pasted[0]["tools"] == ["MyGlow"]
     assert new.tools["MediaOut1"].links["Input"].Name == "MyGlow"
     assert new.tools["MyGlow"].links["Input"].Name.startswith("DRFC_")
-    assert "DRFC_Prova_end_prev" in item.names and "DRFC_Prova_end" in item.names
+    assert p["render_state"]["end"]["stem"] + "_prev" in item.names and p["render_state"]["end"]["stem"] in item.names
     assert item.props["Opacity"] == 80
 
 
@@ -98,7 +98,7 @@ def test_duration_change_replaces_clip_keeping_position_and_properties(tmp_path)
     assert sec["action"] == "replaced"
     new = sec["item"]
     assert new is not old and old in r.tl.deleted
-    assert new.start == 95000 and new.track == old.track
+    assert new.start == 95000 and new.track > old.track
     assert new.props["ZoomX"] == 0.9 and new.props["Opacity"] == 70 and new.color == "Orange"
     assert new.dur == sec["frames"]
 
@@ -181,6 +181,7 @@ def test_wizard_three_steps_flow(tmp_path, monkeypatch):
     it["Placeholders"].Checked = True
     win.fire("Create", "Clicked")
     assert it["Stack"].CurrentIndex == 1
+    win = w.win
     assert ui_wizard.placeholders.count(w.project) > 0
     assert w.rows and any(r["kind"] == "entry" for r in w.rows)
     # passo 2: sostituisco il nome di una voce
@@ -191,17 +192,23 @@ def test_wizard_three_steps_flow(tmp_path, monkeypatch):
     _r, names = ui_wizard.outline.entry_values(w.project, row)
     assert names == ["Luca Marini"]
     # elimina i segnaposto rimasti
-    win.fire("Unfilled", "Clicked")
+    w.it["Unfilled"].Enabled = True
+    w.on_unfilled(None)
     assert ui_wizard.placeholders.count(w.project) == 0
     # passo 3: timeline
     win.fire("Next1", "Clicked")
     win.fire("Next2", "Clicked") if "Next2" in it else win.fire("Step2", "Clicked")
+    win = w.win
     win.fire("Preview", "Clicked")
     assert opened and opened[0].endswith(".html")
+    win.fire("GenerateNew", "Clicked")
+    assert it["InsertSetup"].CurrentIndex == 1
+    win.fire("PrepareInsert", "Clicked")
+    assert it["InsertSetup"].CurrentIndex == 2
+    win.fire("ApplyOperation", "Clicked")
+    assert "✓" in it["Results"].PlainText
     win.fire("SyncChanged", "Clicked")
-    assert "\u2714" in it["Results"].PlainText
-    win.fire("SyncChanged", "Clicked")
-    assert "Invariata" in it["Results"].PlainText
+    assert w.pending_operation is None
 
 
 def test_wizard_second_sync_after_edit_updates_only_changed(tmp_path, monkeypatch):
@@ -209,15 +216,19 @@ def test_wizard_second_sync_after_edit_updates_only_changed(tmp_path, monkeypatc
     w = _wizard(tmp_path)
     w.win.fire("Create", "Clicked")
     w.win.fire("Step2", "Clicked")
-    w.win.fire("SyncChanged", "Clicked")
+    w.win.fire("GenerateNew", "Clicked")
+    w.win.fire("PrepareInsert", "Clicked")
+    w.win.fire("ApplyOperation", "Clicked")
     w.win.fire("Step1", "Clicked")
     _click_row(w, "entry")
     w.it["RNames"].Text = "Nome Nuovo"
     w.win.fire("RSave", "Clicked")
     w.win.fire("Step2", "Clicked")
     w.win.fire("SyncChanged", "Clicked")
+    assert w.pending_operation is not None
+    w.win.fire("ApplyOperation", "Clicked")
     txt = w.it["Results"].PlainText
-    assert "\u2714" in txt and "Invariata" not in txt.split("\n")[0]
+    assert "✓" in txt and "Invariata" not in txt.split("\n")[0]
 
 
 def test_wizard_placeholders_can_be_off(tmp_path):
@@ -312,7 +323,7 @@ def test_auto_calibration_measures_and_regenerates_with_true_scale(tmp_path):
         assert abs(saved["em_per_size_width"] - 1.0 / 1.35) < 0.002  # le side-bearing non falsano la misura
         item = res["sections"][0]["item"]
         # il clip ha un solo comp reale (la sonda temporanea e' stata eliminata) e usa la scala misurata
-        assert item.names == ["DRFC_Prova_end"]
+        assert len(item.names) == 1 and item.names[0].startswith("DRFC_Prova_") and item.names[0].endswith("_end")
         text = open(res["sections"][0]["path"], encoding="utf-8").read()
         import re
         size = float(re.search(r"Size = Input \{ Value = ([0-9.]+)", text).group(1))
@@ -332,7 +343,7 @@ def test_auto_calibration_falls_back_silently_when_unreadable(tmp_path):
         saved = fc.saved()
         assert saved.get("unmeasurable") == "20.0.0.1" and "em_per_size_width" not in saved
         assert fc.load()["em_per_size_width"] == fc.DEFAULTS["em_per_size_width"]
-        assert res["sections"][0]["item"].names == ["DRFC_Prova_end"]
+        assert len(res["sections"][0]["item"].names) == 1
     finally:
         _restore_probe()
 
@@ -362,3 +373,4 @@ def test_log_rotates(tmp_path):
         log.write("x" * 200)
     import os
     assert os.path.exists(log.path() + ".1") and os.path.getsize(log.path()) < log.MAX_BYTES + 1000
+

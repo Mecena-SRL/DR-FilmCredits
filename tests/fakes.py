@@ -336,6 +336,10 @@ class FakeItem(object):
         self.names = []
         self.props = {}
         self.color = ""
+        self.uid = "clip-" + str(id(self))
+
+    def GetUniqueId(self):
+        return self.uid
 
     def GetDuration(self, *a):
         return self.dur
@@ -412,6 +416,9 @@ class FakeTimeline(object):
         self.settings = settings or {"timelineResolutionWidth": "3840", "timelineResolutionHeight": "2160",
                                      "timelineFrameRate": "25"}
         self.deleted = []
+
+    def GetUniqueId(self):
+        return "timeline-" + str(id(self))
 
     def GetSetting(self, k):
         return self.settings.get(k)
@@ -493,6 +500,9 @@ class FakeMediaPool(object):
 
 
 class FakeProject(object):
+    def GetUniqueId(self):
+        return "project-" + str(id(self))
+
     def __init__(self, tl):
         self.tl = tl
         self.mp = FakeMediaPool(tl)
@@ -520,3 +530,4 @@ class FakeResolve(object):
 
     def GetCurrentProject(self):
         return self.project
+

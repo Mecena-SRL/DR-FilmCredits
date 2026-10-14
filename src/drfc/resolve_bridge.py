@@ -14,6 +14,8 @@ Fallback: Fusion Composition standard (da allungare a mano) e, in ultima istanza
 """
 
 import hashlib
+import uuid
+import re
 import json
 import os
 import struct
@@ -21,7 +23,7 @@ import sys
 import tempfile
 import zlib
 
-from . import calibration, engine, fusion_writer, log
+from . import calibration, engine, fusion_writer, log, workspace
 
 MEDIA_FOLDER = "DR-FilmCredits"
 TRACK_NAME = "DR-FilmCredits"
@@ -89,13 +91,19 @@ class ResolveSession(object):
     # ------------------------------------------------------------------ tempo
     @staticmethod
     def tc_to_frames(tc, fps, drop=False):
+        if not re.fullmatch(r"\d{2,}:\d{2}:\d{2}[:;]\d{2}", str(tc)):
+            raise ValueError("Timecode non valido: %s (HH:MM:SS:FF)." % tc)
         sep = ";" if ";" in tc else ":"
         parts = [int(x) for x in tc.replace(";", ":").split(":")]
         h, m, s, f = parts
         nominal = int(round(fps))
+        if m >= 60 or s >= 60 or f >= nominal:
+            raise ValueError("Timecode fuori intervallo: %s." % tc)
         total = ((h * 60 + m) * 60 + s) * nominal + f
         if drop or sep == ";":
             dropn = 2 if nominal == 30 else 4 if nominal == 60 else 0
+            if not dropn or (m % 10 and s == 0 and f < dropn):
+                raise ValueError("Timecode drop-frame non valido: %s." % tc)
             minutes = h * 60 + m
             total -= dropn * (minutes - minutes // 10)
         return total
@@ -150,71 +158,225 @@ class ResolveSession(object):
                     "ok": all(r["ok"] for r in res["sections"])})
         return out
 
+    @staticmethod
+    def _uid(obj):
+        try:
+            return str(obj.GetUniqueId() or "")
+        except Exception:
+            return ""
+
+    def _state(self, project):
+        """Bind render state to the actual Resolve project and timeline, not their names."""
+        project.setdefault("project_id", uuid.uuid4().hex)
+        key = self._uid(self.project) + ":" + self._uid(self.timeline)
+        if key == ":":
+            return project.setdefault("render_state", {})
+        states = project.setdefault("timeline_states", {})
+        previous = project.get("active_timeline")
+        if previous and previous != key:
+            states[previous] = project.get("render_state", {})
+        if key not in states:
+            states[key] = project.get("render_state", {}) if not previous else {}
+        project["active_timeline"] = key
+        project["render_state"] = states[key]
+        return states[key]
+
+    def _linked(self, sec, state):
+        st = state.get(sec["id"], {})
+        stem = st.get("stem", sec["stem"])
+        all_items = [(it, i) for i in range(1, self.timeline.GetTrackCount("video") + 1)
+                     for it in self.timeline.GetItemListInTrack("video", i) or []]
+        uid = st.get("clip_uid")
+        if uid:
+            # A copied clip is independent. Never silently adopt or delete it.
+            return [(it, i) for it, i in all_items if self._uid(it) == uid]
+        # Legacy projects: only an unambiguous name can be adopted.
+        return self.find_existing(stem) if st else []
+
+    def review(self, project, only=None, card_mode="per_card", section_ids=None, zones=None):
+        state = self._state(project)
+        secs, issues, notes = plan_sections(project, only=only, card_mode=card_mode)
+        selected = [s for s in secs if (not section_ids or s["id"] in section_ids)
+                    and (not zones or s["zone"] in zones)]
+        rows = []
+        for sec in selected:
+            st = state.get(sec["id"], {})
+            linked = self._linked(sec, state)
+            item = linked[0][0] if len(linked) == 1 else None
+            if len(linked) > 1:
+                status = "ambiguous"
+            elif not item:
+                status = "missing" if st.get("hash") else "new"
+            elif st.get("locked"):
+                status = "locked"
+            elif self._duration(item) != st.get("clip_frames", st.get("frames")):
+                status = "trimmed"
+            elif st.get("hash") == sec["hash"]:
+                status = "unchanged"
+            else:
+                status = "changed"
+            rows.append(dict(sec, status=status, existing=linked,
+                             current_frames=self._duration(item) if item else None,
+                             current_start=int(item.GetStart()) if item else None))
+        # Deletion is a tombstone: never infer that the timeline clip should be deleted.
+        live = {s["id"] for s in secs}
+        for sid, st in state.items():
+            if sid in live or not st.get("hash"):
+                continue
+            if only and st.get("seq_id") not in only:
+                continue
+            if section_ids and sid not in section_ids:
+                continue
+            if zones and st.get("zone", "crawl") not in zones:
+                continue
+            rows.append({"id": sid, "label": st.get("label", sid), "zone": st.get("zone", "crawl"),
+                         "status": "removed", "frames": st.get("frames", 0),
+                         "existing": self._linked({"id": sid, "stem": st.get("stem", "")}, state)})
+        return rows, issues, notes
+
+    def _track_busy(self, track, start, frames, exclude=None):
+        end = start + frames
+        return any(it is not exclude and start < int(it.GetStart()) + int(it.GetDuration())
+                   and int(it.GetStart()) < end
+                   for it in self.timeline.GetItemListInTrack("video", track) or [])
+
     def sync(self, project, work_dir, only=None, where="playhead", track="dr", only_changed=True,
-             progress=None, card_mode="per_card", replace=True):
-        """Allinea la timeline al progetto, sezione per sezione, senza distruggere il lavoro fatto:
-        - sezione invariata (stesso hash) -> non toccata
-        - modificata, stessa durata -> nuovo comp sullo stesso clip; nodi aggiunti a mano conservati,
-          versione precedente tenuta come '<nome>_prev'
-        - modificata, durata diversa -> nuovo clip nella stessa posizione/traccia con le stesse proprieta'
-        - bloccata -> mai rigenerata
-        - nuova -> inserita alla posizione scelta (i cartelli mantengono la loro distanza)."""
+             progress=None, card_mode="per_card", replace=True, operation="sync", anchors=None,
+             section_ids=None, zones=None, duration_policy="calculated", protected_until=None,
+             film_start=None, before_film=False):
+        """Generate and update are distinct. No ripple, no implicit duplicate cleanup.
+
+        UI updates preserve manual duration by default; 'calculated' is an explicit
+        replacement on a fresh upper track, staged before the old clip is deleted.
+        """
+        if operation not in ("sync", "generate", "update"):
+            raise ValueError("Operazione sconosciuta")
+        if duration_policy not in ("preserve", "calculated"):
+            raise ValueError("Gestione durata sconosciuta")
         say = progress or (lambda m: None)
         fmt = self.apply_timeline_format(project)
-        secs, issues, notes = plan_sections(project, only=only, card_mode=card_mode)
-        if not os.path.isdir(work_dir):
-            os.makedirs(work_dir)
-        state = project.setdefault("render_state", {})
-        base_rec = None
-        out = []
-        for sec in secs:
-            sid, stem = sec["id"], sec["stem"]
-            st = state.get(sid, {})
-            existing = self.find_existing(stem) if replace else []
-            if st.get("locked") and existing:
+        state = self._state(project)
+        rows, issues, notes = self.review(project, only, card_mode, section_ids, zones)
+        os.makedirs(work_dir, exist_ok=True)
+        tracks, out = {}, []
+        base = self.record_frame(where if where != "replace" else "playhead")
+        zone_offsets, placements = {}, {}
+        for sec in rows:
+            if sec["status"] != "new":
+                continue
+            zone = sec["zone"]
+            # Every zone has its own anchor; legacy callers pack sequences consecutively.
+            if anchors is not None:
+                start = int(anchors.get(zone, base)) + zone_offsets.get(zone, 0)
+                zone_offsets[zone] = zone_offsets.get(zone, 0) + sec["frames"]
+            else:
+                start = base
+                base += sec["frames"]
+            placements[sec["id"]] = start
+        # Validate every insertion before mutating Resolve.
+        for sec in rows:
+            if sec["status"] != "new" or operation == "update":
+                continue
+            start = placements[sec["id"]]
+            if start < self.timeline.GetStartFrame():
+                raise ValueError("Il titolo precede l'inizio della timeline.")
+            if protected_until is not None and start < int(protected_until):
+                raise ValueError("Il titolo entra nell'intervallo protetto del frameleader.")
+            if before_film and sec["zone"] in ("opening", "head") and film_start is not None:
+                if start + sec["frames"] > int(film_start):
+                    raise ValueError("Spazio insufficiente prima del film: predisporre spazio manualmente, "
+                                     "senza spostare il frameleader.")
+        for sec in rows:
+            sid, status = sec["id"], sec["status"]
+            if status == "removed":
+                out.append(_res(sec, False, "removed", "Da gestire: %s (clip conservata)." % sec["label"]))
+                continue
+            if status in ("missing", "ambiguous"):
+                out.append(_res(sec, False, status, "Collegamento da verificare: %s. Nessuna modifica." % sec["label"]))
+                continue
+            if status == "locked":
                 out.append(_res(sec, True, "locked", "Bloccata: '%s' non modificata." % sec["label"]))
                 continue
-            if existing and only_changed and st.get("hash") == sec["hash"]:
+            if (operation == "generate" and status != "new") or (operation == "update" and status == "new"):
+                continue
+            if status == "unchanged" and only_changed:
                 out.append(_res(sec, True, "unchanged", "Invariata: %s." % sec["label"]))
                 continue
+            st = state.get(sid, {})
+            stem = st.get("stem", sec["stem"])
+            sec = dict(sec, stem=stem)
             comp_path = os.path.join(work_dir, stem + ".comp")
-            if existing:
-                item, track_idx = existing[0]
-                for extra, _t in existing[1:]:
-                    self.timeline.DeleteClips([extra], False)
-                if self._duration(item) == sec["frames"]:
-                    say("Aggiorno '%s' nello stesso clip..." % sec["label"])
-                    self._ensure_calibration(item, fmt["width"])
-                    self._update_in_place(item, sec, comp_path)
-                    r = _res(sec, True, "updated", "Aggiornata: %s (stesso clip, nodi manuali conservati)." % sec["label"])
+            item = None
+            try:
+                if sec["existing"]:
+                    item, track_idx = sec["existing"][0]
+                    if duration_policy == "preserve" or self._duration(item) == sec["frames"]:
+                        say("Aggiorno '%s' mantenendo posizione e durata..." % sec["label"])
+                        self._ensure_calibration(item, fmt["width"])
+                        self._update_in_place(item, sec, comp_path)
+                        if self._duration(item) != sec["frames"]:
+                            notes.append("%s: durata manuale conservata; verificare ingresso/uscita del testo "
+                                         "(calcolata %d frame, clip %d)." %
+                                         (sec["label"], sec["frames"], self._duration(item)))
+                        r = _res(sec, True, "updated", "Aggiornata: %s (posizione e durata conservate)." % sec["label"])
+                    else:
+                        if self._track_busy(track_idx, int(item.GetStart()), sec["frames"], item):
+                            out.append(_res(sec, False, "collision", "Durata in conflitto: %s. "
+                                            "Liberare spazio o mantenere la durata manuale." % sec["label"]))
+                            continue
+                        new_item = self._replace_item(item, track_idx, sec, work_dir, fmt, comp_path)
+                        r = _res(sec, new_item is not None, "replaced", "Nuova durata: %s, %d frame "
+                                 "(stessa posizione, nuova traccia superiore)." % (sec["label"], sec["frames"]))
+                        item = new_item
                 else:
-                    say("Aggiorno '%s' (nuova durata %d frame)..." % (sec["label"], sec["frames"]))
-                    new_item = self._replace_item(item, track_idx, sec, work_dir, fmt, comp_path)
-                    r = _res(sec, new_item is not None, "replaced",
-                             "Aggiornata: %s, nuova durata %d frame (posizione e proprieta' conservate)." % (sec["label"], sec["frames"]))
-                    item = new_item
-            else:
-                if base_rec is None:
-                    base_rec = self.record_frame(where if where != "replace" else "playhead")
-                track_idx = self._track_for(track)
-                say("Inserisco '%s' (%d frame)..." % (sec["label"], sec["frames"]))
-                self.mp.SetCurrentFolder(self._folder())
-                item = self._append_holder(stem, work_dir, fmt, sec["frames"], track_idx, base_rec + sec["offset"])
-                if item is None:
-                    path = os.path.join(work_dir, stem + ".setting")
-                    fusion_writer.write(sec["project"], sec["layout"], sec["timeline"], path, kind="setting")
-                    out.append(_res(sec, False, "setting",
-                                    "Inserimento automatico non riuscito: incollare %s nella pagina Fusion." % path, path=path))
-                    continue
-                self._ensure_calibration(item, fmt["width"])
-                self._import_comp(item, sec, comp_path)
-                r = _res(sec, True, "inserted", "Inserita: %s, %d frame (%.2fs) su V%d." % (
-                    sec["label"], sec["frames"], sec["frames"] / fmt["fps"], track_idx))
-            r.update({"item": item, "path": comp_path})
-            out.append(r)
-            if r["ok"]:
-                state[sid] = {"hash": sec["hash"], "frames": sec["frames"], "stem": stem, "locked": st.get("locked", False)}
+                    zone = sec["zone"]
+                    if zone not in tracks:
+                        if operation == "generate":
+                            tracks[zone] = self._new_track()
+                            self.timeline.SetTrackName("video", tracks[zone], "DRFC · " +
+                                                       workspace.ZONE_LABELS["it"][workspace.ZONES.index(zone)])
+                        else:
+                            tracks[zone] = self._track_for(track)
+                    track_idx = tracks[zone]
+                    rec = placements[sid]
+                    if self._track_busy(track_idx, rec, sec["frames"]):
+                        tracks[zone] = track_idx = self._new_track()
+                    self.mp.SetCurrentFolder(self._folder())
+                    item = self._append_holder(stem, work_dir, fmt, sec["frames"], track_idx, rec)
+                    if item is None:
+                        out.append(_res(sec, False, "failed", "Inserimento non riuscito: %s." % sec["label"]))
+                        continue
+                    self._ensure_calibration(item, fmt["width"])
+                    self._import_comp(item, sec, comp_path)
+                    item.SetClipColor("Purple")
+                    r = _res(sec, True, "inserted", "Inserita: %s su V%d, frame %d." % (sec["label"], track_idx, rec))
+                r.update({"item": item, "path": comp_path})
+                out.append(r)
+                if r["ok"] and item is not None:
+                    state[sid] = {"hash": sec["hash"], "frames": sec["frames"], "stem": stem,
+                                  "locked": st.get("locked", False), "clip_uid": self._uid(item),
+                                  "clip_frames": self._duration(item), "label": sec["label"],
+                                  "zone": sec["zone"], "seq_id": sec.get("seq_id")}
+            except Exception as e:
+                if status == "new" and item is not None:
+                    self.timeline.DeleteClips([item], False)
+                out.append(_res(sec, False, "failed", "%s: %s" % (sec["label"], e)))
         return {"sections": out, "issues": issues, "notes": notes}
+
+    def resolve_removed(self, project, section_id, delete=False):
+        rows, _i, _n = self.review(project)
+        row = next((r for r in rows if r["id"] == section_id and r["status"] == "removed"), None)
+        if not row:
+            raise ValueError("Nessun elemento rimosso selezionato.")
+        st = project["render_state"].get(section_id, {})
+        if delete:
+            if st.get("locked"):
+                raise ValueError("La clip è bloccata: sbloccarla prima di rimuoverla.")
+            if len(row["existing"]) != 1:
+                raise ValueError("Collegamento mancante o ambiguo: nessuna clip rimossa.")
+            if not self.timeline.DeleteClips([row["existing"][0][0]], False):
+                raise RuntimeError("Resolve non ha rimosso la clip.")
+        project["render_state"].pop(section_id, None)
 
     def _ensure_calibration(self, item, width):
         """Calibra Text+ da soli, una volta per versione di Resolve, su un comp temporaneo del
@@ -293,48 +455,44 @@ class ResolveSession(object):
             pass
         self._rename_active(item, stem)
         self._fix_loaders(comp, info, self._comp_start(comp))
-        if user:
-            restore_user_nodes(comp, user, info["last_merge"], self.log)
+        if user and not restore_user_nodes(comp, user, info["last_merge"], self.log):
+            try:
+                item.LoadFusionCompByName(stem + "_prev")
+            finally:
+                raise RuntimeError("Ripristino nodi manuali non riuscito: composizione precedente riattivata.")
         return comp
 
     def _replace_item(self, old_item, track_idx, sec, work_dir, fmt, comp_path):
-        rec = old_item.GetStart()
+        # Stage a complete replacement on a fresh upper track. Never delete first.
+        rec = int(old_item.GetStart())
         old_comp = self._current_comp(old_item, sec["stem"])
         user = collect_user_nodes(old_comp) if old_comp else None
         props = copy_item_properties(old_item)
-        self.timeline.DeleteClips([old_item], False)
+        new_track = self._new_track()
+        self.timeline.SetTrackName("video", new_track, "DRFC · Aggiornamento durata")
         self.mp.SetCurrentFolder(self._folder())
-        item = self._append_holder(sec["stem"], work_dir, fmt, sec["frames"], track_idx, rec)
+        item = self._append_holder(sec["stem"], work_dir, fmt, sec["frames"], new_track, rec)
         if item is None:
             return None
-        self._ensure_calibration(item, fmt["width"])
-        comp, info = self._import_comp(item, sec, comp_path)
-        paste_item_properties(item, props)
-        if user:
-            restore_user_nodes(comp, user, info["last_merge"], self.log)
+        try:
+            self._ensure_calibration(item, fmt["width"])
+            comp, info = self._import_comp(item, sec, comp_path)
+            paste_item_properties(item, props)
+            if user and not restore_user_nodes(comp, user, info["last_merge"], self.log):
+                raise RuntimeError("Nodi manuali non ripristinati: originale conservato.")
+            if not self.timeline.DeleteClips([old_item], False):
+                raise RuntimeError("Originale non rimosso: aggiornamento annullato.")
+        except Exception:
+            self.timeline.DeleteClips([item], False)
+            raise
         return item
 
     def set_locked(self, project, section_id, locked=True):
         project.setdefault("render_state", {}).setdefault(section_id, {})["locked"] = bool(locked)
 
     def section_status(self, project, only=None, card_mode="per_card"):
-        """[(id, etichetta, stato)] con stato: nuova | modificata | invariata | bloccata."""
-        secs, _i, _n = plan_sections(project, only=only, card_mode=card_mode)
-        state = project.get("render_state") or {}
-        out = []
-        for sec in secs:
-            st = state.get(sec["id"], {})
-            on_tl = bool(self.find_existing(sec["stem"]))
-            if st.get("locked") and on_tl:
-                s = "locked"
-            elif not on_tl:
-                s = "new"
-            elif st.get("hash") == sec["hash"]:
-                s = "unchanged"
-            else:
-                s = "changed"
-            out.append((sec["id"], sec["label"], s))
-        return out
+        rows, _i, _n = self.review(project, only=only, card_mode=card_mode)
+        return [(r["id"], r["label"], r["status"]) for r in rows]
 
     def _append_holder(self, stem, work_dir, fmt, total, track_idx, rec):
         png = os.path.join(work_dir, stem + "_holder.png")
@@ -473,13 +631,14 @@ def plan_sections(project, only=None, card_mode="per_card"):
     cartelli, un clip per cartello (spostabili liberamente) oppure uno per sequenza.
     Ogni sezione ha id stabile, hash del contenuto, durata, offset e dati per il writer."""
     clean, results, issues = engine.solve_all(project, only=only)
-    slug = engine.model_slug(project)
+    slug = engine.model_slug(project) + ("_" + project["project_id"][:8] if project.get("project_id") else "")
     secs, notes = [], []
     for seq, lay, tl, n in results:
         notes += n
         if tl["kind"] == "crawl" or card_mode == "per_sequence":
             secs.append({"id": seq["id"], "label": seq.get("name", seq["id"]), "stem": "%s%s_%s" % (COMP_PREFIX, slug, seq["id"]),
                          "project": clean, "layout": lay, "timeline": tl, "frames": int(tl["total_frames"]), "offset": 0,
+                         "seq_id": seq["id"], "zone": workspace.zone_of(seq, seq["blocks"][0]) if seq["blocks"] else "crawl",
                          "hash": _section_hash(lay.get("elements") or lay.get("cards"), tl)})
             continue
         seen = {}
@@ -493,6 +652,7 @@ def plan_sections(project, only=None, card_mode="per_card"):
             secs.append({"id": sid, "label": "%s: %s" % (seq.get("name", seq["id"]), label),
                          "stem": "%s%s_%s" % (COMP_PREFIX, slug, sid), "project": clean, "layout": sub_lay,
                          "timeline": sub_tl, "frames": int(ctl["frames"]), "offset": int(ctl["start"]),
+                         "seq_id": seq["id"], "zone": workspace.zone_of(seq, next((b for b in seq["blocks"] if b["id"] == bid), {})),
                          "hash": _section_hash(card["elements"], sub_tl["cards"])})
     return secs, issues, notes
 
@@ -620,3 +780,4 @@ def default_work_dir(project_path=None):
     if project_path:
         return os.path.join(os.path.dirname(os.path.abspath(project_path)), "drfc_render")
     return os.path.join(tempfile.gettempdir(), "DR-FilmCredits")
+

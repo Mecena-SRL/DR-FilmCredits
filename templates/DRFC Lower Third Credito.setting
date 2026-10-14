@@ -1,0 +1,84 @@
+{
+	Tools = ordered() {
+		DRFC_LowerThird = MacroOperator {
+			CtrlWZoom = false,
+			Inputs = ordered() {
+				Input1 = InstanceInput { SourceOp = "Role", Source = "StyledText", Name = "Ruolo", },
+				Input2 = InstanceInput { SourceOp = "Name", Source = "StyledText", Name = "Nome", },
+				Input3 = InstanceInput { SourceOp = "Role", Source = "Center", Name = "Posizione ruolo", },
+				Input4 = InstanceInput { SourceOp = "Name", Source = "Center", Name = "Posizione nome", },
+			},
+			Outputs = {
+				MainOutput1 = InstanceOutput { SourceOp = "Merge2", Source = "Output", },
+			},
+			ViewInfo = GroupInfo { Pos = { 0, 0 } },
+			Tools = ordered() {
+				Bg = Background {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						TopLeftAlpha = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { -110, 0 } },
+				},
+				Role = TextPlus {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Center = Input { Value = { 0.08, 0.17 }, },
+						StyledText = Input { Value = "Regia", },
+						Font = Input { Value = "Cormorant Garamond", },
+						Style = Input { Value = "Italic", },
+						Size = Input { Value = 0.019125, },
+						CharacterSpacing = Input { Value = 1, },
+						LineSpacing = Input { Value = 1.1, },
+						HorizontalLeftCenterRight = Input { Value = -1, },
+						Red1 = Input { Value = 0.878431373, },
+						Green1 = Input { Value = 0.878431373, },
+						Blue1 = Input { Value = 0.878431373, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 0 } },
+				},
+				Merge1 = Merge {
+					Inputs = {
+						Background = Input { SourceOp = "Bg", Source = "Output", },
+						Foreground = Input { SourceOp = "Role", Source = "Output", },
+					},
+					ViewInfo = OperatorInfo { Pos = { 110, 0 } },
+				},
+				Name = TextPlus {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Center = Input { Value = { 0.08, 0.11 }, },
+						StyledText = Input { Value = "NOME COGNOME", },
+						Font = Input { Value = "Cormorant Garamond", },
+						Style = Input { Value = "Medium", },
+						Size = Input { Value = 0.02925, },
+						CharacterSpacing = Input { Value = 1.08, },
+						LineSpacing = Input { Value = 1.05, },
+						HorizontalLeftCenterRight = Input { Value = -1, },
+						Red1 = Input { Value = 1, },
+						Green1 = Input { Value = 1, },
+						Blue1 = Input { Value = 1, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 0 } },
+				},
+				Merge2 = Merge {
+					Inputs = {
+						Background = Input { SourceOp = "Merge1", Source = "Output", },
+						Foreground = Input { SourceOp = "Name", Source = "Output", },
+					},
+					ViewInfo = OperatorInfo { Pos = { 110, 0 } },
+				},
+			},
+		},
+	},
+	ActiveTool = "DRFC_LowerThird"
+}

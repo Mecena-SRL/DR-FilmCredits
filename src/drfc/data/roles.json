@@ -1,0 +1,795 @@
+{
+  "_doc": "Dizionario ruoli/reparti multilingua. Chiavi stabili usate da preset, import CSV e wizard. Ordine dei reparti = ordine tipico dei titoli di coda (sovrascrivibile dal preset).",
+  "departments": {
+    "cast": {
+      "it": "Interpreti",
+      "en": "Cast",
+      "fr": "Distribution",
+      "de": "Darsteller",
+      "es": "Reparto"
+    },
+    "production": {
+      "it": "Produzione",
+      "en": "Production",
+      "fr": "Production",
+      "de": "Produktion",
+      "es": "Producción"
+    },
+    "direction": {
+      "it": "Regia",
+      "en": "Direction",
+      "fr": "Réalisation",
+      "de": "Regie",
+      "es": "Dirección"
+    },
+    "writing": {
+      "it": "Sceneggiatura",
+      "en": "Writing",
+      "fr": "Scénario",
+      "de": "Drehbuch",
+      "es": "Guion"
+    },
+    "camera": {
+      "it": "Reparto fotografia",
+      "en": "Camera Department",
+      "fr": "Équipe image",
+      "de": "Kamera",
+      "es": "Departamento de cámara"
+    },
+    "grip": {
+      "it": "Macchinisti",
+      "en": "Grip Department",
+      "fr": "Machinerie",
+      "de": "Bühne",
+      "es": "Maquinistas"
+    },
+    "electric": {
+      "it": "Elettricisti",
+      "en": "Electrical Department",
+      "fr": "Électriciens",
+      "de": "Licht",
+      "es": "Eléctricos"
+    },
+    "sound": {
+      "it": "Suono",
+      "en": "Sound Department",
+      "fr": "Son",
+      "de": "Ton",
+      "es": "Sonido"
+    },
+    "art": {
+      "it": "Scenografia",
+      "en": "Art Department",
+      "fr": "Décors",
+      "de": "Szenenbild",
+      "es": "Dirección de arte"
+    },
+    "costume": {
+      "it": "Costumi",
+      "en": "Costume Department",
+      "fr": "Costumes",
+      "de": "Kostüm",
+      "es": "Vestuario"
+    },
+    "makeup": {
+      "it": "Trucco e acconciature",
+      "en": "Hair & Make-up",
+      "fr": "Maquillage et coiffure",
+      "de": "Maske",
+      "es": "Maquillaje y peluquería"
+    },
+    "stunts": {
+      "it": "Stunt",
+      "en": "Stunts",
+      "fr": "Cascades",
+      "de": "Stunts",
+      "es": "Especialistas"
+    },
+    "locations": {
+      "it": "Location",
+      "en": "Locations",
+      "fr": "Repérages et décors naturels",
+      "de": "Motive",
+      "es": "Localizaciones"
+    },
+    "transport": {
+      "it": "Trasporti",
+      "en": "Transportation",
+      "fr": "Transports",
+      "de": "Fahrbereitschaft",
+      "es": "Transporte"
+    },
+    "catering": {
+      "it": "Catering",
+      "en": "Catering",
+      "fr": "Cantine",
+      "de": "Catering",
+      "es": "Catering"
+    },
+    "editing": {
+      "it": "Montaggio",
+      "en": "Editorial",
+      "fr": "Montage",
+      "de": "Schnitt",
+      "es": "Montaje"
+    },
+    "post": {
+      "it": "Post-produzione",
+      "en": "Post-Production",
+      "fr": "Postproduction",
+      "de": "Postproduktion",
+      "es": "Postproducción"
+    },
+    "color": {
+      "it": "Color correction",
+      "en": "Colour Grading",
+      "fr": "Étalonnage",
+      "de": "Farbkorrektur",
+      "es": "Etalonaje"
+    },
+    "vfx": {
+      "it": "Effetti visivi",
+      "en": "Visual Effects",
+      "fr": "Effets visuels",
+      "de": "Visuelle Effekte",
+      "es": "Efectos visuales"
+    },
+    "post_sound": {
+      "it": "Post-produzione audio",
+      "en": "Post-Production Sound",
+      "fr": "Postproduction son",
+      "de": "Tonpostproduktion",
+      "es": "Postproducción de sonido"
+    },
+    "music": {
+      "it": "Musiche",
+      "en": "Music",
+      "fr": "Musique",
+      "de": "Musik",
+      "es": "Música"
+    },
+    "accounting": {
+      "it": "Amministrazione",
+      "en": "Accounting",
+      "fr": "Comptabilité",
+      "de": "Buchhaltung",
+      "es": "Contabilidad"
+    },
+    "legal": {
+      "it": "Consulenza legale",
+      "en": "Legal",
+      "fr": "Juridique",
+      "de": "Rechtsberatung",
+      "es": "Asesoría legal"
+    },
+    "publicity": {
+      "it": "Ufficio stampa e comunicazione",
+      "en": "Publicity & Marketing",
+      "fr": "Presse et communication",
+      "de": "Presse und Marketing",
+      "es": "Prensa y comunicación"
+    },
+    "second_unit": {
+      "it": "Seconda unità",
+      "en": "Second Unit",
+      "fr": "Seconde équipe",
+      "de": "Second Unit",
+      "es": "Segunda unidad"
+    },
+    "rentals": {
+      "it": "Mezzi tecnici",
+      "en": "Equipment & Facilities",
+      "fr": "Moyens techniques",
+      "de": "Technik und Ausstattung",
+      "es": "Medios técnicos"
+    },
+    "insurance": {
+      "it": "Assicurazioni e garanzie",
+      "en": "Insurance & Completion Guarantee",
+      "fr": "Assurances et garantie de bonne fin",
+      "de": "Versicherung und Fertigstellungsgarantie",
+      "es": "Seguros y garantía de finalización"
+    },
+    "thanks": {
+      "it": "Si ringrazia",
+      "en": "Special Thanks",
+      "fr": "Remerciements",
+      "de": "Besonderer Dank",
+      "es": "Agradecimientos"
+    }
+  },
+  "roles": {
+    "director": {
+      "dept": "direction",
+      "it": "Regia",
+      "en": "Directed by",
+      "fr": "Réalisation",
+      "de": "Regie",
+      "es": "Dirigida por"
+    },
+    "film_by": {
+      "dept": "direction",
+      "it": "Un film di",
+      "en": "A Film by",
+      "fr": "Un film de",
+      "de": "Ein Film von",
+      "es": "Una película de"
+    },
+    "first_ad": {
+      "dept": "direction",
+      "it": "Aiuto regia",
+      "en": "First Assistant Director",
+      "fr": "Premier assistant réalisateur",
+      "de": "Regieassistenz",
+      "es": "Ayudante de dirección"
+    },
+    "second_ad": {
+      "dept": "direction",
+      "it": "Assistente alla regia",
+      "en": "Second Assistant Director",
+      "fr": "Second assistant réalisateur",
+      "de": "Zweite Regieassistenz",
+      "es": "Segundo ayudante de dirección"
+    },
+    "script_supervisor": {
+      "dept": "direction",
+      "it": "Segretaria di edizione",
+      "en": "Script Supervisor",
+      "fr": "Scripte",
+      "de": "Continuity",
+      "es": "Script"
+    },
+    "casting": {
+      "dept": "direction",
+      "it": "Casting",
+      "en": "Casting by",
+      "fr": "Casting",
+      "de": "Casting",
+      "es": "Casting"
+    },
+    "acting_coach": {
+      "dept": "direction",
+      "it": "Acting coach",
+      "en": "Acting Coach",
+      "fr": "Coach d'acteurs",
+      "de": "Schauspielcoach",
+      "es": "Coach de actores"
+    },
+    "written_by": {
+      "dept": "writing",
+      "it": "Scritto da",
+      "en": "Written by",
+      "fr": "Écrit par",
+      "de": "Geschrieben von",
+      "es": "Escrita por"
+    },
+    "screenplay": {
+      "dept": "writing",
+      "it": "Sceneggiatura",
+      "en": "Screenplay by",
+      "fr": "Scénario",
+      "de": "Drehbuch",
+      "es": "Guion"
+    },
+    "story": {
+      "dept": "writing",
+      "it": "Soggetto",
+      "en": "Story by",
+      "fr": "D'après une idée de",
+      "de": "Story",
+      "es": "Argumento"
+    },
+    "based_on": {
+      "dept": "writing",
+      "it": "Tratto da",
+      "en": "Based on",
+      "fr": "D'après",
+      "de": "Nach",
+      "es": "Basada en"
+    },
+    "dialogue": {
+      "dept": "writing",
+      "it": "Dialoghi",
+      "en": "Dialogue by",
+      "fr": "Dialogues",
+      "de": "Dialoge",
+      "es": "Diálogos"
+    },
+    "producer": {
+      "dept": "production",
+      "it": "Prodotto da",
+      "en": "Produced by",
+      "fr": "Produit par",
+      "de": "Produziert von",
+      "es": "Producida por"
+    },
+    "executive_producer": {
+      "dept": "production",
+      "it": "Produttore esecutivo",
+      "en": "Executive Producer",
+      "fr": "Producteur exécutif",
+      "de": "Executive Producer",
+      "es": "Productor ejecutivo"
+    },
+    "coproducer": {
+      "dept": "production",
+      "it": "Coprodotto da",
+      "en": "Co-Producer",
+      "fr": "Coproduit par",
+      "de": "Koproduzent",
+      "es": "Coproductor"
+    },
+    "associate_producer": {
+      "dept": "production",
+      "it": "Produttore associato",
+      "en": "Associate Producer",
+      "fr": "Producteur associé",
+      "de": "Associate Producer",
+      "es": "Productor asociado"
+    },
+    "line_producer": {
+      "dept": "production",
+      "it": "Line producer",
+      "en": "Line Producer",
+      "fr": "Directeur de production",
+      "de": "Herstellungsleitung",
+      "es": "Jefe de producción"
+    },
+    "general_manager": {
+      "dept": "production",
+      "it": "Organizzatore generale",
+      "en": "Unit Production Manager",
+      "fr": "Directeur de production",
+      "de": "Produktionsleitung",
+      "es": "Director de producción"
+    },
+    "production_manager": {
+      "dept": "production",
+      "it": "Direttore di produzione",
+      "en": "Production Manager",
+      "fr": "Régisseur général",
+      "de": "Aufnahmeleitung",
+      "es": "Jefe de producción"
+    },
+    "production_coordinator": {
+      "dept": "production",
+      "it": "Coordinatore di produzione",
+      "en": "Production Coordinator",
+      "fr": "Coordinateur de production",
+      "de": "Produktionskoordination",
+      "es": "Coordinador de producción"
+    },
+    "unit_manager": {
+      "dept": "production",
+      "it": "Ispettore di produzione",
+      "en": "Unit Manager",
+      "fr": "Régisseur",
+      "de": "Set-Aufnahmeleitung",
+      "es": "Ayudante de producción"
+    },
+    "production_secretary": {
+      "dept": "production",
+      "it": "Segretario di produzione",
+      "en": "Production Secretary",
+      "fr": "Secrétaire de production",
+      "de": "Produktionssekretariat",
+      "es": "Secretario de producción"
+    },
+    "production_assistant": {
+      "dept": "production",
+      "it": "Assistente di produzione",
+      "en": "Production Assistant",
+      "fr": "Assistant de production",
+      "de": "Produktionsassistenz",
+      "es": "Auxiliar de producción"
+    },
+    "runner": {
+      "dept": "production",
+      "it": "Runner",
+      "en": "Runner",
+      "fr": "Runner",
+      "de": "Fahrer / Runner",
+      "es": "Runner"
+    },
+    "cinematographer": {
+      "dept": "camera",
+      "it": "Direttore della fotografia",
+      "en": "Director of Photography",
+      "fr": "Directeur de la photographie",
+      "de": "Kamera",
+      "es": "Director de fotografía"
+    },
+    "camera_operator": {
+      "dept": "camera",
+      "it": "Operatore di macchina",
+      "en": "Camera Operator",
+      "fr": "Cadreur",
+      "de": "Kameraoperator",
+      "es": "Operador de cámara"
+    },
+    "first_ac": {
+      "dept": "camera",
+      "it": "Assistente operatore",
+      "en": "First Assistant Camera",
+      "fr": "Premier assistant opérateur",
+      "de": "Schärfezieher",
+      "es": "Foquista"
+    },
+    "second_ac": {
+      "dept": "camera",
+      "it": "Aiuto operatore",
+      "en": "Second Assistant Camera",
+      "fr": "Second assistant opérateur",
+      "de": "Kameraassistenz",
+      "es": "Auxiliar de cámara"
+    },
+    "dit": {
+      "dept": "camera",
+      "it": "DIT",
+      "en": "DIT",
+      "fr": "DIT",
+      "de": "DIT",
+      "es": "DIT"
+    },
+    "steadicam": {
+      "dept": "camera",
+      "it": "Operatore steadicam",
+      "en": "Steadicam Operator",
+      "fr": "Opérateur Steadicam",
+      "de": "Steadicam",
+      "es": "Operador de steadicam"
+    },
+    "drone_operator": {
+      "dept": "camera",
+      "it": "Pilota drone",
+      "en": "Drone Operator",
+      "fr": "Télépilote de drone",
+      "de": "Drohnenpilot",
+      "es": "Piloto de dron"
+    },
+    "stills": {
+      "dept": "camera",
+      "it": "Fotografo di scena",
+      "en": "Stills Photographer",
+      "fr": "Photographe de plateau",
+      "de": "Standfotografie",
+      "es": "Fotógrafo de escena"
+    },
+    "bts": {
+      "dept": "camera",
+      "it": "Backstage",
+      "en": "Behind the Scenes",
+      "fr": "Making-of",
+      "de": "Making-of",
+      "es": "Making of"
+    },
+    "key_grip": {
+      "dept": "grip",
+      "it": "Capo macchinista",
+      "en": "Key Grip",
+      "fr": "Chef machiniste",
+      "de": "Oberbühne",
+      "es": "Jefe de maquinistas"
+    },
+    "grip": {
+      "dept": "grip",
+      "it": "Macchinista",
+      "en": "Grip",
+      "fr": "Machiniste",
+      "de": "Bühne",
+      "es": "Maquinista"
+    },
+    "gaffer": {
+      "dept": "electric",
+      "it": "Capo elettricista",
+      "en": "Gaffer",
+      "fr": "Chef électricien",
+      "de": "Oberbeleuchter",
+      "es": "Jefe de eléctricos"
+    },
+    "electrician": {
+      "dept": "electric",
+      "it": "Elettricista",
+      "en": "Electrician",
+      "fr": "Électricien",
+      "de": "Beleuchter",
+      "es": "Eléctrico"
+    },
+    "sound_mixer": {
+      "dept": "sound",
+      "it": "Fonico di presa diretta",
+      "en": "Production Sound Mixer",
+      "fr": "Chef opérateur du son",
+      "de": "Originalton",
+      "es": "Sonido directo"
+    },
+    "boom_operator": {
+      "dept": "sound",
+      "it": "Microfonista",
+      "en": "Boom Operator",
+      "fr": "Perchman",
+      "de": "Tonassistenz",
+      "es": "Microfonista"
+    },
+    "production_designer": {
+      "dept": "art",
+      "it": "Scenografia",
+      "en": "Production Designer",
+      "fr": "Chef décorateur",
+      "de": "Szenenbild",
+      "es": "Diseño de producción"
+    },
+    "art_director": {
+      "dept": "art",
+      "it": "Art director",
+      "en": "Art Director",
+      "fr": "Directeur artistique",
+      "de": "Art Director",
+      "es": "Director de arte"
+    },
+    "set_decorator": {
+      "dept": "art",
+      "it": "Arredatore",
+      "en": "Set Decorator",
+      "fr": "Ensemblier",
+      "de": "Set-Dekoration",
+      "es": "Ambientador"
+    },
+    "props": {
+      "dept": "art",
+      "it": "Attrezzista",
+      "en": "Props",
+      "fr": "Accessoiriste",
+      "de": "Requisite",
+      "es": "Atrezzista"
+    },
+    "costume_designer": {
+      "dept": "costume",
+      "it": "Costumi",
+      "en": "Costume Designer",
+      "fr": "Créateur de costumes",
+      "de": "Kostümbild",
+      "es": "Diseño de vestuario"
+    },
+    "wardrobe": {
+      "dept": "costume",
+      "it": "Sarta di scena",
+      "en": "Wardrobe Supervisor",
+      "fr": "Habilleuse",
+      "de": "Garderobe",
+      "es": "Sastra"
+    },
+    "makeup_artist": {
+      "dept": "makeup",
+      "it": "Truccatore",
+      "en": "Make-up Artist",
+      "fr": "Maquilleur",
+      "de": "Maskenbild",
+      "es": "Maquillaje"
+    },
+    "hair_stylist": {
+      "dept": "makeup",
+      "it": "Parrucchiere",
+      "en": "Hair Stylist",
+      "fr": "Coiffeur",
+      "de": "Frisuren",
+      "es": "Peluquería"
+    },
+    "sfx_makeup": {
+      "dept": "makeup",
+      "it": "Effetti speciali di trucco",
+      "en": "Special Effects Make-up",
+      "fr": "Maquillage effets spéciaux",
+      "de": "Special Make-up Effects",
+      "es": "Maquillaje FX"
+    },
+    "stunt_coordinator": {
+      "dept": "stunts",
+      "it": "Coordinatore stunt",
+      "en": "Stunt Coordinator",
+      "fr": "Coordinateur cascades",
+      "de": "Stunt-Koordination",
+      "es": "Coordinador de especialistas"
+    },
+    "location_manager": {
+      "dept": "locations",
+      "it": "Location manager",
+      "en": "Location Manager",
+      "fr": "Régisseur d'extérieurs",
+      "de": "Location Manager",
+      "es": "Jefe de localizaciones"
+    },
+    "location_scout": {
+      "dept": "locations",
+      "it": "Location scout",
+      "en": "Location Scout",
+      "fr": "Repéreur",
+      "de": "Location Scout",
+      "es": "Localizador"
+    },
+    "editor": {
+      "dept": "editing",
+      "it": "Montaggio",
+      "en": "Edited by",
+      "fr": "Montage",
+      "de": "Schnitt",
+      "es": "Montaje"
+    },
+    "assistant_editor": {
+      "dept": "editing",
+      "it": "Assistente al montaggio",
+      "en": "Assistant Editor",
+      "fr": "Assistant monteur",
+      "de": "Schnittassistenz",
+      "es": "Ayudante de montaje"
+    },
+    "post_supervisor": {
+      "dept": "post",
+      "it": "Supervisore di post-produzione",
+      "en": "Post-Production Supervisor",
+      "fr": "Directeur de postproduction",
+      "de": "Postproduktionsleitung",
+      "es": "Supervisor de postproducción"
+    },
+    "colorist": {
+      "dept": "color",
+      "it": "Colorist",
+      "en": "Colourist",
+      "fr": "Étalonneur",
+      "de": "Colorist",
+      "es": "Etalonador"
+    },
+    "vfx_supervisor": {
+      "dept": "vfx",
+      "it": "Supervisore effetti visivi",
+      "en": "VFX Supervisor",
+      "fr": "Superviseur effets visuels",
+      "de": "VFX Supervisor",
+      "es": "Supervisor de efectos visuales"
+    },
+    "vfx_artist": {
+      "dept": "vfx",
+      "it": "Artista VFX",
+      "en": "VFX Artist",
+      "fr": "Graphiste VFX",
+      "de": "VFX Artist",
+      "es": "Artista VFX"
+    },
+    "titles": {
+      "dept": "post",
+      "it": "Titoli",
+      "en": "Titles by",
+      "fr": "Génériques",
+      "de": "Titel",
+      "es": "Títulos de crédito"
+    },
+    "sound_designer": {
+      "dept": "post_sound",
+      "it": "Sound design",
+      "en": "Sound Designer",
+      "fr": "Montage son",
+      "de": "Sounddesign",
+      "es": "Diseño de sonido"
+    },
+    "rerecording_mixer": {
+      "dept": "post_sound",
+      "it": "Mix",
+      "en": "Re-recording Mixer",
+      "fr": "Mixage",
+      "de": "Mischung",
+      "es": "Mezcla"
+    },
+    "foley": {
+      "dept": "post_sound",
+      "it": "Rumorista",
+      "en": "Foley Artist",
+      "fr": "Bruiteur",
+      "de": "Geräuschemacher",
+      "es": "Artista de foley"
+    },
+    "dialogue_editor": {
+      "dept": "post_sound",
+      "it": "Montaggio dialoghi",
+      "en": "Dialogue Editor",
+      "fr": "Monteur dialogues",
+      "de": "Dialogschnitt",
+      "es": "Edición de diálogos"
+    },
+    "composer": {
+      "dept": "music",
+      "it": "Musiche originali",
+      "en": "Original Music by",
+      "fr": "Musique originale",
+      "de": "Musik",
+      "es": "Música original"
+    },
+    "music_supervisor": {
+      "dept": "music",
+      "it": "Supervisione musicale",
+      "en": "Music Supervisor",
+      "fr": "Superviseur musical",
+      "de": "Music Supervisor",
+      "es": "Supervisor musical"
+    },
+    "music_editor": {
+      "dept": "music",
+      "it": "Montaggio musica",
+      "en": "Music Editor",
+      "fr": "Monteur musique",
+      "de": "Musikschnitt",
+      "es": "Editor musical"
+    },
+    "accountant": {
+      "dept": "accounting",
+      "it": "Amministrazione",
+      "en": "Production Accountant",
+      "fr": "Administrateur de production",
+      "de": "Filmgeschäftsführung",
+      "es": "Contable de producción"
+    },
+    "legal_counsel": {
+      "dept": "legal",
+      "it": "Consulenza legale",
+      "en": "Legal Counsel",
+      "fr": "Conseil juridique",
+      "de": "Rechtsberatung",
+      "es": "Asesoría jurídica"
+    },
+    "press_office": {
+      "dept": "publicity",
+      "it": "Ufficio stampa",
+      "en": "Unit Publicist",
+      "fr": "Attaché de presse",
+      "de": "Pressebetreuung",
+      "es": "Jefe de prensa"
+    },
+    "catering": {
+      "dept": "catering",
+      "it": "Catering",
+      "en": "Catering by",
+      "fr": "Cantine",
+      "de": "Catering",
+      "es": "Catering"
+    },
+    "driver": {
+      "dept": "transport",
+      "it": "Autista",
+      "en": "Driver",
+      "fr": "Chauffeur",
+      "de": "Fahrer",
+      "es": "Conductor"
+    },
+    "created_by": {
+      "dept": "writing",
+      "it": "Ideata da",
+      "en": "Created by",
+      "fr": "Créée par",
+      "de": "Idee",
+      "es": "Creada por"
+    },
+    "showrunner": {
+      "dept": "production",
+      "it": "Showrunner",
+      "en": "Showrunner",
+      "fr": "Showrunner",
+      "de": "Showrunner",
+      "es": "Showrunner"
+    },
+    "delegate_producer": {
+      "dept": "production",
+      "it": "Produttore delegato",
+      "en": "Delegate Producer",
+      "fr": "Producteur délégué",
+      "de": "Produzent",
+      "es": "Productor delegado"
+    },
+    "narrator": {
+      "dept": "cast",
+      "it": "Voce narrante",
+      "en": "Narrator",
+      "fr": "Narration",
+      "de": "Erzähler",
+      "es": "Narrador"
+    }
+  }
+}

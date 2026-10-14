@@ -1,0 +1,278 @@
+{
+ "label": {
+  "it": "Italia – Fiction / serie TV",
+  "en": "Italy – TV drama / series"
+ },
+ "region": "IT",
+ "theme": "broadcast",
+ "language": "it",
+ "format": {
+  "width": 1920,
+  "height": 1080,
+  "fps": 25.0
+ },
+ "timing": {
+  "speed": "fast",
+  "end_mode": "scroll_out"
+ },
+ "max_crawl_seconds": 90,
+ "notes": [
+  "Le emittenti impongono spesso una durata massima dei titoli di coda: impostare la durata e usare 'Adatta a durata'.",
+  "Safe area EBU R95: title-safe 90% (5% per lato) per HD 16:9."
+ ],
+ "sequences": [
+  {
+   "id": "opening",
+   "kind": "cards",
+   "name": "Titoli di testa",
+   "blocks": [
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "Emittente / produzione presenta",
+     "position": "lower_third"
+    },
+    {
+     "type": "title",
+     "text": ""
+    },
+    {
+     "type": "card",
+     "names": [],
+     "position": "lower_third",
+     "note": "Protagonisti"
+    },
+    {
+     "type": "card",
+     "role": "director",
+     "names": [],
+     "position": "lower_third"
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "Titoli di coda",
+   "blocks": [
+    {
+     "type": "credit",
+     "role": "director",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "credit",
+     "role": "screenplay",
+     "names": [],
+     "layout": "two_column"
+    },
+    {
+     "type": "credit",
+     "role": "producer",
+     "names": [],
+     "layout": "two_column"
+    },
+    {
+     "type": "cast",
+     "heading": "h:cast",
+     "rows": []
+    },
+    {
+     "type": "list",
+     "heading": "dept:production",
+     "rows": [
+      {
+       "role": "executive_producer",
+       "names": []
+      },
+      {
+       "role": "line_producer",
+       "names": []
+      },
+      {
+       "role": "general_manager",
+       "names": []
+      },
+      {
+       "role": "production_manager",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:camera",
+     "rows": [
+      {
+       "role": "cinematographer",
+       "names": []
+      },
+      {
+       "role": "camera_operator",
+       "names": []
+      },
+      {
+       "role": "first_ac",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:sound",
+     "rows": [
+      {
+       "role": "sound_mixer",
+       "names": []
+      },
+      {
+       "role": "boom_operator",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:art",
+     "rows": [
+      {
+       "role": "production_designer",
+       "names": []
+      },
+      {
+       "role": "set_decorator",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:costume",
+     "rows": [
+      {
+       "role": "costume_designer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:makeup",
+     "rows": [
+      {
+       "role": "makeup_artist",
+       "names": []
+      },
+      {
+       "role": "hair_stylist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:editing",
+     "rows": [
+      {
+       "role": "editor",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:post",
+     "rows": [
+      {
+       "role": "post_supervisor",
+       "names": []
+      },
+      {
+       "role": "colorist",
+       "names": []
+      },
+      {
+       "role": "sound_designer",
+       "names": []
+      },
+      {
+       "role": "rerecording_mixer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:music",
+     "rows": [
+      {
+       "role": "composer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "music",
+     "heading": "h:songs",
+     "cues": []
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "logos",
+     "caption": "h:with_support",
+     "items": [],
+     "hold_s": 0
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "product_placement"
+      }
+     ],
+     "enabled": false
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "copyright"
+      }
+     ]
+    }
+   ],
+   "timing": {
+    "fit": "speed",
+    "target_seconds": 60
+   }
+  }
+ ],
+ "checks": [
+  {
+   "check": "role_present",
+   "role": "director"
+  },
+  {
+   "check": "legal_present",
+   "key": "copyright"
+  },
+  {
+   "check": "max_duration",
+   "seconds": 90
+  },
+  {
+   "check": "ai_disclosure"
+  }
+ ],
+ "id": "it_tv"
+}

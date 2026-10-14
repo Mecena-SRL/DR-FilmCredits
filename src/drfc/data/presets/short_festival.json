@@ -1,0 +1,185 @@
+{
+ "label": {
+  "it": "Cortometraggio / Festival",
+  "en": "Short film / Festival"
+ },
+ "region": "INT",
+ "theme": "festival",
+ "language": "it",
+ "format": {
+  "width": 1920,
+  "height": 1080,
+  "fps": 24.0
+ },
+ "timing": {
+  "speed": "normal",
+  "end_mode": "hold_last",
+  "hold_last_s": 3.0
+ },
+ "notes": [
+  "Molti festival limitano la durata complessiva: tenere i titoli di coda sotto i 90 secondi.",
+  "Formato compatto: crediti a due colonne, ringraziamenti multicolonna."
+ ],
+ "sequences": [
+  {
+   "id": "opening",
+   "kind": "cards",
+   "name": "Titoli di testa",
+   "blocks": [
+    {
+     "type": "card",
+     "lines": [
+      {
+       "text": "",
+       "style": "card_name"
+      }
+     ],
+     "note": "Produzione presenta"
+    },
+    {
+     "type": "title",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "Titoli di coda",
+   "blocks": [
+    {
+     "type": "credit",
+     "role": "film_by",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "cast",
+     "heading": "h:cast",
+     "rows": []
+    },
+    {
+     "type": "list",
+     "heading": "",
+     "rows": [
+      {
+       "role": "screenplay",
+       "names": []
+      },
+      {
+       "role": "cinematographer",
+       "names": []
+      },
+      {
+       "role": "editor",
+       "names": []
+      },
+      {
+       "role": "production_designer",
+       "names": []
+      },
+      {
+       "role": "costume_designer",
+       "names": []
+      },
+      {
+       "role": "composer",
+       "names": []
+      },
+      {
+       "role": "sound_mixer",
+       "names": []
+      },
+      {
+       "role": "sound_designer",
+       "names": []
+      },
+      {
+       "role": "colorist",
+       "names": []
+      },
+      {
+       "role": "producer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "list",
+     "heading": "dept:production",
+     "rows": [
+      {
+       "role": "production_manager",
+       "names": []
+      },
+      {
+       "role": "first_ad",
+       "names": []
+      },
+      {
+       "role": "first_ac",
+       "names": []
+      },
+      {
+       "role": "gaffer",
+       "names": []
+      },
+      {
+       "role": "makeup_artist",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "music",
+     "heading": "h:songs",
+     "cues": []
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "media",
+     "items": [],
+     "lane": "side",
+     "enabled": false,
+     "note": "Backstage laterale"
+    },
+    {
+     "type": "logos",
+     "caption": "h:with_support",
+     "items": [],
+     "hold_s": 0
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "copyright"
+      }
+     ]
+    }
+   ],
+   "timing": {
+    "fit": "spacing",
+    "target_seconds": 75
+   }
+  }
+ ],
+ "checks": [
+  {
+   "check": "title_present"
+  },
+  {
+   "check": "legal_present",
+   "key": "copyright"
+  },
+  {
+   "check": "max_duration",
+   "seconds": 120
+  }
+ ],
+ "id": "short_festival"
+}

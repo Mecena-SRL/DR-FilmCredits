@@ -1,0 +1,136 @@
+{
+ "label": {
+  "it": "Documentario",
+  "en": "Documentary"
+ },
+ "region": "INT",
+ "theme": "minimal",
+ "language": "it",
+ "format": {
+  "width": 1920,
+  "height": 1080,
+  "fps": 25.0
+ },
+ "timing": {
+  "speed": "normal",
+  "end_mode": "hold_last",
+  "hold_last_s": 4.0
+ },
+ "notes": [
+  "Repertorio: ogni fonte va citata con la dicitura del proprio accordo (licenza, gentile concessione, pubblico dominio).",
+  "Testimoni/intervistati: blocco 'Con' prima della troupe."
+ ],
+ "sequences": [
+  {
+   "id": "opening",
+   "kind": "cards",
+   "name": "Titoli di testa",
+   "blocks": [
+    {
+     "type": "title",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "kind": "crawl",
+   "name": "Titoli di coda",
+   "blocks": [
+    {
+     "type": "credit",
+     "role": "director",
+     "names": [],
+     "layout": "stacked"
+    },
+    {
+     "type": "names",
+     "heading": "h:with",
+     "names": [],
+     "note": "Intervistati / protagonisti"
+    },
+    {
+     "type": "list",
+     "rows": [
+      {
+       "role": "producer",
+       "names": []
+      },
+      {
+       "role": "cinematographer",
+       "names": []
+      },
+      {
+       "role": "editor",
+       "names": []
+      },
+      {
+       "role": "sound_mixer",
+       "names": []
+      },
+      {
+       "role": "composer",
+       "names": []
+      },
+      {
+       "role": "colorist",
+       "names": []
+      },
+      {
+       "role": "sound_designer",
+       "names": []
+      }
+     ]
+    },
+    {
+     "type": "agreements",
+     "kind": "archive",
+     "entries": []
+    },
+    {
+     "type": "music",
+     "heading": "h:songs",
+     "cues": []
+    },
+    {
+     "type": "agreements",
+     "kind": "location",
+     "entries": []
+    },
+    {
+     "type": "names",
+     "heading": "h:thanks",
+     "names": []
+    },
+    {
+     "type": "logos",
+     "caption": "h:with_support",
+     "items": [],
+     "hold_s": 0
+    },
+    {
+     "type": "legal",
+     "items": [
+      {
+       "key": "copyright"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checks": [
+  {
+   "check": "role_present",
+   "role": "director"
+  },
+  {
+   "check": "legal_present",
+   "key": "copyright"
+  },
+  {
+   "check": "ai_disclosure"
+  }
+ ],
+ "id": "documentary"
+}

@@ -1,0 +1,86 @@
+{
+	Tools = ordered() {
+		DRFC_TwoColumn = MacroOperator {
+			CtrlWZoom = false,
+			Inputs = ordered() {
+				Input1 = InstanceInput { SourceOp = "Role", Source = "StyledText", Name = "Ruolo", },
+				Input2 = InstanceInput { SourceOp = "Name", Source = "StyledText", Name = "Nomi", },
+				Input3 = InstanceInput { SourceOp = "Role", Source = "Center", Name = "Posizione ruolo", },
+				Input4 = InstanceInput { SourceOp = "Name", Source = "Center", Name = "Posizione nomi", },
+				Input5 = InstanceInput { SourceOp = "Role", Source = "Size", Name = "Dimensione ruolo", },
+				Input6 = InstanceInput { SourceOp = "Name", Source = "Size", Name = "Dimensione nomi", },
+			},
+			Outputs = {
+				MainOutput1 = InstanceOutput { SourceOp = "Merge2", Source = "Output", },
+			},
+			ViewInfo = GroupInfo { Pos = { 0, 0 } },
+			Tools = ordered() {
+				Bg = Background {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						TopLeftAlpha = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { -110, 0 } },
+				},
+				Role = TextPlus {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Center = Input { Value = { 0.488, 0.5 }, },
+						StyledText = Input { Value = "Direttore della fotografia", },
+						Font = Input { Value = "Cormorant Garamond", },
+						Style = Input { Value = "Italic", },
+						Size = Input { Value = 0.0151875, },
+						CharacterSpacing = Input { Value = 1, },
+						LineSpacing = Input { Value = 1.1, },
+						HorizontalLeftCenterRight = Input { Value = 1, },
+						Red1 = Input { Value = 0.850980392, },
+						Green1 = Input { Value = 0.850980392, },
+						Blue1 = Input { Value = 0.850980392, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 0 } },
+				},
+				Merge1 = Merge {
+					Inputs = {
+						Background = Input { SourceOp = "Bg", Source = "Output", },
+						Foreground = Input { SourceOp = "Role", Source = "Output", },
+					},
+					ViewInfo = OperatorInfo { Pos = { 110, 0 } },
+				},
+				Name = TextPlus {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Center = Input { Value = { 0.512, 0.5 }, },
+						StyledText = Input { Value = "NOME COGNOME", },
+						Font = Input { Value = "Cormorant Garamond", },
+						Style = Input { Value = "Medium", },
+						Size = Input { Value = 0.016875, },
+						CharacterSpacing = Input { Value = 1.04, },
+						LineSpacing = Input { Value = 1.1, },
+						HorizontalLeftCenterRight = Input { Value = -1, },
+						Red1 = Input { Value = 1, },
+						Green1 = Input { Value = 1, },
+						Blue1 = Input { Value = 1, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 0 } },
+				},
+				Merge2 = Merge {
+					Inputs = {
+						Background = Input { SourceOp = "Merge1", Source = "Output", },
+						Foreground = Input { SourceOp = "Name", Source = "Output", },
+					},
+					ViewInfo = OperatorInfo { Pos = { 110, 0 } },
+				},
+			},
+		},
+	},
+	ActiveTool = "DRFC_TwoColumn"
+}

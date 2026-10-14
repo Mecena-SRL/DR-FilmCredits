@@ -1,0 +1,80 @@
+{
+	Tools = ordered() {
+		DRFC_MusicCue = MacroOperator {
+			CtrlWZoom = false,
+			Inputs = ordered() {
+				Input1 = InstanceInput { SourceOp = "Song", Source = "StyledText", Name = "Titolo", },
+				Input2 = InstanceInput { SourceOp = "Details", Source = "StyledText", Name = "Dettagli", },
+			},
+			Outputs = {
+				MainOutput1 = InstanceOutput { SourceOp = "Merge2", Source = "Output", },
+			},
+			ViewInfo = GroupInfo { Pos = { 0, 0 } },
+			Tools = ordered() {
+				Bg = Background {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						TopLeftAlpha = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { -110, 0 } },
+				},
+				Song = TextPlus {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Center = Input { Value = { 0.5, 0.56 }, },
+						StyledText = Input { Value = "«Titolo del brano»", },
+						Font = Input { Value = "Cormorant Garamond", },
+						Style = Input { Value = "Medium", },
+						Size = Input { Value = 0.016875, },
+						CharacterSpacing = Input { Value = 1.04, },
+						LineSpacing = Input { Value = 1.1, },
+						Red1 = Input { Value = 1, },
+						Green1 = Input { Value = 1, },
+						Blue1 = Input { Value = 1, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 0 } },
+				},
+				Merge1 = Merge {
+					Inputs = {
+						Background = Input { SourceOp = "Bg", Source = "Output", },
+						Foreground = Input { SourceOp = "Song", Source = "Output", },
+					},
+					ViewInfo = OperatorInfo { Pos = { 110, 0 } },
+				},
+				Details = TextPlus {
+					Inputs = {
+						GlobalOut = Input { Value = 119, },
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Center = Input { Value = { 0.5, 0.47 }, },
+						StyledText = Input { Value = "di Autore\nEseguita da Interprete\nPer gentile concessione di Etichetta", },
+						Font = Input { Value = "Cormorant Garamond", },
+						Style = Input { Value = "Regular", },
+						Size = Input { Value = 0.012375, },
+						CharacterSpacing = Input { Value = 1, },
+						LineSpacing = Input { Value = 1.15, },
+						Red1 = Input { Value = 0.811764706, },
+						Green1 = Input { Value = 0.811764706, },
+						Blue1 = Input { Value = 0.811764706, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 0 } },
+				},
+				Merge2 = Merge {
+					Inputs = {
+						Background = Input { SourceOp = "Merge1", Source = "Output", },
+						Foreground = Input { SourceOp = "Details", Source = "Output", },
+					},
+					ViewInfo = OperatorInfo { Pos = { 110, 0 } },
+				},
+			},
+		},
+	},
+	ActiveTool = "DRFC_MusicCue"
+}

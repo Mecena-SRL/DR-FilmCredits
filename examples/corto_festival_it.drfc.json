@@ -1,0 +1,405 @@
+{
+  "schema": "drfc/1",
+  "meta": {
+    "title": "La Luce di Ottobre",
+    "original_title": "",
+    "year": 2026,
+    "language": "it",
+    "preset": "short_festival",
+    "copyright_owner": "Ottobre Film srl",
+    "country": "",
+    "funding": [
+      "film_commission"
+    ]
+  },
+  "format": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24.0,
+    "safe_title": 0.9,
+    "background": "transparent"
+  },
+  "style": {
+    "theme": "festival",
+    "overrides": {}
+  },
+  "timing": {
+    "speed": "normal",
+    "px_per_frame": null,
+    "fit": "none",
+    "target_seconds": null,
+    "lead_in_s": 0.0,
+    "lead_out_s": 0.0,
+    "end_mode": "hold_last",
+    "hold_last_s": 3.0,
+    "card_pace": "normal",
+    "card_fade_s": 0.5,
+    "card_gap_s": 0.25,
+    "allow_fractional_speed": false
+  },
+  "layout": {
+    "split": "none",
+    "axis": 0.5,
+    "text_lane": 0.5,
+    "max_text_width": 0.8,
+    "render_mode": "auto"
+  },
+  "sequences": [
+    {
+      "id": "opening",
+      "kind": "cards",
+      "name": "Titoli di testa",
+      "blocks": [
+        {
+          "type": "card",
+          "lines": [
+            {
+              "text": "Ottobre Film presenta",
+              "style": "card_name"
+            }
+          ],
+          "note": "Produzione presenta",
+          "id": "opening_card_1",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "role": "",
+          "names": [],
+          "position": "center"
+        },
+        {
+          "type": "title",
+          "text": "La Luce di Ottobre",
+          "id": "opening_title_2",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "kind": "crawl",
+      "name": "Titoli di coda",
+      "blocks": [
+        {
+          "type": "credit",
+          "role": "film_by",
+          "names": [
+            "Giulia Ferri"
+          ],
+          "layout": "stacked",
+          "id": "end_credit_1",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "team": false
+        },
+        {
+          "type": "cast",
+          "heading": "h:cast",
+          "rows": [
+            {
+              "actor": "Marta Lodi",
+              "character": "Elena"
+            },
+            {
+              "actor": "Paolo Gentile",
+              "character": "Tommaso"
+            },
+            {
+              "actor": "Sara Conte",
+              "character": "La madre"
+            },
+            {
+              "actor": "Davide Russo",
+              "character": "Il pescatore"
+            }
+          ],
+          "id": "end_cast_2",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "order": "actor_character"
+        },
+        {
+          "type": "list",
+          "heading": "",
+          "rows": [
+            {
+              "role": "screenplay",
+              "names": [
+                "Giulia Ferri",
+                "Andrea Sala"
+              ]
+            },
+            {
+              "role": "cinematographer",
+              "names": [
+                "Luca Marini"
+              ]
+            },
+            {
+              "role": "editor",
+              "names": [
+                "Chiara Neri"
+              ]
+            },
+            {
+              "role": "production_designer",
+              "names": [
+                "Fabio Greco"
+              ]
+            },
+            {
+              "role": "costume_designer",
+              "names": [
+                "Irene Bassi"
+              ]
+            },
+            {
+              "role": "composer",
+              "names": [
+                "Matteo Villa"
+              ]
+            },
+            {
+              "role": "sound_mixer",
+              "names": [
+                "Nicola Riva"
+              ]
+            },
+            {
+              "role": "sound_designer",
+              "names": [
+                "Elisa Fontana"
+              ]
+            },
+            {
+              "role": "colorist",
+              "names": [
+                "Simone Galli"
+              ]
+            },
+            {
+              "role": "producer",
+              "names": [
+                "Roberta Ottobre"
+              ]
+            }
+          ],
+          "id": "end_list_3",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "list",
+          "heading": "dept:production",
+          "rows": [
+            {
+              "role": "production_manager",
+              "names": [
+                "Pietro Fabbri"
+              ]
+            },
+            {
+              "role": "first_ad",
+              "names": [
+                "Anna Costa"
+              ]
+            },
+            {
+              "role": "first_ac",
+              "names": [
+                "Marco De Luca",
+                "Ivo Serra"
+              ]
+            },
+            {
+              "role": "gaffer",
+              "names": [
+                "Gianni Moretti"
+              ]
+            },
+            {
+              "role": "makeup_artist",
+              "names": [
+                "Laura Pini"
+              ]
+            }
+          ],
+          "id": "end_list_4",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "layout": "two_column"
+        },
+        {
+          "type": "music",
+          "heading": "h:songs",
+          "cues": [
+            {
+              "title": "Ottobre",
+              "writers": [
+                "Matteo Villa"
+              ],
+              "agreement": "original"
+            },
+            {
+              "title": "Il mare d'inverno",
+              "writers": [
+                "E. Bennato"
+              ],
+              "performers": [
+                "Loredana Bertè"
+              ],
+              "publisher": "Edizioni Esempio",
+              "agreement": "licensed",
+              "licensor": "Etichetta Esempio srl"
+            },
+            {
+              "title": "Canzone del molo",
+              "writers": [
+                "Band Locale"
+              ],
+              "performers": [
+                "Band Locale"
+              ],
+              "agreement": "courtesy",
+              "licensor": "Band Locale"
+            }
+          ],
+          "id": "end_music_5",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": ""
+        },
+        {
+          "type": "names",
+          "heading": "h:thanks",
+          "names": [
+            "Comune di Esempio",
+            "Famiglia Rossi",
+            "Bar del Porto",
+            "Pro Loco",
+            "Associazione Pescatori",
+            "Marina Bianchi",
+            "Luigi Verdi",
+            "Scuola di Cinema"
+          ],
+          "id": "end_names_6",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "columns": "auto"
+        },
+        {
+          "type": "media",
+          "items": [
+            {
+              "path": "assets/bts_01.png",
+              "caption": ""
+            },
+            {
+              "path": "assets/bts_02.png"
+            }
+          ],
+          "lane": "side",
+          "enabled": true,
+          "note": "Backstage laterale",
+          "id": "end_media_7",
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "arrangement": "row",
+          "height": null
+        },
+        {
+          "type": "logos",
+          "caption": "h:with_support",
+          "items": [
+            {
+              "path": "assets/logo_wide.png",
+              "name": "Film Commission",
+              "tag": "film_commission"
+            },
+            {
+              "path": "assets/logo_square.png",
+              "name": "Comune"
+            },
+            {
+              "path": "assets/logo_mid.png",
+              "name": "Partner"
+            }
+          ],
+          "hold_s": 2.0,
+          "id": "end_logos_8",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "height": null,
+          "per_row": "auto"
+        },
+        {
+          "type": "legal",
+          "items": [
+            {
+              "key": "copyright"
+            }
+          ],
+          "id": "end_legal_9",
+          "enabled": true,
+          "spacing_before": null,
+          "spacing_after": null,
+          "hold_s": 0.0,
+          "page_break": false,
+          "style": {},
+          "note": "",
+          "text": ""
+        }
+      ],
+      "timing": {
+        "fit": "spacing",
+        "target_seconds": 75
+      }
+    }
+  ]
+}

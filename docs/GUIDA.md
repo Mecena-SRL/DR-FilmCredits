@@ -1,0 +1,148 @@
+# Guida d'uso
+
+## Indice
+1. [Installazione](#installazione)
+2. [Prima prova in Resolve](#prima-prova-in-resolve)
+3. [Il progetto .drfc.json](#il-progetto-drfcjson)
+4. [Blocchi e sintassi rapida](#blocchi-e-sintassi-rapida)
+5. [Import da CSV / Excel](#import-da-csv--excel)
+6. [Stile](#stile)
+7. [Tempi: velocità, durata, pause](#tempi-velocità-durata-pause)
+8. [Generazione in timeline](#generazione-in-timeline)
+9. [Title manuali](#title-manuali)
+10. [Calibrazione](#calibrazione)
+11. [Problemi frequenti](#problemi-frequenti)
+
+## Installazione
+```
+python install/install.py
+```
+| Cosa | Dove |
+|---|---|
+| Libreria | Windows `%APPDATA%\DR-FilmCredits\lib` · macOS `~/Library/Application Support/DR-FilmCredits/lib` · Linux `~/.config/DR-FilmCredits/lib` |
+| Script di menu | `…/Fusion/Scripts/Utility/DR-FilmCredits.py` |
+| Title manuali | `…/Fusion/Templates/Edit/Titles/DR-FilmCredits/` |
+
+Impostazioni, calibrazione e ultimo progetto aperto si salvano nella stessa cartella utente.
+
+## Prima prova in Resolve
+1. Apri una timeline di prova e lancia **Workspace › Scripts › Utility › DR-FilmCredits**.
+2. Pagina Fusion su un clip qualsiasi → nel pannello: **5 · Verifica e genera › Calibra Text+**
+   (misura la scala reale dei caratteri; 1 secondo, una sola volta).
+3. Apri `examples/corto_festival_it.drfc.json` (**Apri…**), poi **Genera nella timeline**.
+4. Controlla: durata del clip = durata indicata nell'esito; scorrimento fluido; colonne allineate.
+   Per valutare il judder fai un render a piena risoluzione e guardalo in un player.
+
+## Il progetto .drfc.json
+Un file JSON leggibile (versionabile con git, modificabile a mano). Percorsi di loghi e media
+relativi al file di progetto. Una cartella `fonts/` accanto al progetto viene usata per le misure.
+
+```json
+{
+  "meta": {"title": "…", "year": 2026, "language": "it", "preset": "it_cinema",
+           "copyright_owner": "…", "funding": ["mic_tax_credit"], "ai_used": true, "ai_uses": "montaggio"},
+  "format": {"width": 1920, "height": 1080, "fps": 24, "safe_title": 0.9, "background": "transparent"},
+  "style": {"theme": "classic", "overrides": {"name": {"family": "Inter", "size": 30}}},
+  "timing": {"speed": "normal", "end_mode": "hold_last", "hold_last_s": 4},
+  "layout": {"split": "none", "render_mode": "auto"},
+  "sequences": [
+    {"id": "opening", "kind": "cards", "blocks": [ … ]},
+    {"id": "end", "kind": "crawl", "timing": {"fit": "spacing", "target_seconds": 90}, "blocks": [ … ]}
+  ]
+}
+```
+
+## Blocchi e sintassi rapida
+Campi comuni: `enabled`, `spacing_before`/`spacing_after` (in righe, vuoto = tema), `hold_s`
+(pausa del rullo con il blocco al centro), `page_break` (cartelli), `style` (override locale).
+
+| Tipo | Uso | Sintassi nel riquadro |
+|---|---|---|
+| `title` | titolo dell'opera | testo |
+| `card` | cartello (testa) | `ruolo: Nomi` oppure righe `[card_name] testo` |
+| `credit` | credito singolo (impilato o a 2 colonne) | `director: Giulia Ferri` |
+| `list` | reparto a due colonne | `ruolo: nome, nome` una riga per ruolo |
+| `names` | nomi multicolonna (ringraziamenti, comparse) | un nome per riga |
+| `cast` | interpreti | `Attore = Personaggio` |
+| `music` | brani | paragrafo per brano: `titolo:`, `autori:`, `interpreti:`, `edizioni:`, `accordo:`, `licenziante:`, `agente:`, `cc:`, `team: si`, `extra:` |
+| `agreements` | location, noleggi, repertorio, prodotti, opere | `nome \| fornitore \| accordo` |
+| `logos` | loghi | `percorso \| tag \| scala \| nome` |
+| `media` | foto/video backstage | `percorso \| didascalia \| scala` |
+| `legal` | diciture | `@chiave campo=valore` o testo libero |
+| `text`, `spacer` | testo libero, spazio | testo / numero di righe |
+
+**Ruoli**: si possono usare le chiavi del dizionario (tradotte automaticamente nella lingua delle
+diciture: `cinematographer` → «Direttore della fotografia» / «Director of Photography»…) oppure
+scrivere il ruolo per esteso. Il menu **Ruoli** inserisce le chiavi.
+
+**Intestazioni**: `dept:camera` (reparto tradotto), `h:thanks` (intestazione standard) o testo libero.
+
+**Tag dei loghi** usati dai controlli: `mic`, `creative_europe`, `eurimages`, `film_commission`,
+`cnc`, `ffa`, `dfff`, `icaa`. Usare PNG con trasparenza (Fusion non legge SVG).
+
+**Accordi**: vedi [music-rights.md](research/music-rights.md) e
+[rentals-locations-legal.md](research/rentals-locations-legal.md).
+
+## Import da CSV / Excel
+**Crea modello CSV** genera un file con le colonne:
+`sezione; sequenza; ruolo; nome; personaggio; titolo; autori; interpreti; editore; accordo; licenziante; fornitore; file; tag; nota`.
+- `sezione`: chiave reparto (`camera`, `sound`, …), `cast`, `music`, `locations`, `rentals`,
+  `archive`, `products`, `thanks`, `logos`, `media`, `credit`, `legal`. Se vuota si deduce dal ruolo.
+- Nomi multipli nella stessa cella: separati da `;` o `|`.
+- Separatore `,` `;` o tab rilevato in automatico (Excel italiano usa `;`). `.xlsx` richiede `openpyxl`.
+- Le voci si aggiungono ai blocchi del preset (stesso reparto) e prima di loghi/diciture finali.
+
+## Stile
+- **Temi**: Classico cinema (Cormorant Garamond), Moderno (Montserrat), Minimale (Inter),
+  Festival (Playfair Display + Lato), Broadcast TV (Arial, alta leggibilità). I font devono essere
+  installati nel sistema (Resolve li usa da lì).
+- Dimensioni in px riferiti a 1080 di altezza: in UHD vengono raddoppiate automaticamente.
+- **Personalizza stile**: font, stile, dimensione, colore, maiuscole, spaziatura lettere,
+  interlinea per ciascuno stile (titolo, intestazione, ruolo, nome, personaggio, piccolo, legale,
+  ruolo/nome dei cartelli).
+- **Media a lato**: il testo occupa una corsia (es. 50%) e le foto/video con `lane: side`
+  scorrono nell'altra, distribuiti lungo tutto il rullo.
+- **Nodi Fusion**: *Automatico* (consigliato) = colonne centrate in un Text+ multiriga, colonne
+  laterali una riga per Text+ (allineamento perfetto); *Compatto* = meno nodi; *Preciso* = un nodo
+  per riga.
+
+## Tempi: velocità, durata, pause
+| Opzione | Effetto |
+|---|---|
+| Lenta / Normale / Veloce | 15 / 11 / 8 s perché una riga attraversi lo schermo, convertiti in px/frame **interi** |
+| Personalizzata | px/frame scelti a mano |
+| Adatta velocità alla durata | velocità intera più bassa che sta nel tempo; i frame residui allungano la pausa finale → durata esatta |
+| Adatta spaziatura alla durata | velocità del preset, spazi tra blocchi allargati/stretti (0,5×–2×) fino alla durata |
+| Finale | esce dallo schermo / si ferma sull'ultimo blocco (o sul gruppo loghi + ©) con pausa |
+| Pausa su blocco | `hold_s`: il rullo si ferma con quel blocco al centro |
+| Cartelli | durata da parole e righe × ritmo (lento ×1,3, veloce ×0,75), min 2,5 s, max 8 s; dissolvenza e nero tra cartelli |
+
+La durata obiettivo si imposta **per sequenza** (testa e coda hanno tempi diversi).
+
+## Generazione in timeline
+- **Posizione**: testina, inizio, fine timeline, oppure *Sostituisci* (stessa posizione della
+  versione precedente).
+- **Traccia**: traccia dedicata «DR-FilmCredits» (creata se manca) o nuova traccia.
+- Il formato (risoluzione, fps) viene preso dalla timeline se è attivo «Usa formato della timeline».
+- Ogni rigenerazione sostituisce il clip precedente della stessa sequenza.
+- In Fusion: `DRFC_Scroll` contiene l'unica espressione di scorrimento; i nodi hanno il nome del
+  blocco (`end_list_5_T`, `…_M`, `…_L` per i Loader).
+
+## Title manuali
+In **Effects › Titles › DR-FilmCredits**: *Cartello Ruolo-Nome*, *Due Colonne*, *Lower Third
+Credito*, *Brano Musicale*, *Copyright*. Si trascinano in timeline e si modificano dall'Inspector.
+Rigenerabili con `python -m drfc.templates templates/`.
+
+## Calibrazione
+**Calibra Text+** aggiunge un Text+ temporaneo al comp aperto, misura l'altezza reale delle
+maiuscole e il verso dell'ancoraggio e salva `calibration.json` nella cartella utente. Valori
+modificabili a mano: `em_per_size_width`, `anchor_h`, `justify_h`, `baseline_fix_em`.
+
+## Problemi frequenti
+| Sintomo | Causa / soluzione |
+|---|---|
+| Avviso «Font non trovati» | Installare i font del tema o scegliere font installati in *Stile*. |
+| Il clip è più corto del rullo | Resolve non ha accettato la durata: il plugin passa da solo alla sequenza di immagini; se l'esito dice di allungare il clip, trascinarne la coda fino alla durata indicata. |
+| Loghi non visibili | Percorso errato o SVG: usare PNG; controllare la Verifica. |
+| Righe a capo inattese | Ruolo/nome più largo della colonna: ridurre la dimensione o allargare la safe area. |
+| Lo scorrimento non parte da 0 | Il comp viene riallineato da solo; se il clip è stato tagliato a mano, rigenerare. |
